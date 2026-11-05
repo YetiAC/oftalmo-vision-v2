@@ -1,0 +1,58 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Reviews from '../../components/Reviews.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import YouTube from '../../components/YouTube.astro';
+import Icon from '../../components/Icon.astro';
+import { site, waLink } from '../../data/site';
+---
+<Base lang="en" title="Ophthalmologist in Tijuana, Mexico | Eye Surgery near San Diego | Oftalmo Visión" description="Board‑certified ophthalmologists in Tijuana, Mexico, minutes from San Diego: eyelid surgery, retina specialist, cataract surgery and eye exams. English spoken." alternates={{ es: '/', en: '/en/' }} frente="turismo">
+  <PageHero
+    eyebrow="Oftalmo Visión · Tijuana, Mexico"
+    title="Eye specialists in Tijuana, minutes from San Diego"
+    lede="Two board‑certified ophthalmic surgeons with fellowship training in retina and oculoplastics. Cross at San Ysidro and you are at your appointment in minutes."
+    photo="doctores-oftalmo-vision-recepcion"
+    photoAlt="Dr. Juvenal Guzmán and Dr. Citlali Carrasco at Oftalmo Visión in Tijuana"
+    wa={waLink('EN · Home · Questions', 'Hi, I have a question about visiting.')}
+    lang="en"
+    secondary={{ href: '#visit', label: 'Plan your visit' }}
+    frente="turismo"
+    chips={['English spoken', `${site.reviews.rating}★ on Google`, 'Zona Río, Tijuana']}
+  />
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Treatments</p>
+      <h2>What brings patients from the US</h2>
+      <div class="grid grid-3 tr">
+        <a class="tr__c reveal" href="/en/eyelid-surgery-tijuana/"><h3>Eyelid surgery</h3><p class="muted">Blepharoplasty and droopy eyelid repair by an oculoplastic surgeon.</p><span>Learn more <Icon name="arrow" size={16} /></span></a>
+        <a class="tr__c reveal" href="/en/retina-specialist-tijuana/"><h3>Retina specialist</h3><p class="muted">Diabetic retinopathy, retinal detachment, injections and vitrectomy.</p><span>Learn more <Icon name="arrow" size={16} /></span></a>
+        <a class="tr__c reveal" href="/en/cataract-surgery-tijuana/"><h3>Cataract surgery</h3><p class="muted">Outpatient lens replacement under local anesthesia.</p><span>Learn more <Icon name="arrow" size={16} /></span></a>
+      </div>
+    </div>
+  </section>
+  <section class="section section--navy" id="visit">
+    <div class="container vis">
+      <div>
+        <p class="eyebrow">Plan your visit</p>
+        <h2>Getting here from San Ysidro</h2>
+        <p class="lede">We are at {site.address.street}, {site.address.neighborhood}, Tijuana. After crossing on foot at San Ysidro, take a taxi or rideshare to Edificio Corporativo Central. Zona Río has hotels and restaurants within walking distance.</p>
+        <p>Call from the US: <a class="lnk" href={`tel:${site.phone}`} data-cta="click_call" data-pos="en-visit">+52 664 608 5040</a> · Emergencies: <a class="lnk" href={`tel:${site.emergency}`} data-cta="click_call" data-frente="urgencias" data-pos="en-visit">+52 664 357 9604</a></p>
+      </div>
+      <YouTube id="tSKwqrLRXDE" title="How to find Oftalmo Visión" frente="turismo" />
+    </div>
+  </section>
+  <Reviews lang="en" />
+  <CtaBand lang="en" title="Book your consultation" text="Message us on WhatsApp in English and we will confirm your appointment." tag="EN · Home final" message="Hi, I would like to schedule a consultation." frente="turismo" />
+</Base>
+<style>
+  .tr { margin-top: 28px; }
+  .tr__c { display: grid; gap: 8px; padding: 28px; border: 1px solid var(--line); border-radius: 20px; text-decoration: none; color: var(--navy); transition: transform .25s, border-color .25s; }
+  .tr__c:hover { transform: translateY(-4px); border-color: var(--blue); }
+  .tr__c h3, .tr__c p { margin: 0; }
+  .tr__c span { display: inline-flex; gap: 6px; align-items: center; font-weight: 700; color: var(--blue-deep); }
+  .vis { display: grid; gap: 48px; align-items: center; }
+  .vis > * { min-width: 0; }
+  @media (min-width: 1000px) { .vis { grid-template-columns: 1fr 1fr; gap: 72px; } }
+  .lnk { color: #9fe3c0; }
+</style>

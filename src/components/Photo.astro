@@ -1,0 +1,32 @@
+---
+// Foto de la sesión comercial, servida en AVIF/WebP y en varios tamaños.
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  name: string;
+  alt: string;
+  sizes?: string;
+  widths?: number[];
+  class?: string;
+  priority?: boolean;
+  position?: string;
+}
+const { name, alt, sizes = '(min-width: 1000px) 50vw, 100vw', widths = [480, 800, 1200, 1600], class: cls, priority = false, position } = Astro.props;
+const all = import.meta.glob<{ default: ImageMetadata }>('/src/assets/fotos/*.jpg', { eager: true });
+const img = all[`/src/assets/fotos/${name}.jpg`]?.default;
+if (!img) throw new Error(`Foto no encontrada: ${name}`);
+---
+<Picture
+  src={img}
+  alt={alt}
+  formats={['avif', 'webp']}
+  widths={widths}
+  sizes={sizes}
+  quality={62}
+  class={cls}
+  loading={priority ? 'eager' : 'lazy'}
+  fetchpriority={priority ? 'high' : 'auto'}
+  decoding={priority ? 'sync' : 'async'}
+  style={position ? `object-position:${position}` : undefined}
+/>

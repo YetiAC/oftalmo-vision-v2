@@ -1,0 +1,237 @@
+---
+// Header basado en el del sitio actual: barra superior de contacto con bloque
+// verde "Agendar cita", y barra blanca con logo sobre círculo, menú con
+// desplegables y redes sociales.
+import { Image } from 'astro:assets';
+import logo from '../assets/marca/logo-oftalmo-vision.png';
+import Icon from './Icon.astro';
+import { site, doctors, waLink } from '../data/site';
+
+interface Props { lang?: 'es' | 'en'; enHref?: string; esHref?: string }
+const { lang = 'es', enHref = '/en/', esHref = '/' } = Astro.props;
+const path = Astro.url.pathname;
+const es = lang === 'es';
+
+type Link = { href: string; label: string };
+type Group = { title: string; who: string; items: Link[]; book?: { href: string; label: string } };
+type Item = { href: string; label: string; children?: Link[]; groups?: Group[]; extras?: Link[] };
+const nav: Item[] = es
+  ? [
+      { href: '/', label: 'Inicio' },
+      { href: '/padecimiento/', label: 'Padecimientos', groups: [
+        { title: 'Párpados', who: 'Dra. Citlali Carrasco · Oculoplástica', book: { href: doctors.citlali.setmore, label: 'Agendar con la Dra. Citlali' }, items: [
+          { href: '/padecimiento/cirugia-cosmetica-de-parpados/', label: 'Blefaroplastia' },
+          { href: '/padecimiento/ptosis-parpado-caido/', label: 'Párpado caído' },
+          { href: '/padecimiento/chalazion/', label: 'Chalazión' },
+          { href: '/padecimiento/obstruccion-via-lagrimal/', label: 'Vía lagrimal' },
+        ] },
+        { title: 'Retina', who: 'Dr. Juvenal Guzmán · Retina y vítreo', book: { href: doctors.juvenal.setmore, label: 'Agendar con el Dr. Juvenal' }, items: [
+          { href: '/padecimiento/retinopatia-diabetica/', label: 'Retinopatía diabética' },
+          { href: '/padecimiento/desprendimiento-de-retina/', label: 'Desprendimiento de retina' },
+          { href: '/padecimiento/inyecciones-intravitreas/', label: 'Inyecciones intravítreas' },
+          { href: '/padecimiento/vitrectomia/', label: 'Vitrectomía' },
+          { href: '/padecimiento/degeneracion-macular/', label: 'Degeneración macular' },
+        ] },
+        { title: 'Ambos doctores', who: 'Atendidos por los dos especialistas', items: [
+          { href: '/padecimiento/catarata/', label: 'Catarata' },
+          { href: '/padecimiento/glaucoma/', label: 'Glaucoma' },
+          { href: '/padecimiento/pterigion/', label: 'Pterigión' },
+        ] },
+      ], extras: [
+        { href: '/urgencias-oftalmologicas/', label: 'Urgencias oftalmológicas' },
+        { href: '/padecimiento/', label: 'Ver todos los padecimientos' },
+      ] },
+      { href: '/profesionales-de-la-salud/', label: 'Profesionales', children: [
+        { href: '/profesionales-de-la-salud/retinologo-dr-juvenal-guzman-cerda/', label: 'Dr. Juvenal Guzmán Cerda' },
+        { href: '/profesionales-de-la-salud/dra-citlali-carrasco-gonzalez/', label: 'Dra. Citlali Carrasco González' },
+      ] },
+      { href: '/optica-tijuana/', label: 'Óptica' },
+      { href: '/empresas/', label: 'Empresas' },
+      { href: '/acerca-de/', label: 'Acerca de', children: [
+        { href: '/sucursal-oftalmo-vision-zona-rio-tijuana/', label: 'Ubicación Zona Río' },
+        { href: '/oculista-en-tijuana/', label: 'Oculista en Tijuana' },
+        { href: '/clinica-de-ojos-tijuana/', label: 'Clínica de ojos' },
+        { href: '/aviso-de-privacidad/', label: 'Aviso de privacidad' },
+      ] },
+      { href: '/blog/', label: 'Blog' },
+      { href: '/contactanos/', label: 'Contáctanos' },
+    ]
+  : [
+      { href: '/en/', label: 'Home' },
+      { href: '/en/eyelid-surgery-tijuana/', label: 'Eyelid surgery' },
+      { href: '/en/retina-specialist-tijuana/', label: 'Retina' },
+      { href: '/en/cataract-surgery-tijuana/', label: 'Cataracts' },
+      { href: '/en/#visit', label: 'Visit us' },
+    ];
+const wa = es ? waLink('Header · Dudas', 'Hola, tengo una duda:') : waLink('EN · Header', 'Hi, I have a question:');
+const active = (it: Item) => it.href === path || (it.href !== '/' && it.href !== '/en/' && (path.startsWith(it.href) || it.children?.some((c) => c.href === path) || it.groups?.some((g) => g.items.some((c) => c.href === path))));
+---
+<header class="hd">
+  <div class="hd__top">
+    <div class="hd__topin">
+      <div class="hd__contact">
+        <a href={`tel:${site.phone}`} data-cta="click_call" data-pos="header"><Icon name="phone" size={22} /><span>+52 {site.phoneDisplay}</span></a>
+        <a href={wa} target="_blank" rel="noopener" data-cta="click_whatsapp" data-pos="header"><Icon name="whatsapp" size={22} /><span>{es ? '¿Dudas? WhatsApp' : 'Questions? WhatsApp'}</span></a>
+        <a href={`mailto:${site.email}`} class="hd__mail"><Icon name="mail" size={22} /><span>{site.email}</span></a>
+        <a href={site.mapsUrl} target="_blank" rel="noopener" class="hd__loc"><Icon name="pin" size={22} /><span>Edf. Corporativo Central</span></a>
+      </div>
+      <a class="hd__book" href={site.setmore.base} target="_blank" rel="noopener" data-cta="click_setmore" data-pos="header">{es ? 'Agendar cita' : 'Book now'}</a>
+    </div>
+  </div>
+
+  <div class="hd__bar">
+    <div class="hd__barin">
+      <a href={es ? '/' : '/en/'} class="hd__logo" aria-label="Oftalmo Visión, inicio">
+        <span class="hd__halo" aria-hidden="true"></span>
+        <Image src={logo} alt="Oftalmo Visión Tijuana" width={330} height={153} loading="eager" fetchpriority="high" />
+      </a>
+
+      <nav class="hd__nav" aria-label={es ? 'Principal' : 'Main'}>
+        <ul>
+          {nav.map((it) => (
+            <li class:list={[{ 'has-sub': it.children, 'has-mega': it.groups }]}>
+              <a href={it.href} aria-current={active(it) ? 'page' : undefined}>{it.label}{(it.children || it.groups) && <svg class="chev" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5 5 6.5 8 3.5" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>}</a>
+              {it.children && (
+                <ul class="hd__sub">
+                  {it.children.map((c) => <li><a href={c.href} aria-current={c.href === path ? 'page' : undefined}>{c.label}</a></li>)}
+                </ul>
+              )}
+              {it.groups && (
+                <div class="hd__mega">
+                  <div class="hd__megagrid">
+                    {it.groups.map((g) => (
+                      <div class="hd__col">
+                        <p class="hd__coltitle">{g.title}</p>
+                        <p class="hd__colwho">{g.who}</p>
+                        <ul>{g.items.map((c) => <li><a href={c.href} aria-current={c.href === path ? 'page' : undefined}>{c.label}</a></li>)}</ul>
+                        {g.book && <a class="hd__colbook" href={g.book.href} target="_blank" rel="noopener" data-cta="click_setmore" data-pos="menu-padecimientos">{g.book.label}</a>}
+                        {!g.book && it.extras && (
+                          <div class="hd__extras">{it.extras.map((x) => <a href={x.href} class:list={[{ 'hd__urg': x.href.includes('urgencias') }]}>{x.label} ›</a>)}</div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="hd__right">
+        <a class="hd__lang" href={es ? enHref : esHref} hreflang={es ? 'en' : 'es'} lang={es ? 'en' : 'es'}>{es ? 'EN' : 'ES'}</a>
+        <a class="hd__soc hd__soc--fb" href={site.social.facebook} target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5H16.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.3H8v3h2.5V21h3Z"/></svg></a>
+        <a class="hd__soc hd__soc--ig" href={site.social.instagram} target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" d="M7.5 3h9A4.5 4.5 0 0 1 21 7.5v9a4.5 4.5 0 0 1-4.5 4.5h-9A4.5 4.5 0 0 1 3 16.5v-9A4.5 4.5 0 0 1 7.5 3Z"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg></a>
+        <details class="hd__menu">
+          <summary aria-label={es ? 'Abrir menú' : 'Open menu'}><Icon name="menu" size={28} /></summary>
+          <div class="hd__drawer">
+            {nav.map((it) => (
+              <div class="hd__group">
+                <a href={it.href}>{it.label}</a>
+                {it.children && <div class="hd__kids">{it.children.map((c) => <a href={c.href}>{c.label}</a>)}</div>}
+                {it.groups && (
+                  <div class="hd__kids">
+                    {it.groups.map((g) => (
+                      <>
+                        <span class="hd__kidtitle">{g.title} <small>· {g.who.split(' · ')[0]}</small></span>
+                        {g.items.map((c) => <a href={c.href}>{c.label}</a>)}
+                        {g.book && <a class="hd__kidbook" href={g.book.href} target="_blank" rel="noopener" data-cta="click_setmore" data-pos="menu-movil-padecimientos">{g.book.label} ›</a>}
+                      </>
+                    ))}
+                    {it.extras?.map((x) => <a href={x.href}>{x.label}</a>)}
+                  </div>
+                )}
+              </div>
+            ))}
+            <a class="hd__drawerbook" href={site.setmore.base} target="_blank" rel="noopener" data-cta="click_setmore" data-pos="menu-movil">{es ? 'Agendar cita' : 'Book appointment'}</a>
+            <a href={wa} target="_blank" rel="noopener" data-cta="click_whatsapp" data-pos="menu-movil">{es ? '¿Dudas? Escríbenos por WhatsApp' : 'Questions? WhatsApp us'}</a>
+            <a href={es ? enHref : esHref}>{es ? 'English' : 'Español'}</a>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  /* Todo el header es sticky con offset negativo: la barra azul se va al hacer scroll y la blanca se queda. */
+  .hd { position: sticky; top: calc(env(safe-area-inset-top, 0px) - 52px); z-index: 50; }
+  .hd__top { position: relative; z-index: 1; background: linear-gradient(180deg, #0f2a44 0%, var(--navy) 100%); color: #fff; }
+  .hd__topin { max-width: 1440px; margin-inline: auto; display: flex; align-items: stretch; justify-content: flex-end; padding-left: max(20px, env(safe-area-inset-left, 0px)); height: 52px; }
+  .hd__contact { display: flex; align-items: center; justify-content: flex-end; gap: clamp(18px, 5vw, 96px); flex: 1; padding-right: clamp(16px, 3vw, 48px); }
+  .hd__contact a { display: inline-flex; align-items: center; gap: 12px; color: #fff; text-decoration: none; font: 500 .98rem/1 var(--body); }
+  .hd__contact a:hover { color: #9fe3c0; }
+  .hd__contact :global(svg) { color: var(--green); }
+  .hd__book { display: grid; place-items: center; padding: 0 clamp(22px, 5vw, 96px); background: var(--green); color: var(--navy); text-decoration: none; font: 600 .95rem/1 var(--display); letter-spacing: .08em; text-transform: uppercase; transition: background-color .2s; }
+  .hd__book:hover { background: #3fc985; color: var(--navy); }
+  @media (max-width: 1100px) { .hd__contact .hd__loc { display: none; } }
+  @media (max-width: 900px) { .hd__contact .hd__mail, .hd__contact .hd__loc { display: none; } .hd__contact { justify-content: flex-start; gap: 28px; } }
+  /* En móvil: solo íconos (teléfono y WhatsApp) + bloque Agendar cita */
+  @media (max-width: 640px) {
+    .hd__contact { gap: 8px; padding-right: 8px; }
+    .hd__contact a { width: 44px; height: 44px; justify-content: center; border-radius: 50%; background: rgb(255 255 255 / .08); }
+    .hd__contact a span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+    .hd__book { padding: 0 22px; font-size: .82rem; white-space: nowrap; }
+  }
+
+  .hd__bar { position: relative; z-index: 2; background: #fff; box-shadow: 0 1px 0 rgb(0 9 39 / .06), 0 10px 24px -18px rgb(0 9 39 / .25); }
+  .hd__barin { max-width: 1440px; margin-inline: auto; display: flex; align-items: center; gap: 20px; min-height: 92px; padding-inline: max(20px, env(safe-area-inset-left, 0px)) max(20px, env(safe-area-inset-right, 0px)); }
+  .hd__logo { position: relative; display: block; flex: none; }
+  .hd__logo img { position: relative; width: clamp(170px, 18vw, 230px); height: auto; }
+  .hd__halo { position: absolute; left: 51%; top: 50%; width: 56%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; background: #fff; box-shadow: 0 -6px 16px -10px rgb(0 9 39 / .35); }
+
+  .hd__nav { display: none; margin-inline: auto; }
+  .hd__nav > ul { list-style: none; margin: 0; padding: 0; display: flex; gap: clamp(4px, .9vw, 16px); }
+  .hd__nav li { position: relative; }
+  .hd__nav > ul > li > a { display: inline-flex; align-items: center; gap: 6px; padding: 34px 4px; color: var(--graphite); text-decoration: none; font: 700 .86rem/1 var(--body); letter-spacing: .02em; text-transform: uppercase; transition: color .2s; white-space: nowrap; }
+  .hd__nav > ul > li > a:hover, .hd__nav > ul > li > a[aria-current='page'] { color: var(--green-ink); }
+  .hd__nav > ul > li > a[aria-current='page'] { box-shadow: inset 0 -3px 0 var(--green); }
+  .chev { transition: rotate .2s; }
+  .hd__sub { list-style: none; margin: 0; padding: 10px 0; position: absolute; left: -16px; top: 100%; min-width: 250px; background: #fff; border-top: 3px solid var(--green); box-shadow: 0 18px 40px -16px rgb(0 9 39 / .3); opacity: 0; visibility: hidden; translate: 0 8px; transition: opacity .2s, translate .2s, visibility .2s; }
+  .hd__sub a { display: block; padding: 10px 22px; color: var(--graphite); text-decoration: none; font-weight: 600; font-size: .92rem; }
+  .hd__sub a:hover, .hd__sub a[aria-current='page'] { background: var(--paper); color: var(--green-ink); }
+  .has-sub:hover > .hd__sub, .has-sub:focus-within > .hd__sub { opacity: 1; visibility: visible; translate: 0 0; }
+  .has-sub:hover .chev, .has-sub:focus-within .chev { rotate: 180deg; }
+  /* Panel de Padecimientos por especialista */
+  .hd__barin { position: relative; }
+  .hd__nav li.has-mega { position: static; }
+  .hd__mega { position: absolute; left: 50%; top: 100%; width: min(1040px, calc(100vw - 40px)); translate: -50% 8px; background: #fff; border-top: 3px solid var(--green); box-shadow: 0 24px 50px -20px rgb(0 9 39 / .35); opacity: 0; visibility: hidden; transition: opacity .2s, translate .2s, visibility .2s; }
+  .has-mega:hover > .hd__mega, .has-mega:focus-within > .hd__mega { opacity: 1; visibility: visible; translate: -50% 0; }
+  .has-mega:hover .chev, .has-mega:focus-within .chev { rotate: 180deg; }
+  .hd__megagrid { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .hd__col { display: flex; flex-direction: column; padding: 28px 30px 30px; border-right: 1px solid var(--line); }
+  .hd__col:last-child { border-right: 0; background: var(--paper); }
+  .hd__coltitle { margin: 0; font: 600 .78rem/1 var(--display); letter-spacing: .18em; text-transform: uppercase; color: var(--green-ink); }
+  .hd__colwho { margin: 8px 0 14px; font-size: .86rem; font-weight: 600; color: var(--muted); }
+  .hd__col ul { list-style: none; margin: 0 0 20px; padding: 0; display: grid; gap: 2px; }
+  .hd__col ul a { display: block; padding: 8px 0; color: var(--navy); font-weight: 700; font-size: .98rem; text-decoration: none; border-bottom: 1px solid transparent; }
+  .hd__col ul a:hover, .hd__col ul a[aria-current='page'] { color: var(--green-ink); }
+  .hd__colbook { margin-top: auto; display: grid; place-items: center; min-height: 46px; padding: 0 16px; background: var(--green); color: var(--navy); text-decoration: none; font: 600 .78rem/1.2 var(--display); letter-spacing: .1em; text-transform: uppercase; text-align: center; transition: background-color .2s; }
+  .hd__colbook:hover { background: #3fc985; color: var(--navy); }
+  .hd__extras { margin-top: auto; display: grid; gap: 10px; padding-top: 16px; border-top: 1px solid var(--line); }
+  .hd__extras a { color: var(--blue-deep); font-weight: 700; font-size: .92rem; text-decoration: none; }
+  .hd__extras a:hover { text-decoration: underline; }
+  .hd__extras .hd__urg { color: #b3261e; }
+  .hd__kidtitle { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); font: 600 .74rem/1.2 var(--display); letter-spacing: .14em; text-transform: uppercase; color: var(--green-ink); }
+  .hd__kidtitle:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+  .hd__kidtitle small { letter-spacing: 0; text-transform: none; color: var(--muted); font-family: var(--body); font-weight: 600; }
+  .hd__kids .hd__kidbook { color: var(--green-ink); font-weight: 800; }
+
+  .hd__right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+  .hd__lang { font-weight: 800; font-size: .85rem; letter-spacing: .08em; color: var(--navy); text-decoration: none; padding: 8px; }
+  .hd__soc { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; color: #fff; }
+  .hd__soc--fb { background: #3b5998; }
+  .hd__soc--ig { background: #e4405f; }
+  .hd__soc:hover { color: #fff; filter: brightness(1.1); }
+  .hd__menu summary { list-style: none; cursor: pointer; padding: 8px; color: var(--navy); }
+  .hd__menu summary::-webkit-details-marker { display: none; }
+  .hd__drawer { position: absolute; left: 0; right: 0; top: 100%; max-height: calc(100vh - 140px); overflow-y: auto; background: #fff; border-top: 3px solid var(--green); box-shadow: 0 20px 40px -20px rgb(0 9 39 / .35); padding: 8px max(20px, env(safe-area-inset-left, 0px)) 24px; display: grid; }
+  .hd__group { border-bottom: 1px solid var(--line); }
+  .hd__group > a { display: block; padding: 14px 2px; color: var(--navy); font-weight: 800; text-transform: uppercase; font-size: .9rem; text-decoration: none; letter-spacing: .02em; }
+  .hd__kids { display: grid; padding: 0 0 12px 12px; }
+  .hd__kids a { padding: 7px 0; color: var(--muted); font-weight: 600; text-decoration: none; font-size: .95rem; }
+  .hd__drawer > a { padding: 14px 2px; color: var(--navy); font-weight: 700; text-decoration: none; }
+  .hd__drawer > .hd__drawerbook { margin-top: 16px; text-align: center; background: var(--green); color: var(--navy); text-transform: uppercase; letter-spacing: .08em; font-family: var(--display); font-weight: 600; }
+  @media (max-width: 560px) { .hd__soc { display: none; } .hd__barin { min-height: 78px; } }
+  @media (min-width: 1240px) { .hd__nav { display: block; } .hd__menu { display: none; } .hd__right { margin-left: 0; } }
+</style>

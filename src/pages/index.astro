@@ -1,0 +1,399 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import Reviews from '../components/Reviews.astro';
+import CtaBand from '../components/CtaBand.astro';
+import YouTube from '../components/YouTube.astro';
+import Faq from '../components/Faq.astro';
+import { getCollection } from 'astro:content';
+import { site, doctors, waLink } from '../data/site';
+
+// Todos los artículos; el navegador muestra 3 al azar en cada visita.
+const posts = (await getCollection('blog')).sort((a, b) => +b.data.date - +a.data.date);
+const authors = { jguzman: 'Dr. Juvenal Guzmán', ccarrasco: 'Dra. Citlali Carrasco', equipo: 'Oftalmo Visión' };
+
+// Íconos de línea propios (24×24) para cada síntoma.
+const symptoms = [
+  { t: 'Veo borroso o nublado', h: '/padecimiento/catarata/', i: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3" stroke-dasharray="2 2"/><path d="M4 18.5h4M16 18.5h4M6 21h12"/>' },
+  { t: 'Me deslumbran las luces de noche', h: '/padecimiento/catarata/', i: '<circle cx="8" cy="12" r="4.5"/><path d="M15 12h7M14.5 7.5 20 4.5M14.5 16.5 20 19.5M8 4V2M8 22v-2"/>' },
+  { t: 'Veo moscas flotantes o destellos', h: '/padecimiento/desprendimiento-de-retina/', i: '<path d="M2 14s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 14 2 14Z"/><circle cx="12" cy="14" r="2.5"/><path d="M6 3.5c1 .8 1 1.7 0 2.5M10 2.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8Z"/><circle cx="17.5" cy="4" r="1"/>' },
+  { t: 'Tengo diabetes', h: '/padecimiento/retinopatia-diabetica/', i: '<path d="M12 2.5s6.5 7 6.5 11.5a6.5 6.5 0 0 1-13 0C5.5 9.5 12 2.5 12 2.5Z"/><path d="M12 11v6M9 14h6"/>' },
+  { t: 'Mis párpados se ven cansados', h: '/padecimiento/cirugia-cosmetica-de-parpados/', i: '<path d="M3 11c3-2.2 6-3.2 9-3.2s6 1 9 3.2"/><path d="M3 11c2.6 3.2 5.6 4.8 9 4.8s6.4-1.6 9-4.8"/><path d="M6.5 15l-1.2 2.2M12 16v2.5M17.5 15l1.2 2.2M5 7.5c2-1.2 4.5-2 7-2s5 .8 7 2"/>' },
+  { t: 'Se me cae el párpado', h: '/padecimiento/ptosis-parpado-caido/', i: '<path d="M2 13s3.6-6.5 10-6.5 10 6.5 10 6.5-3.6 6.5-10 6.5S2 13 2 13Z"/><path d="M3.6 11.6C6.3 10.4 9 10 12 10s5.7.4 8.4 1.6"/><path d="M9.3 13.2a2.7 2.7 0 0 0 5.4 0"/><path d="M12 2v4M10 4.5 12 6.5l2-2"/>' },
+  { t: 'Tengo una carnosidad', h: '/padecimiento/pterigion/', i: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/><path d="M3.5 12 9 10.3v3.4Z"/>' },
+  { t: 'Me lloran los ojos', h: '/padecimiento/obstruccion-via-lagrimal/', i: '<path d="M2.5 9s3.4-5 9.5-5 9.5 5 9.5 5-3.4 5-9.5 5-9.5-5-9.5-5Z"/><circle cx="12" cy="9" r="2.2"/><path d="M7 15.5s-1.8 2.3-1.8 3.5a1.8 1.8 0 0 0 3.6 0c0-1.2-1.8-3.5-1.8-3.5Z"/>' },
+  { t: 'Las líneas se ven chuecas', h: '/padecimiento/degeneracion-macular/', i: '<rect x="3" y="3" width="18" height="18" rx="1.5"/><path d="M3 9h18M3 15h18M9 3v18"/><path d="M15 3c-2.2 3 2.2 6 0 9s2.2 6 0 9"/>' },
+  { t: 'Bolita en el párpado', h: '/padecimiento/chalazion/', i: '<path d="M2 14s3.6-6.5 10-6.5 10 6.5 10 6.5-3.6 6.5-10 6.5S2 14 2 14Z"/><circle cx="12" cy="14" r="2.5"/><circle cx="15" cy="6.2" r="2.4"/>' },
+  { t: 'Necesito lentes', h: '/optica-tijuana/', i: '<circle cx="6.5" cy="14.5" r="3.8"/><circle cx="17.5" cy="14.5" r="3.8"/><path d="M10.3 14.5h3.4M2.7 14.5 5 6h2M21.3 14.5 19 6h-2"/>' },
+  { t: 'Antecedentes de glaucoma', h: '/padecimiento/glaucoma/', i: '<circle cx="8" cy="7" r="3"/><circle cx="17" cy="8.5" r="2.4"/><path d="M2.5 21v-.8a5.5 5.5 0 0 1 11 0v.8M14 21v-.6a4 4 0 0 1 7.5-1.9"/>' },
+];
+
+const faq = [
+  { q: '¿Dónde está Oftalmo Visión?', a: 'En Diego Rivera 2311, interior 507, Edificio Corporativo Central, Zona Urbana Río Tijuana. Es una zona moderna y segura, a minutos de la garita internacional de San Ysidro.' },
+  { q: '¿Qué especialistas atienden?', a: 'El Dr. Juvenal Guzmán Cerda, cirujano oftalmólogo con alta especialidad en retina y vítreo, y la Dra. Citlali Carrasco González, cirujana oftalmóloga con alta especialidad en oculoplástica (párpados, órbita y vía lagrimal). Ambos están certificados por el Consejo Mexicano de Oftalmología.' },
+  { q: '¿Atienden pacientes de Estados Unidos?', a: 'Sí. Recibimos pacientes de San Diego, Chula Vista, Los Ángeles y el resto de California. Hablamos inglés y te ayudamos a planear tu visita.' },
+  { q: '¿Tienen óptica?', a: 'Sí. Contamos con examen de la vista, armazones, micas graduadas y lentes de contacto, con el respaldo de oftalmólogos si el examen detecta algo más.' },
+  { q: '¿Cómo agendo una cita?', a: `Por WhatsApp, por teléfono al ${site.phoneDisplay} o en línea a través de nuestra agenda en Setmore.` },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${site.url}/#web`,
+    url: `${site.url}/`,
+    name: 'Oftalmo Visión Tijuana',
+    inLanguage: 'es-MX',
+    publisher: { '@id': `${site.url}/#clinica` },
+  },
+];
+---
+<Base
+  title="Oftalmólogo en Tijuana | Retina, Párpados y Óptica | Oftalmo Visión"
+  description="Oftalmólogos en Tijuana con alta especialidad en retina y párpados. Cirugía de catarata, blefaroplastia, retina, óptica y salud visual para empresas. A minutos de San Ysidro."
+  schema={schema}
+  alternates={{ es: '/', en: '/en/' }}
+  frente="home"
+>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero__in">
+      <div class="hero__text">
+        <p class="eyebrow">Centro de especialistas en ojos · Zona Río, Tijuana</p>
+        <h1>Oftalmólogo en Tijuana: <span class="hero__accent">tus ojos</span> en manos de alta especialidad</h1>
+        <p class="lede">Retina, párpados, catarata y óptica en un solo lugar, con dos cirujanos oftalmólogos certificados. A minutos de la garita de San Ysidro.</p>
+        <div class="btn-row">
+          <a class="btn btn--book" href={site.setmore.base} target="_blank" rel="noopener" data-cta="click_setmore" data-pos="hero"><Icon name="calendar" /> Agendar cita</a>
+          <a class="btn btn--chat" href={waLink('Home · Hero · Dudas', 'Hola, tengo una duda:')} target="_blank" rel="noopener" data-cta="click_whatsapp" data-pos="hero"><Icon name="whatsapp" /> ¿Tienes dudas? Escríbenos</a>
+                  </div>
+        <dl class="hero__facts">
+          <div><dt>{site.reviews.rating}<Icon name="star" size={18} /></dt><dd>{Math.floor(site.reviews.count / 10) * 10}+ reseñas en Google</dd></div>
+          <div><dt>2</dt><dd>altas especialidades: retina y oculoplástica</dd></div>
+          <div><dt>ES · EN</dt><dd>Atención en español e inglés</dd></div>
+        </dl>
+      </div>
+      <div class="hero__media">
+        <span class="iris hero__iris" aria-hidden="true"></span>
+        <span class="iris hero__iris hero__iris--2" aria-hidden="true"></span>
+        <Photo name="doctores-oftalmo-vision-recepcion" alt="Dr. Juvenal Guzmán y Dra. Citlali Carrasco en la recepción de Oftalmo Visión Tijuana" priority sizes="(min-width: 1000px) 44vw, 92vw" widths={[420, 640, 900, 1200]} class="hero__img" />
+        <div class="hero__badge hero__badge--a">
+          <strong>Dr. Juvenal Guzmán</strong><span>Retina y vítreo</span>
+        </div>
+        <div class="hero__badge hero__badge--b">
+          <strong>Dra. Citlali Carrasco</strong><span>Párpados · Oculoplástica</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CINCO FRENTES -->
+  <section class="section" id="que-necesitas">
+    <div class="container">
+      <div class="head">
+        <p class="eyebrow">¿Qué necesitas hoy?</p>
+        <h2>Cinco formas de cuidar tu visión, un mismo equipo</h2>
+      </div>
+      <div class="bento">
+        <a class="tile tile--parpados reveal" href="/padecimiento/cirugia-cosmetica-de-parpados/">
+          <div class="tile__media"><Photo name="marcaje-blefaroplastia-dra-citlali" alt="Dra. Citlali Carrasco marcando los párpados antes de una blefaroplastia" sizes="(min-width: 1000px) 58vw, 100vw" widths={[480, 800, 1200]} position="60% 40%" /></div>
+          <div class="tile__body">
+            <span class="tile__tag">Dra. Citlali Carrasco · Oculoplástica</span>
+            <h3>Blefaroplastia y cirugía de párpados</h3>
+            <p>Rejuvenece tu mirada con una cirujana especialista en ojos y párpados.</p>
+            <span class="tile__go">Conocer el procedimiento <Icon name="arrow" size={18} /></span>
+          </div>
+        </a>
+        <a class="tile tile--retina reveal" href={doctors.juvenal.url}>
+          <div class="tile__media"><Photo name="dr-juvenal-guzman-imagen-retina" alt="Dr. Juvenal Guzmán analizando una imagen de retina" sizes="(min-width: 1000px) 40vw, 100vw" widths={[480, 800, 1100]} position="45% 50%" /></div>
+          <div class="tile__body">
+            <span class="tile__tag">Dr. Juvenal Guzmán · Retinólogo</span>
+            <h3>Retina y vítreo</h3>
+            <p>Retinopatía diabética, desprendimiento de retina, inyecciones y vitrectomía.</p>
+            <span class="tile__go">Ver tratamientos <Icon name="arrow" size={18} /></span>
+          </div>
+        </a>
+        <a class="tile tile--plain reveal" href="/padecimiento/">
+          <Icon name="eye" size={34} class="tile__icon" />
+          <div class="tile__body">
+            <span class="tile__tag">Clínica</span>
+            <h3>Padecimientos de los ojos</h3>
+            <p>Catarata, glaucoma, pterigión, chalazión y más, con diagnóstico completo.</p>
+            <span class="tile__go">Ver padecimientos <Icon name="arrow" size={18} /></span>
+          </div>
+        </a>
+        <a class="tile tile--optica reveal" href="/optica-tijuana/">
+          <div class="tile__media"><Photo name="doctores-oftalmo-vision-optica" alt="Dra. Citlali Carrasco y Dr. Juvenal Guzmán en la óptica de Oftalmo Visión" sizes="(min-width: 1000px) 30vw, 100vw" widths={[480, 800]} position="50% 35%" /></div>
+          <div class="tile__body">
+            <span class="tile__tag">Óptica</span>
+            <h3>Examen de la vista y lentes</h3>
+            <span class="tile__go">Ir a la óptica <Icon name="arrow" size={18} /></span>
+          </div>
+        </a>
+        <a class="tile tile--empresas reveal" href="/empresas/">
+          <Icon name="building" size={34} class="tile__icon" />
+          <div class="tile__body">
+            <span class="tile__tag">Empresas</span>
+            <h3>Programa de conservación visual</h3>
+            <p>Examen visual sin costo en tu planta e informe clínico para RH.</p>
+            <span class="tile__go">Solicitar brigada <Icon name="arrow" size={18} /></span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CREDENCIALES -->
+  <section class="creds">
+    <div class="container creds__in">
+      <div class="creds__group">
+        <p class="creds__label">Certificados y miembros de</p>
+        <div class="creds__logos">
+          <img src="/img/logos/consejo-mexicano-de-oftalmologia.webp" alt="Consejo Mexicano de Oftalmología" width="260" height="260" loading="lazy" decoding="async" />
+          <img src="/img/logos/sociedad-mexicana-de-oftalmologia.webp" alt="Sociedad Mexicana de Oftalmología" width="260" height="260" loading="lazy" decoding="async" />
+        </div>
+      </div>
+      <div class="creds__group creds__group--edu">
+        <p class="creds__label">Formados en</p>
+        <ul class="creds__seals">
+          <li><span class="seal">UNAM</span><small>Retina · Instituto Mexicano de Oftalmología</small></li>
+          <li><span class="seal">IMO</span><small>Instituto Mexicano de Oftalmología</small></li>
+          <li><span class="seal">UASLP</span><small>Especialidad en Oftalmología</small></li>
+          <li><span class="seal">UAS</span><small>Oculoplástica</small></li>
+          <li><span class="seal">UABC</span><small>Medicina</small></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESPECIALISTAS -->
+  <section class="section section--tint">
+    <div class="container duo">
+      <div class="duo__intro">
+        <p class="eyebrow">Tus especialistas</p>
+        <h2>Dos cirujanos oftalmólogos, dos altas especialidades</h2>
+        <p class="lede">Ambos estudiaron medicina en la UABC, se especializaron en oftalmología en San Luis Potosí y después hicieron una alta especialidad. Hoy atienden juntos en Tijuana.</p>
+        <a class="btn btn--ghost" href="/profesionales-de-la-salud/">Conocer al equipo <Icon name="arrow" /></a>
+      </div>
+      <div class="duo__cards">
+        <a class="person reveal" href={doctors.juvenal.url}>
+          <Photo name="dr-juvenal-guzman-retinologo" alt="Dr. Juvenal Guzmán Cerda, retinólogo en Tijuana" sizes="(min-width: 1000px) 24vw, 50vw" widths={[360, 600, 800]} position="50% 25%" />
+          <div><strong>{doctors.juvenal.name}</strong><span>Retina y vítreo · IMO / UNAM</span></div>
+        </a>
+        <a class="person reveal" href={doctors.citlali.url}>
+          <Photo name="dra-citlali-carrasco-oculoplastica" alt="Dra. Citlali Carrasco González, especialista en párpados en Tijuana" sizes="(min-width: 1000px) 24vw, 50vw" widths={[360, 600, 800]} position="50% 25%" />
+          <div><strong>{doctors.citlali.name}</strong><span>Oculoplástica · UAS</span></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SÍNTOMAS -->
+  <section class="section">
+    <div class="container">
+      <div class="head head--split">
+        <div>
+          <p class="eyebrow">Empieza por lo que sientes</p>
+          <h2>¿Qué te está pasando?</h2>
+        </div>
+        <p class="muted">Elige el síntoma que más se parece a lo tuyo y te llevamos a la información correcta. Si es algo súbito, como una cortina en la visión, <a href="/urgencias-oftalmologicas/">llama a urgencias</a>.</p>
+      </div>
+      <ul class="sym">
+        {symptoms.map((s) => (
+          <li>
+            <a href={s.h} class="reveal">
+              <span class="sym__ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={s.i} /></span>
+              <span class="sym__t">{s.t}</span>
+              <Icon name="arrow" size={18} class="sym__go" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- TURISMO MÉDICO -->
+  <section class="section section--navy visit" id="visita">
+    <span class="iris visit__iris" aria-hidden="true"></span>
+    <div class="container visit__in">
+      <div class="visit__head">
+        <p class="eyebrow">Pacientes de Estados Unidos</p>
+        <h2>Cruza San Ysidro y llega a tu consulta en minutos</h2>
+        <p class="lede">Muchos de nuestros pacientes viven en San Diego, Chula Vista, Orange County y Los Ángeles. Estamos en Zona Río, una de las zonas más modernas y seguras de Tijuana, rodeada de hoteles y restaurantes.</p>
+      </div>
+      <div class="visit__video">
+        <YouTube id="tSKwqrLRXDE" title="Cómo llegar a Oftalmo Visión desde la garita" frente="turismo" />
+      </div>
+      <ol class="visit__steps">
+        <li class="reveal"><span class="visit__n">1</span><h3>Escríbenos</h3><p>Por WhatsApp, en español o inglés, y agenda tu valoración.</p></li>
+        <li class="reveal"><span class="visit__n">2</span><h3>Cruza por San Ysidro</h3><p>Toma un taxi o app hasta el Edificio Corporativo Central, Diego Rivera 2311.</p></li>
+        <li class="reveal"><span class="visit__n">3</span><h3>Consulta y plan</h3><p>Tu valoración el mismo día y, si hay cirugía, coordinamos fechas y revisiones.</p></li>
+      </ol>
+      <div class="btn-row visit__ctas">
+        <a class="btn btn--book" href={site.setmore.base} target="_blank" rel="noopener" data-cta="click_setmore" data-frente="turismo" data-pos="visita"><Icon name="calendar" /> Agendar cita</a>
+        <a class="btn btn--chat" href={waLink('Home · Turismo médico · Dudas', 'Hola, vengo de Estados Unidos y tengo dudas sobre mi visita.')} target="_blank" rel="noopener" data-cta="click_whatsapp" data-frente="turismo" data-pos="visita"><Icon name="whatsapp" /> Dudas sobre tu visita</a>
+        <a class="btn btn--ghost" href="/en/">English <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <Reviews />
+
+  <!-- BLOG -->
+  <section class="section section--tint">
+    <div class="container">
+      <div class="head head--split">
+        <div>
+          <p class="eyebrow">Escrito por nuestros médicos</p>
+          <h2>Artículos para entender tus ojos</h2>
+        </div>
+        <a class="btn btn--ghost" href="/blog/">Ver todos los artículos <Icon name="arrow" /></a>
+      </div>
+      <div class="grid grid-3 posts" data-random="3">
+        {posts.map((p, i) => (
+          <a class="post reveal" href={`/${p.id}/`} hidden={i > 2}>
+            {p.data.cover && <img src={p.data.cover} alt={p.data.coverAlt ?? ''} width="640" height="400" loading="lazy" decoding="async" />}
+            <div>
+              <span class="post__meta">{authors[p.data.author]}</span>
+              <h3>{p.data.title}</h3>
+            </div>
+          </a>
+        ))}
+      </div>
+      <script is:inline>
+        (function () {
+          var box = document.querySelector('.posts[data-random]');
+          if (!box) return;
+          var cards = Array.prototype.slice.call(box.children);
+          for (var i = cards.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = cards[i]; cards[i] = cards[j]; cards[j] = t; }
+          cards.forEach(function (c, k) { c.hidden = k >= 3; box.appendChild(c); });
+        })();
+      </script>
+    </div>
+  </section>
+
+  <Faq items={faq} />
+
+  <CtaBand title="Agenda tu consulta hoy" text="Escríbenos y la recepción te confirma día y hora. Si es una urgencia, llama directamente." tag="Home · Banda final" message="Hola, quiero agendar una consulta." />
+</Base>
+
+<style>
+  .hero { position: relative; overflow: hidden; background: radial-gradient(90% 80% at 85% 20%, #e3f1fb 0%, rgb(227 241 251 / 0) 60%), linear-gradient(180deg, var(--paper), #fff); padding-block: clamp(28px, 5vw, 72px) clamp(56px, 8vw, 110px); }
+  .hero__in { display: grid; gap: clamp(36px, 5vw, 72px); align-items: center; }
+  .hero__in > * { min-width: 0; }
+  @media (min-width: 1000px) { .hero__in { grid-template-columns: 1.1fr .9fr; } }
+  .hero h1 { font-size: clamp(2.5rem, 1.6rem + 3.8vw, 4.7rem); }
+  .hero__accent { background: linear-gradient(100deg, var(--blue) 10%, var(--green) 90%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero .lede { margin-bottom: 30px; }
+  .hero__facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 18px; margin: 44px 0 0; padding-top: 28px; border-top: 1px solid var(--line); }
+  .hero__facts div { display: grid; gap: 4px; }
+  .hero__facts dt { display: flex; align-items: center; gap: 6px; font: 650 1.6rem/1 var(--display); color: var(--navy); }
+  .hero__facts dt :global(svg) { color: #f5b301; }
+  .hero__facts dd { margin: 0; font-size: .9rem; color: var(--muted); }
+
+  .hero__media { position: relative; max-width: 520px; margin-inline: auto; width: 100%; }
+  .hero__iris { width: 128%; left: -14%; top: -6%; }
+  .hero__iris--2 { width: 150%; left: -25%; top: -16%; opacity: .25; animation-direction: reverse; }
+  .hero__media :global(.hero__img), .hero__media :global(picture img) { position: relative; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 999px 999px 32px 32px; box-shadow: 0 30px 60px -30px rgb(0 9 39 / .45); }
+  .hero__badge { position: absolute; display: grid; gap: 2px; background: rgb(255 255 255 / .92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 16px; padding: 12px 16px; box-shadow: var(--shadow); font-size: .82rem; color: var(--muted); }
+  .hero__badge strong { color: var(--navy); font-size: .92rem; }
+  .hero__badge--a { left: -4%; bottom: 22%; }
+  .hero__badge--b { right: -4%; bottom: 6%; }
+
+  .head { margin-bottom: clamp(32px, 4vw, 52px); max-width: 760px; }
+  .head h2 { margin: 0; }
+  .head--split { max-width: none; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 20px 48px; }
+  .head--split > p { max-width: 46ch; margin: 0; }
+
+  .bento { display: grid; gap: 18px; grid-template-columns: 1fr; }
+  @media (min-width: 760px) { .bento { grid-template-columns: repeat(6, 1fr); } .tile--parpados { grid-column: span 6; } .tile--retina { grid-column: span 3; } .tile--plain { grid-column: span 3; } .tile--optica { grid-column: span 3; } .tile--empresas { grid-column: span 3; } }
+  @media (min-width: 1100px) { .bento { grid-template-columns: repeat(12, 1fr); grid-auto-rows: minmax(250px, auto); } .tile--parpados { grid-column: span 7; grid-row: span 2; } .tile--retina { grid-column: span 5; grid-row: span 2; } .tile--plain { grid-column: span 4; } .tile--optica { grid-column: span 4; } .tile--empresas { grid-column: span 4; } }
+
+
+  .duo { display: grid; gap: 40px; align-items: center; }
+  @media (min-width: 1000px) { .duo { grid-template-columns: .9fr 1.1fr; gap: 72px; } }
+  .duo > * { min-width: 0; }
+  .duo .lede { margin-bottom: 28px; }
+  .duo__cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .person { position: relative; display: block; border-radius: 24px; overflow: hidden; text-decoration: none; color: #fff; }
+  .person:nth-child(2) { margin-top: 48px; }
+  .person :global(img) { width: 100%; aspect-ratio: 3 / 4.2; object-fit: cover; transition: transform .8s ease; }
+  .person:hover :global(img) { transform: scale(1.04); }
+  .person div { position: absolute; left: 0; right: 0; bottom: 0; padding: 48px 18px 18px; background: linear-gradient(180deg, transparent, rgb(0 9 39 / .85)); display: grid; gap: 2px; }
+  .person strong { font: 600 1.02rem/1.25 var(--display); }
+  .person span { font-size: .82rem; color: #cfe0f3; }
+
+
+
+  /* 5 frentes: la foto se ve completa y el texto va debajo */
+  .tile { position: relative; display: flex; flex-direction: column; border: 1px solid var(--line); background: #fff; overflow: hidden; text-decoration: none; color: var(--navy); transition: box-shadow .3s, transform .3s; }
+  .tile:hover { box-shadow: 0 24px 50px -28px rgb(0 9 39 / .45); transform: translateY(-3px); }
+  .tile__media { position: relative; overflow: hidden; flex: 1; min-height: 240px; }
+  .tile__media :global(picture), .tile__media :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .8s cubic-bezier(.2,.7,.2,1); }
+  .tile:hover .tile__media :global(img) { transform: scale(1.04); }
+  .tile--parpados .tile__media { min-height: 380px; }
+  .tile--retina .tile__media { min-height: 300px; }
+  .tile__body { padding: clamp(22px, 2.6vw, 30px); display: grid; gap: 8px; border-top: 3px solid var(--green); }
+  .tile--retina .tile__body { border-top-color: var(--blue); }
+  .tile__tag { font: 600 .72rem/1.2 var(--display); letter-spacing: .14em; text-transform: uppercase; color: var(--green-ink); }
+  .tile--retina .tile__tag { color: var(--blue-deep); }
+  .tile h3 { font-size: var(--step-2); margin: 0; }
+  .tile--parpados h3 { font-size: var(--step-3); }
+  .tile p { margin: 0; color: var(--muted); max-width: 52ch; }
+  .tile__go { display: inline-flex; align-items: center; gap: 8px; margin-top: 6px; font: 600 .78rem/1 var(--display); letter-spacing: .12em; text-transform: uppercase; color: var(--navy); }
+  .tile--plain, .tile--empresas { background: var(--paper); justify-content: space-between; }
+  .tile--empresas { background: linear-gradient(140deg, #e6f6ee, #e4f0fb); }
+  .tile--plain .tile__body, .tile--empresas .tile__body { border-top: 0; }
+  .tile :global(.tile__icon) { margin: 28px 0 0 28px; color: var(--blue); }
+
+  /* Formación y certificaciones */
+  .creds { border-block: 1px solid var(--line); padding-block: clamp(28px, 4vw, 44px); background: #fff; }
+  .creds__in { display: grid; gap: 28px 56px; align-items: center; }
+  @media (min-width: 1000px) { .creds__in { grid-template-columns: auto 1fr; } }
+  .creds__label { margin: 0 0 14px; font: 600 .72rem/1 var(--display); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+  .creds__logos { display: flex; gap: 28px; align-items: center; }
+  .creds__logos img { width: 112px; height: auto; mix-blend-mode: multiply; filter: grayscale(1); opacity: .8; transition: filter .3s, opacity .3s; }
+  .creds__logos img:hover { filter: none; opacity: 1; }
+  .creds__group--edu { border-left: 1px solid var(--line); padding-left: clamp(0px, 3vw, 48px); }
+  @media (max-width: 999px) { .creds__group--edu { border-left: 0; padding-left: 0; } }
+  .creds__seals { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 18px; }
+  .creds__seals li { display: grid; justify-items: center; gap: 8px; text-align: center; }
+  .seal { display: grid; place-items: center; width: 74px; height: 74px; border-radius: 50%; border: 1.5px solid var(--navy); box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 5px rgb(0 9 39 / .25); font: 650 .86rem/1 var(--display); letter-spacing: .06em; color: var(--navy); transition: background-color .3s, color .3s; }
+  .creds__seals li:hover .seal { background: var(--navy); color: #fff; }
+  .creds__seals small { font-size: .74rem; line-height: 1.3; color: var(--muted); max-width: 16ch; }
+
+  /* Síntomas con ícono */
+  .sym { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+  .sym a { position: relative; display: grid; grid-template-rows: auto 1fr; gap: 16px; height: 100%; padding: 22px 22px 20px; border: 1px solid var(--line); background: #fff; text-decoration: none; color: var(--navy); transition: border-color .25s, box-shadow .25s, transform .25s; }
+  .sym a:hover { border-color: var(--blue); box-shadow: 0 18px 36px -24px rgb(0 9 39 / .45); transform: translateY(-3px); }
+  .sym__ico { display: grid; place-items: center; width: 58px; height: 58px; border-radius: 50%; color: var(--navy); background: radial-gradient(circle, #fff 58%, transparent 60%), var(--ring); transition: color .25s; }
+  .sym a:hover .sym__ico { color: var(--blue-deep); }
+  .sym__t { font: 600 1.04rem/1.35 var(--display); padding-right: 22px; }
+  .sym a :global(.sym__go) { position: absolute; right: 18px; bottom: 20px; color: var(--blue); transition: translate .25s; }
+  .sym a:hover :global(.sym__go) { translate: 4px 0; }
+
+  /* Visita: video protagonista, todo centrado */
+  .visit { position: relative; overflow: hidden; }
+  .visit__iris { position: absolute; width: 900px; left: 50%; top: 38%; translate: -50% -50%; opacity: .18; }
+  .visit__in { position: relative; display: grid; justify-items: center; gap: clamp(28px, 4vw, 48px); text-align: center; }
+  .visit__head { max-width: 760px; }
+  .visit__head h2 { margin-inline: auto; max-width: 18ch; }
+  .visit__head .lede { margin-inline: auto; }
+  .visit__head .eyebrow { justify-content: center; }
+  .visit__video { width: min(100%, 980px); }
+  .visit__video :global(.yt) { box-shadow: 0 40px 80px -30px rgb(0 0 0 / .7), 0 0 0 1px rgb(255 255 255 / .08); }
+  .visit__steps { list-style: none; margin: 0; padding: 0; width: min(100%, 980px); display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); text-align: left; }
+  .visit__steps li { position: relative; padding: 26px 24px 24px; background: linear-gradient(160deg, rgb(255 255 255 / .09), rgb(255 255 255 / .02)); border: 1px solid rgb(255 255 255 / .12); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); overflow: hidden; }
+  .visit__steps li::after { content: ''; position: absolute; right: -40px; top: -40px; width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle, rgb(43 182 115 / .35), transparent 70%); }
+  .visit__n { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 16px; border-radius: 50%; background: var(--ring); color: var(--navy); font: 700 1.2rem/1 var(--display); box-shadow: 0 0 0 6px rgb(255 255 255 / .06); }
+  .visit__steps h3 { color: #fff; margin: 0 0 6px; font-size: 1.12rem; }
+  .visit__steps p { margin: 0; color: #b9c8dc; font-size: .96rem; }
+  .visit__ctas { justify-content: center; }
+
+  .post { display: grid; gap: 18px; text-decoration: none; color: var(--navy); background: #fff; border-radius: 22px; overflow: hidden; border: 1px solid var(--line); transition: transform .3s, box-shadow .3s; }
+  .post:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .post img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+  .post > div { padding: 0 24px 26px; }
+  .post__meta { font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--green-ink); }
+  .post h3 { margin: 8px 0 0; font-size: 1.12rem; }
+</style>

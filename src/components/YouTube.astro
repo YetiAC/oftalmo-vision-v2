@@ -1,0 +1,32 @@
+---
+// Video ligero: muestra una miniatura y carga el reproductor solo al dar clic.
+import Icon from './Icon.astro';
+interface Props { id: string; title: string; frente?: string }
+const { id, title, frente = 'general' } = Astro.props;
+---
+<div class="yt" data-yt={id} data-title={title} data-frente={frente}>
+  <img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt="" width="480" height="360" loading="lazy" decoding="async" />
+  <button type="button" class="yt__play" aria-label={`Reproducir video: ${title}`}><Icon name="play" size={30} /></button>
+  <span class="yt__title">{title}</span>
+</div>
+<script is:inline>
+  document.querySelectorAll('.yt:not([data-ready])').forEach(function (el) {
+    el.dataset.ready = '1';
+    el.querySelector('button').addEventListener('click', function () {
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + el.dataset.yt + '?autoplay=1&rel=0';
+      f.title = el.dataset.title; f.allow = 'accelerometer; autoplay; encrypted-media; picture-in-picture'; f.allowFullscreen = true;
+      el.innerHTML = ''; el.appendChild(f);
+      if (window.gtag) gtag('event', 'video_play', { video: el.dataset.title, frente: el.dataset.frente, pagina: location.pathname });
+    });
+  });
+</script>
+<style>
+  .yt { position: relative; aspect-ratio: 16 / 9; border-radius: 22px; overflow: hidden; background: var(--navy); box-shadow: var(--shadow); }
+  .yt img { width: 100%; height: 100%; object-fit: cover; opacity: .82; }
+  .yt :global(iframe) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .yt__play { position: absolute; inset: 0; margin: auto; width: 84px; height: 84px; border-radius: 50%; border: 0; background: #fff; color: var(--navy); display: grid; place-items: center; cursor: pointer; box-shadow: 0 0 0 10px rgb(255 255 255 / .25); transition: transform .2s; }
+  .yt__play:hover { transform: scale(1.06); }
+  .yt__play svg { margin-left: 4px; }
+  .yt__title { position: absolute; left: 20px; bottom: 16px; right: 20px; color: #fff; font-weight: 700; text-shadow: 0 1px 8px rgb(0 0 0 / .5); }
+</style>

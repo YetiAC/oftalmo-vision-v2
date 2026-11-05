@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Icon from '../../components/Icon.astro';
+import { padecimientos, groups } from '../../data/padecimientos';
+import { site, waLink } from '../../data/site';
+
+const blefaro = { slug: 'cirugia-cosmetica-de-parpados', name: 'Blefaroplastia (cirugía de párpados)', group: 'parpados', lede: 'Retira el exceso de piel y bolsas de los párpados para una mirada descansada, con cirujana oculoplástica.' };
+const all = [blefaro, ...padecimientos];
+const order = ['parpados', 'retina', 'anterior'] as const;
+const schema = [{
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Padecimientos y tratamientos de Oftalmo Visión',
+  itemListElement: all.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${site.url}/padecimiento/${p.slug}/`, name: p.name })),
+}];
+---
+<Base title="Padecimientos de los Ojos que Tratamos | Oftalmo Visión Tijuana" description="Catarata, glaucoma, retinopatía diabética, desprendimiento de retina, blefaroplastia, párpado caído, pterigión y más. Diagnóstico y tratamiento en Tijuana." schema={schema} frente="clinica">
+  <PageHero
+    eyebrow="Clínica · Oftalmo Visión"
+    title="Padecimientos de los ojos que atendemos"
+    lede="Del diagnóstico a la cirugía, con el especialista adecuado para cada parte del ojo: retina, párpados, cristalino y superficie ocular."
+    crumbs={[{ label: 'Padecimientos' }]}
+    wa={waLink('Padecimientos · Dudas', 'Hola, tengo dudas sobre un padecimiento:')}
+    secondary={{ href: '/urgencias-oftalmologicas/', label: 'Es una urgencia' }}
+    frente="clinica"
+  />
+  {order.map((g) => (
+    <section class:list={['section', { 'section--tint': g === 'retina' }]}>
+      <div class="container">
+        <div class="gh">
+          <h2>{groups[g].label}</h2>
+          <p class="muted">{groups[g].doctor}</p>
+        </div>
+        <div class="grid grid-3">
+          {all.filter((p) => p.group === g).map((p) => (
+            <a class="pd reveal" href={`/padecimiento/${p.slug}/`}>
+              <h3>{p.name}</h3>
+              <p class="muted">{p.lede}</p>
+              <span class="pd__go">Ver padecimiento <Icon name="arrow" size={16} /></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+  <CtaBand title="¿No sabes qué tienes?" text="Cuéntanos tus síntomas por WhatsApp y te orientamos con el especialista indicado." tag="Padecimientos · Banda final" message="Hola, tengo estos síntomas y no sé con quién agendar:" frente="clinica" />
+</Base>
+<style>
+  .gh { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px; margin-bottom: 28px; }
+  .gh h2 { margin: 0; font-size: var(--step-2); }
+  .gh p { margin: 0; font-weight: 600; }
+  .pd { display: grid; gap: 10px; align-content: start; padding: 28px; border-radius: 20px; background: #fff; border: 1px solid var(--line); text-decoration: none; color: var(--navy); transition: transform .25s, border-color .25s, box-shadow .25s; }
+  .pd:hover { transform: translateY(-4px); border-color: var(--blue); box-shadow: var(--shadow); }
+  .pd h3 { margin: 0; }
+  .pd p { margin: 0; font-size: .95rem; }
+  .pd__go { display: inline-flex; gap: 6px; align-items: center; font-weight: 700; color: var(--blue-deep); margin-top: 6px; }
+</style>

@@ -1,0 +1,31 @@
+---
+import EnTreatment from '../../components/EnTreatment.astro';
+import { doctors } from '../../data/site';
+---
+<EnTreatment
+  seoTitle="Retina Specialist in Tijuana | Dr. Juvenal Guzmán | Oftalmo Visión"
+  description="Retina specialist in Tijuana, Mexico: diabetic retinopathy, retinal detachment, intravitreal injections and vitrectomy with Dr. Juvenal Guzmán, fellowship‑trained in retina and vitreous."
+  eyebrow="Dr. Juvenal Guzmán · Retina & vitreous"
+  h1="Retina specialist in Tijuana, minutes from San Diego"
+  lede="Diabetic retinopathy, retinal detachment, macular degeneration, intravitreal injections and vitrectomy with an ophthalmic surgeon fellowship‑trained in retina at the Mexican Institute of Ophthalmology (UNAM)."
+  photo="dr-juvenal-guzman-imagen-retina"
+  photoAlt="Dr. Juvenal Guzmán reviewing a retinal image in Tijuana"
+  es="/profesionales-de-la-salud/retinologo-dr-juvenal-guzman-cerda/"
+  en="/en/retina-specialist-tijuana/"
+  tag="EN · Retina"
+  frente="retina"
+  setmore={doctors.juvenal.setmore}
+  image="/og/retinologo-tijuana.jpg"
+  procedure="Vitrectomy and intravitreal injection"
+  chips={['Retina & vitreous fellowship', 'Board‑certified ophthalmologist', 'English spoken']}
+  points={[
+    { t: 'Fellowship‑trained in retina', d: 'Retina and vitreous fellowship at the Mexican Institute of Ophthalmology, endorsed by UNAM.' },
+    { t: 'From diagnosis to surgery', d: 'Retinal imaging, laser, anti‑VEGF injections and vitrectomy with the same specialist.' },
+    { t: 'Urgent care for detachments', d: 'Flashes, new floaters or a curtain over your vision need same‑day attention. Call our emergency line.' },
+  ]}
+  faq={[
+    { q: 'I have diabetes and my vision is fine. Should I get a retina exam?', a: 'Yes. Diabetic retinopathy has no symptoms in early stages. A retina exam detects changes before they affect your vision.' },
+    { q: 'Do intravitreal injections hurt?', a: 'They are given with anesthetic eye drops and take seconds. Most patients feel pressure rather than pain.' },
+    { q: 'Can I fly after vitrectomy?', a: 'If a gas bubble is used, you must not fly or travel to high altitude until it is absorbed. The doctor will give you specific instructions.' },
+  ]}
+/>

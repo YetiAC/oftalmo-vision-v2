@@ -1,0 +1,35 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog')).sort((a, b) => +b.data.date - +a.data.date);
+const authors = { jguzman: 'Dr. Juvenal Guzmán', ccarrasco: 'Dra. Citlali Carrasco', equipo: 'Oftalmo Visión' };
+const cats = { retina: 'Retina', parpados: 'Párpados', general: 'Salud visual' };
+---
+<Base title="Blog de Salud Visual | Artículos de Oftalmólogos | Oftalmo Visión" description="Artículos sobre retina, párpados y salud visual escritos por los oftalmólogos de Oftalmo Visión en Tijuana: retinopatía diabética, desprendimiento de retina y más." frente="blog">
+  <PageHero eyebrow="Blog médico" title="Artículos para entender tus ojos" lede="Escritos por nuestros oftalmólogos para resolver las dudas que más escuchamos en consulta." crumbs={[{ label: 'Blog' }]} frente="blog" />
+  <section class="section">
+    <div class="container grid grid-3">
+      {posts.map((p) => (
+        <a class="bp reveal" href={`/${p.id}/`}>
+          {p.data.cover && <img src={p.data.cover} alt={p.data.coverAlt ?? ''} width="640" height="400" loading="lazy" decoding="async" />}
+          <div>
+            <span class="bp__m">{cats[p.data.category]} · {authors[p.data.author]}</span>
+            <h2>{p.data.title}</h2>
+            <p class="muted">{p.data.description}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>
+<style>
+  .bp { display: grid; align-content: start; gap: 16px; text-decoration: none; color: var(--navy); border: 1px solid var(--line); border-radius: 22px; overflow: hidden; transition: transform .3s, box-shadow .3s; }
+  .bp:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+  .bp img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+  .bp > div { padding: 0 24px 26px; }
+  .bp__m { font-size: .76rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--green-ink); }
+  .bp h2 { font-size: 1.16rem; margin: 8px 0; }
+  .bp p { margin: 0; font-size: .92rem; }
+</style>

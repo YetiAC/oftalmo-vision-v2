@@ -1,0 +1,128 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Faq from '../../components/Faq.astro';
+import DoctorCta from '../../components/DoctorCta.astro';
+import Icon from '../../components/Icon.astro';
+import Photo from '../../components/Photo.astro';
+import YouTube from '../../components/YouTube.astro';
+import { getCollection } from 'astro:content';
+import { padecimientos, bySlug, type Padecimiento } from '../../data/padecimientos';
+import { site, doctors, waLink } from '../../data/site';
+
+export function getStaticPaths() {
+  return padecimientos.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+const { p } = Astro.props as { p: Padecimiento };
+const doc = p.doctor === 'equipo' ? null : doctors[p.doctor];
+const posts = p.blog ? (await getCollection('blog')).filter((b) => p.blog!.includes(b.id)) : [];
+const frente = p.group === 'retina' ? 'retina' : p.group === 'parpados' ? 'parpados' : 'clinica';
+const setmore = doc ? doc.setmore : site.setmore.base;
+const url = `${site.url}/padecimiento/${p.slug}/`;
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalWebPage',
+    '@id': `${url}#pagina`,
+    url,
+    name: p.seoTitle,
+    description: p.description,
+    inLanguage: 'es-MX',
+    lastReviewed: '2026-10-20',
+    reviewedBy: doc ? { '@id': `${site.url}${doc.url}#medico` } : { '@id': `${site.url}/#clinica` },
+    about: { '@type': 'MedicalCondition', name: p.name, signOrSymptom: p.symptoms.map((s) => ({ '@type': 'MedicalSignOrSymptom', name: s })) },
+    mainEntity: { '@type': 'MedicalProcedure', name: p.procedure, procedureType: 'https://schema.org/SurgicalProcedure', howPerformed: p.lede },
+    isPartOf: { '@id': `${site.url}/#web` },
+  },
+];
+---
+<Base title={p.seoTitle} description={p.description} schema={schema} frente={frente} image={p.group === 'retina' ? '/og/retinologo-tijuana.jpg' : undefined}>
+  <PageHero
+    eyebrow={doc ? `${doc.short} · ${p.group === 'retina' ? 'Retina y vítreo' : 'Oculoplástica'}` : 'Oftalmo Visión · Tijuana'}
+    title={p.h1}
+    lede={p.lede}
+    photo={p.photo}
+    photoAlt={p.photoAlt}
+    illustration={p.illustration}
+    crumbs={[{ label: 'Padecimientos', href: '/padecimiento/' }, { label: p.name }]}
+    wa={waLink(`${p.name} · Dudas`, `Hola, tengo dudas sobre ${p.name.toLowerCase()}.`)}
+    book={setmore}
+    bookLabel="Agendar valoración"
+    frente={frente}
+  />
+
+  <section class="section">
+    <div class="container cond">
+      <aside class="cond__aside">
+        <div class="card cond__sym">
+          <h2 class="cond__h">Señales a vigilar</h2>
+          <ul>{p.symptoms.map((s) => <li><Icon name="eye" size={18} />{s}</li>)}</ul>
+          <a class="btn btn--book" href={setmore} target="_blank" rel="noopener" data-cta="click_setmore" data-frente={frente} data-pos="sintomas"><Icon name="calendar" /> Agendar revisión</a>
+          <a class="cond__wa" href={waLink(`${p.name} · Síntomas · Dudas`, `Hola, tengo síntomas de ${p.name.toLowerCase()} y una duda:`)} target="_blank" rel="noopener" data-cta="click_whatsapp" data-frente={frente} data-pos="sintomas"><Icon name="whatsapp" size={18} /> ¿Dudas? Escríbenos</a>
+        </div>
+        {doc && (
+          <a class="card cond__doc" href={doc.url}>
+            <Photo name={p.doctor === 'juvenal' ? 'dr-juvenal-guzman-retinologo' : 'dra-citlali-carrasco-oculoplastica'} alt={doc.name} sizes="120px" widths={[160, 240]} position="50% 20%" />
+            <div><span class="small muted">Te atiende</span><strong>{doc.name}</strong><span class="small">{doc.title}</span><span class="small muted">Céd. Esp. {doc.cedEsp}</span></div>
+          </a>
+        )}
+      </aside>
+      <article class="prose">
+        {p.sections.map((s) => (<><h2>{s.h}</h2><Fragment set:html={s.html} /></>))}
+        {p.video && <div class="cond__video"><YouTube id={p.video.id} title={p.video.title} frente={frente} /></div>}
+        <p class="small muted cond__note">Información educativa revisada por el equipo médico de Oftalmo Visión. No sustituye una consulta: cada caso requiere valoración personal.</p>
+      </article>
+    </div>
+  </section>
+
+  {posts.length > 0 && (
+    <section class="section section--tint">
+      <div class="container">
+        <p class="eyebrow">Para leer con calma</p>
+        <h2>Lo que escribió tu especialista</h2>
+        <div class="grid grid-2 rel-posts">
+          {posts.map((b) => <a class="card rel-post" href={`/${b.id}/`}><span class="small muted">Artículo</span><h3>{b.data.title}</h3><span class="rel-go">Leer artículo <Icon name="arrow" size={16} /></span></a>)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <Faq items={p.faq} title={`Preguntas sobre ${p.name.toLowerCase()}`} />
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">También atendemos</p>
+      <div class="grid grid-3">
+        {p.related.map((r) => bySlug[r]).filter(Boolean).map((r) => (
+          <a class="card rel" href={`/padecimiento/${r.slug}/`}><h3>{r.name}</h3><p class="muted small">{r.lede.slice(0, 120)}…</p><span class="rel-go">Ver más <Icon name="arrow" size={16} /></span></a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <DoctorCta who={p.doctor} topic={p.name} frente={frente} />
+</Base>
+
+<style>
+  .cond { display: grid; gap: 40px; }
+  .cond > * { min-width: 0; }
+  @media (min-width: 1000px) { .cond { grid-template-columns: 340px 1fr; gap: 72px; } .cond__aside { position: sticky; top: 100px; align-self: start; } }
+  .cond__aside { display: grid; gap: 16px; }
+  .cond__h { font-size: 1.15rem; }
+  .cond__sym ul { list-style: none; padding: 0; margin: 0 0 22px; display: grid; gap: 12px; }
+  .cond__sym li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; font-weight: 600; }
+  .cond__sym li :global(svg) { color: var(--blue); margin-top: 4px; }
+  .cond__sym .btn { width: 100%; }
+  .cond__wa { display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 12px; font-weight: 700; color: var(--navy); }
+  .cond__wa :global(svg) { color: #1f9a5e; }
+  .cond__doc { display: grid; grid-template-columns: 76px 1fr; gap: 14px; align-items: center; text-decoration: none; color: var(--navy); padding: 16px; }
+  .cond__doc :global(img) { width: 76px; height: 76px; border-radius: 50%; object-fit: cover; }
+  .cond__doc div { display: grid; gap: 2px; }
+  .cond__video { margin-top: 32px; }
+  .cond__note { margin-top: 32px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .rel, .rel-post { text-decoration: none; color: var(--navy); display: grid; gap: 8px; transition: border-color .2s, transform .2s; }
+  .rel:hover, .rel-post:hover { border-color: var(--blue); transform: translateY(-3px); }
+  .rel h3, .rel-post h3 { margin: 0; }
+  .rel-go { display: inline-flex; gap: 6px; align-items: center; font-weight: 700; color: var(--blue-deep); }
+  .rel-posts { margin-top: 24px; }
+</style>

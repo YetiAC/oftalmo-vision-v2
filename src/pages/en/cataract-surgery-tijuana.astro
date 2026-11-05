@@ -1,0 +1,30 @@
+---
+import EnTreatment from '../../components/EnTreatment.astro';
+import { site } from '../../data/site';
+---
+<EnTreatment
+  seoTitle="Cataract Surgery in Tijuana, Mexico | Oftalmo Visión"
+  description="Cataract surgery in Tijuana with board‑certified ophthalmic surgeons. Outpatient procedure under local anesthesia with intraocular lens, minutes from the San Ysidro border."
+  eyebrow="Oftalmo Visión · Tijuana"
+  h1="Cataract surgery in Tijuana"
+  lede="Cloudy vision or glare from headlights at night? Cataract surgery replaces the clouded lens with an intraocular lens in an outpatient, painless procedure."
+  photo="dra-citlali-carrasco-lampara-hendidura"
+  photoAlt="Ophthalmologist examining a patient's lens with a slit lamp in Tijuana"
+  es="/padecimiento/catarata/"
+  en="/en/cataract-surgery-tijuana/"
+  tag="EN · Cataract"
+  frente="clinica"
+  setmore={site.setmore.base}
+  procedure="Phacoemulsification cataract surgery with intraocular lens"
+  chips={['Local anesthesia', 'Outpatient', 'English spoken']}
+  points={[
+    { t: 'Board‑certified surgeons', d: 'Our ophthalmologists are certified by the Mexican Council of Ophthalmology and members of the Mexican Society of Ophthalmology.' },
+    { t: 'Full eye evaluation', d: 'Measurements and studies to choose the right intraocular lens for your eyes and lifestyle.' },
+    { t: 'Easy follow‑up', d: 'Zona Río is minutes from San Ysidro, so returning for check‑ups is simple.' },
+  ]}
+  faq={[
+    { q: 'Is cataract surgery painful?', a: 'No. It is performed under local or regional anesthesia and you stay awake and comfortable.' },
+    { q: 'Can eye drops remove cataracts?', a: 'No. There are no drops that prevent or dissolve cataracts; surgery is the treatment.' },
+    { q: 'Can I drive back to the US after surgery?', a: 'No. Please come with a companion who can drive you on surgery day.' },
+  ]}
+/>

@@ -1,0 +1,39 @@
+---
+interface Props { items: { q: string; a: string }[]; title?: string; eyebrow?: string }
+const { items, title = 'Preguntas frecuentes', eyebrow = 'Dudas comunes' } = Astro.props;
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((i) => ({ '@type': 'Question', name: i.q, acceptedAnswer: { '@type': 'Answer', text: i.a } })),
+};
+---
+<section class="section section--tint">
+  <div class="container faq">
+    <div>
+      <p class="eyebrow">{eyebrow}</p>
+      <h2>{title}</h2>
+    </div>
+    <div class="faq__list">
+      {items.map((i, n) => (
+        <details class="faq__item" open={n === 0}>
+          <summary>{i.q}</summary>
+          <p>{i.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</section>
+<style>
+  .faq { display: grid; gap: 32px; }
+  .faq > * { min-width: 0; }
+  @media (min-width: 960px) { .faq { grid-template-columns: .8fr 1.2fr; gap: 64px; } }
+  .faq__list { display: grid; gap: 10px; }
+  .faq__item { background: #fff; border: 1px solid var(--line); border-radius: 14px; padding: 0 22px; transition: border-color .2s; }
+  .faq__item[open] { border-color: var(--blue); }
+  .faq__item summary { cursor: pointer; list-style: none; padding: 20px 32px 20px 0; position: relative; font-weight: 700; font-size: 1.04rem; }
+  .faq__item summary::-webkit-details-marker { display: none; }
+  .faq__item summary::after { content: '+'; position: absolute; right: 0; top: 50%; translate: 0 -50%; font: 400 1.6rem/1 var(--display); color: var(--blue); transition: rotate .2s; }
+  .faq__item[open] summary::after { rotate: 45deg; }
+  .faq__item p { color: var(--muted); padding-bottom: 20px; margin: 0; }
+</style>

@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+<Base title="Aviso de Privacidad | Oftalmo Visión" description="Aviso de privacidad de Oftalmo Visión, de los doctores Citlali Carrasco González y Juvenal Guzmán Cerda, conforme a la ley mexicana de protección de datos personales." frente="legal">
+  <section class="section">
+    <div class="container prose legal">
+      <p class="eyebrow">Legal</p>
+      <h1>Aviso de privacidad</h1>
+      <p class="muted">Oftalmo Visión, de los doctores Citlali Carrasco González y Juvenal Guzmán Cerda. Última actualización: octubre de 2026.</p>
+      <h2>Responsable del tratamiento de datos personales</h2>
+      <p>Los doctores Citlali Carrasco González y Juvenal Guzmán Cerda, con domicilio en Edificio Corporativo Central, Diego Rivera No. 2311, Int. 507, Zona Urbana Río, Tijuana, B.C., son responsables del tratamiento de sus datos personales conforme a este aviso de privacidad.</p>
+      <h2>Finalidad del tratamiento</h2>
+      <p>Los datos personales en posesión de los doctores se utilizarán para:</p>
+      <ul>
+        <li>Prestación de servicios médicos, incluyendo consultas, cirugías, estudios diagnósticos y demás fines relacionados con servicios de salud.</li>
+        <li>Creación, actualización y conservación del expediente clínico.</li>
+        <li>Facturación y cobranza.</li>
+        <li>Estudios, registros, estadísticas y análisis de información de salud.</li>
+        <li>Seguimiento de servicios y comunicación de información relevante.</li>
+        <li>Responder solicitudes enviadas por los formularios de este sitio, por WhatsApp o por teléfono, y agendar citas.</li>
+        <li>Análisis estadísticos y de mercado.</li>
+      </ul>
+      <h2>Datos personales recabados</h2>
+      <p>Nombre completo, fecha de nacimiento, edad, sexo, estado civil, domicilio, teléfono, correo electrónico, nacionalidad y datos de contacto de un familiar responsable en caso de urgencia.</p>
+      <p>Adicionalmente se recaban datos sensibles como el estado de salud, antecedentes e historial clínico, información sobre modo de vida y otros necesarios para los fines señalados. Los datos sensibles se tratan con estricta seguridad y confidencialidad.</p>
+      <h2>Formularios, WhatsApp y analítica web</h2>
+      <p>Cuando envías un formulario en este sitio, tus datos se envían por correo a la clínica y se abre una conversación de WhatsApp con la información que capturaste. Usamos Google Analytics para medir de forma agregada las visitas y los clics en los botones del sitio; esta herramienta puede usar cookies. No vendemos tus datos.</p>
+      <h2>Transferencia</h2>
+      <p>Para la prestación de servicios, los doctores pueden transferir los datos personales a otros médicos, hospitales, clínicas, laboratorios, aseguradoras y terceros subcontratados relacionados con su atención, dentro y fuera del país.</p>
+      <h2>Limitación de uso y derechos ARCO</h2>
+      <p>Puedes solicitar el acceso, rectificación, cancelación u oposición al uso de tus datos, así como revocar tu consentimiento, enviando un correo a <a href={`mailto:${site.email}`}>{site.email}</a> o por escrito al domicilio señalado, detallando claramente tu solicitud.</p>
+      <h2>Cambios al aviso de privacidad</h2>
+      <p>Cualquier cambio a este aviso será publicado en esta página.</p>
+      <h2>Fundamentación</h2>
+      <p>Conforme al artículo 16 de la Constitución Política de los Estados Unidos Mexicanos, la legislación federal de protección de datos personales en posesión de los particulares, su reglamento y las demás disposiciones aplicables en el Estado de Baja California.</p>
+    </div>
+  </section>
+</Base>
+<style>.legal h1 { font-size: var(--step-3); }</style>

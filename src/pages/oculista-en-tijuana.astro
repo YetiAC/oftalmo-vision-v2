@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { waLink } from '../data/site';
+
+const faq = [
+  { q: '¿Oculista y oftalmólogo son lo mismo?', a: 'Sí. “Oculista” es el nombre coloquial del oftalmólogo: el médico especialista en las enfermedades de los ojos que diagnostica, receta y opera.' },
+  { q: '¿Cuál es la diferencia con un optometrista?', a: 'El optometrista mide tu graduación y adapta lentes. El oftalmólogo, además, diagnostica y trata enfermedades y realiza cirugías. En Oftalmo Visión tienes a ambos.' },
+  { q: '¿Cada cuánto debo ir al oculista?', a: 'Una revisión anual es recomendable a partir de los 40 años, y antes si tienes diabetes, hipertensión, miopía alta o antecedentes familiares de glaucoma.' },
+];
+---
+<Base title="Oculista en Tijuana | Oftalmólogos Certificados | Oftalmo Visión" description="¿Buscas oculista en Tijuana? En Oftalmo Visión te atienden oftalmólogos certificados con alta especialidad en retina y párpados, en Zona Río, cerca de San Ysidro." frente="clinica">
+  <PageHero
+    eyebrow="Oculista en Tijuana"
+    title="Oculista en Tijuana: cuándo ir y con quién"
+    lede="El oculista es el médico oftalmólogo. Si tu vista cambió, te duelen o arden los ojos o tienes diabetes, una revisión a tiempo puede evitar problemas mayores."
+    photo="dr-juvenal-guzman-exploracion-ocular"
+    photoAlt="Oculista en Tijuana revisando a una paciente con lámpara de hendidura"
+    crumbs={[{ label: 'Oculista en Tijuana' }]}
+    wa={waLink('Oculista en Tijuana · Dudas', 'Hola, tengo una duda sobre mi consulta.')}
+    frente="clinica"
+  />
+  <section class="section">
+    <div class="container prose">
+      <h2>¿Cómo saber cuándo necesito visitar a un oculista?</h2>
+      <p>La oftalmología es la especialidad médica que se encarga de las enfermedades de los ojos, y los médicos que la ejercen son los oftalmólogos u oculistas. Su trabajo incluye diagnosticar enfermedades y trastornos con pruebas especializadas, indicar tratamientos y operar cuando es necesario.</p>
+      <p>Acude con un oculista si notas cambios en tu visión, dolor, enrojecimiento persistente, destellos o moscas flotantes, o si tienes una enfermedad que afecta los ojos, como la diabetes. Los adultos mayores y las personas con diabetes son más propensas a ciertas condiciones que, tratadas a tiempo, tienen buenos resultados.</p>
+      <h2>Oculistas con alta especialidad, cerca de la garita de San Ysidro</h2>
+      <p>Estamos en Diego Rivera 2311, interior 507, Zona Urbana Río Tijuana. Muchos pacientes que viven en Estados Unidos vienen a consulta por la cercanía con la garita de San Ysidro y porque Zona Río cuenta con hoteles y servicios para descansar si una cirugía lo requiere.</p>
+      <h2>Padecimientos que atendemos</h2>
+      <ul class="lst">
+        <li><a href="/padecimiento/catarata/">Cataratas</a>: la causa más común de pérdida de visión después de los 40 años.</li>
+        <li><a href="/padecimiento/retinopatia-diabetica/">Retinopatía diabética</a>: daño en los vasos de la retina por la diabetes.</li>
+        <li><a href="/padecimiento/glaucoma/">Glaucoma</a>: daño del nervio óptico, casi siempre sin síntomas.</li>
+        <li><a href="/padecimiento/desprendimiento-de-retina/">Desprendimiento de retina</a>: una urgencia que requiere atención inmediata.</li>
+        <li><a href="/padecimiento/pterigion/">Pterigión</a>, <a href="/padecimiento/chalazion/">chalazión</a> y <a href="/padecimiento/cirugia-cosmetica-de-parpados/">cirugía de párpados</a>.</li>
+      </ul>
+      <p><Icon name="alert" size={18} class="inl" /> ¿Es una emergencia? Consulta nuestra página de <a href="/urgencias-oftalmologicas/">urgencias oftalmológicas</a>.</p>
+    </div>
+  </section>
+  <Faq items={faq} title="Preguntas sobre el oculista" />
+  <CtaBand title="Agenda con un oculista en Tijuana" text="Primera consulta con oftalmólogo certificado en Zona Río." tag="Oculista · Banda final" message="Hola, quiero agendar una consulta con el oculista." frente="clinica" />
+</Base>
+<style>
+  .lst li { margin-bottom: .6em; }
+  .prose :global(.inl) { display: inline; vertical-align: -3px; color: #b3261e; }
+</style>

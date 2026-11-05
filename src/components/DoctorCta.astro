@@ -1,0 +1,66 @@
+---
+// Banner de cita según el padecimiento: si lo atiende un solo especialista,
+// aparece él o ella con su agenda; si lo atienden ambos, aparecen los dos,
+// cada quien con su propio botón de Setmore. Las dudas van a WhatsApp.
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { doctors, waLink } from '../data/site';
+
+interface Props { who: 'juvenal' | 'citlali' | 'equipo'; topic: string; frente: string }
+const { who, topic, frente } = Astro.props;
+const people = (who === 'equipo' ? ['juvenal', 'citlali'] : [who]) as ('juvenal' | 'citlali')[];
+const photos = { juvenal: 'dr-juvenal-guzman-optica-tijuana', citlali: 'dra-citlali-carrasco-optica-tijuana' };
+const roles = { juvenal: 'Retina y vítreo', citlali: 'Oculoplástica · Párpados' };
+const solo = people.length === 1;
+const t = topic.toLowerCase();
+---
+<section class="dcta">
+  <div class="container">
+    <div class:list={['dcta__in', { 'dcta__in--duo': !solo }]}>
+      <span class="iris dcta__iris" aria-hidden="true"></span>
+      <div class="dcta__text">
+        <p class="dcta__label">Agenda tu valoración</p>
+        <h2>{solo ? `Tu valoración de ${t} con ${doctors[people[0]].short}` : `Tu valoración de ${t}: elige a tu especialista`}</h2>
+        <p>{solo ? 'Reserva directo en su agenda en línea y elige el día y la hora que te acomoden.' : 'Ambos especialistas atienden este padecimiento. Reserva con quien prefieras en su agenda en línea.'}</p>
+        <a class="dcta__wa" href={waLink(`${topic} · Banner · Dudas`, `Hola, tengo dudas sobre ${t}.`)} target="_blank" rel="noopener" data-cta="click_whatsapp" data-frente={frente} data-pos="banner-doctor"><Icon name="whatsapp" size={18} /> ¿Tienes dudas? Escríbenos por WhatsApp</a>
+      </div>
+      <div class="dcta__docs">
+        {people.map((k) => (
+          <article class="dcta__doc">
+            <Photo name={photos[k]} alt={doctors[k].name} sizes="(min-width: 1000px) 220px, 40vw" widths={[240, 440]} position="56% 28%" />
+            <div class="dcta__body">
+              <span class="dcta__role">{roles[k]}</span>
+              <strong>{doctors[k].name}</strong>
+              <span class="dcta__ced">Céd. Esp. {doctors[k].cedEsp}</span>
+              <a class="btn btn--book" href={doctors[k].setmore} target="_blank" rel="noopener" data-cta="click_setmore" data-frente={frente} data-pos={`banner-${k}`}><Icon name="calendar" /> Agendar con {k === 'juvenal' ? 'él' : 'ella'}</a>
+              <a class="dcta__profile" href={doctors[k].url}>Ver perfil</a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .dcta { padding-block: clamp(48px, 7vw, 88px); }
+  .dcta__in { position: relative; overflow: hidden; display: grid; gap: 36px; align-items: center; background: radial-gradient(120% 140% at 100% 0%, #10326e 0%, var(--navy) 58%); border-radius: 32px; padding: clamp(28px, 5vw, 64px); color: #c8d6ea; }
+  .dcta__in > :not(.iris) { position: relative; min-width: 0; }
+  .dcta__iris { position: absolute; width: 560px; right: -180px; top: -200px; opacity: .45; }
+  @media (min-width: 1000px) { .dcta__in { grid-template-columns: 1fr auto; gap: 56px; } }
+  .dcta__label { margin: 0 0 12px; font: 600 .72rem/1 var(--display); letter-spacing: .2em; text-transform: uppercase; color: #9fe3c0; }
+  .dcta h2 { color: #fff; font-size: var(--step-3); max-width: 18ch; }
+  .dcta__text > p { font-size: var(--step-1); line-height: 1.5; max-width: 46ch; }
+  .dcta__wa { display: inline-flex; align-items: center; gap: 10px; margin-top: 8px; color: #fff; font-weight: 700; text-decoration: underline; text-underline-offset: 4px; text-decoration-color: var(--green); }
+  .dcta__wa :global(svg) { color: var(--green); }
+  .dcta__wa:hover { color: #9fe3c0; }
+  .dcta__docs { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
+  @media (min-width: 1000px) { .dcta__docs { grid-template-columns: repeat(var(--n, 1), 250px); } .dcta__in--duo .dcta__docs { --n: 2; } }
+  .dcta__doc { background: #fff; border-radius: 22px; overflow: hidden; color: var(--navy); display: grid; }
+  .dcta__doc :global(img) { width: 100%; aspect-ratio: 4 / 3.6; object-fit: cover; }
+  .dcta__body { display: grid; gap: 6px; padding: 18px 18px 20px; }
+  .dcta__role { font: 600 .7rem/1.2 var(--display); letter-spacing: .14em; text-transform: uppercase; color: var(--green-ink); }
+  .dcta__body strong { font: 600 1.05rem/1.25 var(--display); }
+  .dcta__ced { font-size: .82rem; color: var(--muted); }
+  .dcta__body .btn { margin-top: 8px; min-height: 48px; padding: 0 16px; font-size: .92rem; }
+  .dcta__profile { justify-self: center; font-weight: 700; font-size: .88rem; color: var(--blue-deep); margin-top: 4px; }
+</style>

@@ -1,0 +1,64 @@
+---
+// Formulario que termina en WhatsApp. Antes de abrir el chat guarda una copia
+// por correo (public/api/lead.php) para que el lead no se pierda.
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+
+interface Field { name: string; label: string; type?: string; required?: boolean; options?: string[]; placeholder?: string }
+interface Props { id: string; tag: string; title: string; intro?: string; fields: Field[]; submit: string; frente: string; lang?: 'es' | 'en' }
+const { id, tag, title, intro, fields, submit, frente, lang = 'es' } = Astro.props;
+---
+<form class="lead card" id={id} data-tag={tag} data-frente={frente} data-wa={site.whatsapp} novalidate>
+  <h3>{title}</h3>
+  {intro && <p class="muted small">{intro}</p>}
+  <div class="lead__grid">
+    {fields.map((f) => (
+      <label class:list={['lead__f', { 'lead__f--full': f.type === 'textarea' }]} for={`${id}-${f.name}`}>
+        <span>{f.label}{f.required && ' *'}</span>
+        {f.options ? (
+          <select id={`${id}-${f.name}`} name={f.label} required={f.required}>
+            <option value="">{lang === 'es' ? 'Selecciona' : 'Select'}</option>
+            {f.options.map((o) => <option>{o}</option>)}
+          </select>
+        ) : f.type === 'textarea' ? (
+          <textarea id={`${id}-${f.name}`} name={f.label} rows="3" placeholder={f.placeholder}></textarea>
+        ) : (
+          <input id={`${id}-${f.name}`} name={f.label} type={f.type ?? 'text'} required={f.required} placeholder={f.placeholder} autocomplete={f.type === 'tel' ? 'tel' : f.type === 'email' ? 'email' : f.name === 'nombre' ? 'name' : 'off'} />
+        )}
+      </label>
+    ))}
+  </div>
+  <button class="btn btn--wa" type="submit"><Icon name="whatsapp" /> {submit}</button>
+  <p class="lead__note small muted">{lang === 'es' ? 'Al enviar se abre WhatsApp con tus datos para que la recepción te confirme. Consulta nuestro ' : 'Submitting opens WhatsApp with your details so our front desk can confirm. See our '}<a href="/aviso-de-privacidad/">{lang === 'es' ? 'aviso de privacidad' : 'privacy notice'}</a>.</p>
+  <p class="lead__err small" role="alert" hidden>{lang === 'es' ? 'Completa los campos marcados con *.' : 'Please fill in the fields marked with *.'}</p>
+</form>
+<script is:inline>
+  document.querySelectorAll('form.lead:not([data-ready])').forEach(function (form) {
+    form.dataset.ready = '1';
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var err = form.querySelector('.lead__err');
+      if (!form.checkValidity()) { err.hidden = false; form.reportValidity && form.reportValidity(); return; }
+      err.hidden = true;
+      var lines = [];
+      var data = { formulario: form.dataset.tag, pagina: location.pathname };
+      new FormData(form).forEach(function (v, k) { if (String(v).trim()) { lines.push(k + ': ' + v); data[k] = v; } });
+      try { navigator.sendBeacon('/api/lead.php', new Blob([JSON.stringify(data)], { type: 'application/json' })); } catch (x) {}
+      if (window.gtag) gtag('event', 'form_submit', { formulario: form.dataset.tag, frente: form.dataset.frente, pagina: location.pathname });
+      var msg = '[Web · ' + form.dataset.tag + ']\n' + lines.join('\n');
+      window.open('https://wa.me/' + form.dataset.wa + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    });
+  });
+</script>
+<style>
+  .lead { display: grid; gap: 18px; box-shadow: var(--shadow); }
+  .lead h3 { margin: 0; font-size: var(--step-2); }
+  .lead__grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+  .lead__f { display: grid; gap: 6px; font-weight: 600; font-size: .9rem; }
+  .lead__f--full { grid-column: 1 / -1; }
+  .lead input, .lead select, .lead textarea { width: 100%; font: 500 1rem/1.4 var(--body); color: var(--navy); background: var(--paper); border: 1.5px solid var(--line); border-radius: 12px; padding: 13px 14px; min-height: 50px; }
+  .lead input:focus, .lead select:focus, .lead textarea:focus { outline: none; border-color: var(--blue); background: #fff; box-shadow: 0 0 0 4px rgb(41 151 226 / .15); }
+  .lead .btn { width: 100%; }
+  .lead__note { margin: 0; }
+  .lead__err { color: #b3261e; margin: 0; font-weight: 600; }
+</style>

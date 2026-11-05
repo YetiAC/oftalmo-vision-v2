@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import LeadForm from '../components/LeadForm.astro';
+import Icon from '../components/Icon.astro';
+import { site, waLink } from '../data/site';
+---
+<Base title="Contacto | Oftalmo Visión Tijuana" description={`Contacta a Oftalmo Visión en Tijuana: WhatsApp, teléfono ${site.phoneDisplay}, urgencias ${site.emergencyDisplay} y agenda en línea. Diego Rivera 2311, Zona Río.`} frente="contacto">
+  <PageHero
+    eyebrow="Contáctanos"
+    title="Es un gusto atenderte"
+    lede="Escríbenos por WhatsApp, llámanos o agenda en línea. La recepción te confirma tu cita."
+    crumbs={[{ label: 'Contacto' }]}
+    wa={waLink('Contacto · Dudas', 'Hola, tengo una duda:')}
+    frente="contacto"
+  />
+  <section class="section">
+    <div class="container ct">
+      <div class="ct__info">
+        <a class="ct__c" href={`tel:${site.phone}`} data-cta="click_call" data-pos="contacto"><Icon name="phone" /><div><span>Teléfono</span><strong>{site.phoneDisplay}</strong></div></a>
+        <a class="ct__c ct__c--urg" href={`tel:${site.emergency}`} data-cta="click_call" data-frente="urgencias" data-pos="contacto"><Icon name="alert" /><div><span>Urgencias</span><strong>{site.emergencyDisplay}</strong></div></a>
+        <a class="ct__c" href={`mailto:${site.email}`}><Icon name="mail" /><div><span>Correo</span><strong>{site.email}</strong></div></a>
+        <a class="ct__c" href={site.mapsUrl} target="_blank" rel="noopener"><Icon name="pin" /><div><span>Dirección</span><strong>{site.address.street}, {site.address.neighborhood}, Tijuana</strong></div></a>
+        <div class="ct__c"><Icon name="clock" /><div><span>Horario</span>{site.hours.map((h) => <strong>{h.days}: {h.time}</strong>)}</div></div>
+      </div>
+      <LeadForm id="form-contacto" tag="Contacto · Formulario" title="Envíanos un mensaje" frente="contacto" submit="Enviar por WhatsApp" fields={[
+        { name: 'nombre', label: 'Nombre', required: true },
+        { name: 'telefono', label: 'Teléfono', type: 'tel', required: true },
+        { name: 'motivo', label: 'Motivo', options: ['Consulta oftalmológica', 'Blefaroplastia / párpados', 'Retina', 'Óptica / examen de la vista', 'Empresas', 'Otro'] },
+        { name: 'mensaje', label: 'Mensaje', type: 'textarea' },
+      ]} />
+    </div>
+  </section>
+</Base>
+<style>
+  .ct { display: grid; gap: 40px; align-items: start; }
+  .ct > * { min-width: 0; }
+  @media (min-width: 1000px) { .ct { grid-template-columns: .9fr 1.1fr; gap: 64px; } }
+  .ct__info { display: grid; gap: 12px; }
+  .ct__c { display: grid; grid-template-columns: 24px 1fr; gap: 16px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 18px; text-decoration: none; color: var(--navy); }
+  a.ct__c:hover { border-color: var(--blue); }
+  .ct__c :global(svg) { color: var(--green); margin-top: 2px; }
+  .ct__c div { display: grid; gap: 2px; min-width: 0; overflow-wrap: anywhere; }
+  .ct__c span { font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 700; }
+  .ct__c--urg :global(svg) { color: #b3261e; }
+</style>

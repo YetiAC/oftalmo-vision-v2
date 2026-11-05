@@ -1,0 +1,161 @@
+---
+// Footer basado en el del sitio actual: encabezado de ubicación con CTA verde,
+// foto del Edificio Corporativo Central con franja de redes, tarjetas de contacto,
+// horario y listas. Se repite en todas las páginas.
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { site, doctors, waLink } from '../data/site';
+interface Props { lang?: 'es' | 'en' }
+const { lang = 'es' } = Astro.props;
+const es = lang === 'es';
+const year = new Date().getFullYear();
+
+const padecimientos = es
+  ? [
+      ['Blefaroplastia', '/padecimiento/cirugia-cosmetica-de-parpados/'],
+      ['Catarata', '/padecimiento/catarata/'],
+      ['Retinopatía diabética', '/padecimiento/retinopatia-diabetica/'],
+      ['Glaucoma', '/padecimiento/glaucoma/'],
+      ['Desprendimiento de retina', '/padecimiento/desprendimiento-de-retina/'],
+      ['Pterigión', '/padecimiento/pterigion/'],
+      ['Párpado caído', '/padecimiento/ptosis-parpado-caido/'],
+      ['Chalazión', '/padecimiento/chalazion/'],
+      ['Ver todos', '/padecimiento/'],
+    ]
+  : [
+      ['Eyelid surgery', '/en/eyelid-surgery-tijuana/'],
+      ['Retina specialist', '/en/retina-specialist-tijuana/'],
+      ['Cataract surgery', '/en/cataract-surgery-tijuana/'],
+    ];
+const conocenos = es
+  ? [
+      ['Inicio', '/'],
+      ['Acerca de', '/acerca-de/'],
+      ['Profesionales de la salud', '/profesionales-de-la-salud/'],
+      ['Óptica', '/optica-tijuana/'],
+      ['Empresas', '/empresas/'],
+      ['Blog', '/blog/'],
+      ['Clínica de ojos', '/clinica-de-ojos-tijuana/'],
+      ['Contáctanos', '/contactanos/'],
+      ['English', '/en/'],
+    ]
+  : [
+      ['Home', '/en/'],
+      ['Plan your visit', '/en/#visit'],
+      ['Sitio en español', '/'],
+    ];
+const days: Record<string, string> | null = es ? null : { 'Lunes a viernes': 'Monday – Friday', 'Sábado': 'Saturday' };
+---
+<footer class="ft">
+  <div class="ft__head">
+    <div class="ft__headin">
+      <div>
+        <p class="ft__label">{es ? 'Ubicación' : 'Location'}</p>
+        <h2>{es ? 'Nos encontramos en una zona moderna y segura de Tijuana, a minutos de la Garita Internacional de San Ysidro.' : 'We are in a modern, safe area of Tijuana, minutes from the San Ysidro International Border Crossing.'}</h2>
+      </div>
+      <div class="ft__ctas">
+        <a class="ft__cta" href={site.setmore.base} target="_blank" rel="noopener" data-cta="click_setmore" data-pos="footer">{es ? 'Agenda tu cita' : 'Book your visit'}</a>
+        <a class="ft__cta ft__cta--wa" href={waLink(es ? 'Footer · Dudas' : 'EN · Footer', es ? 'Hola, tengo una duda:' : 'Hi, I have a question:')} target="_blank" rel="noopener" data-cta="click_whatsapp" data-pos="footer">{es ? '¿Dudas? WhatsApp' : 'Questions? WhatsApp'}</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="ft__body">
+    <figure class="ft__photo">
+      <Photo name="edificio-corporativo-central-zona-rio-tijuana" alt={es ? 'Edificio Corporativo Central en Zona Río, Tijuana, donde está Oftalmo Visión' : 'Edificio Corporativo Central in Zona Río, Tijuana, home of Oftalmo Visión'} sizes="(min-width: 1000px) 48vw, 100vw" widths={[480, 760, 960]} />
+      <div class="ft__social">
+        <a href={site.social.facebook} target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5H16.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 3.9v2.3H8v3h2.5V21h3Z"/></svg></a>
+        <a href={site.social.instagram} target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" d="M7.5 3h9A4.5 4.5 0 0 1 21 7.5v9a4.5 4.5 0 0 1-4.5 4.5h-9A4.5 4.5 0 0 1 3 16.5v-9A4.5 4.5 0 0 1 7.5 3Z"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.2" fill="currentColor"/></svg></a>
+      </div>
+    </figure>
+
+    <div class="ft__info">
+      <a class="ft__card" href={`tel:${site.phone}`} data-cta="click_call" data-pos="footer">
+        <span class="ft__ico ft__ico--green"><Icon name="phone" size={16} /></span>
+        <span><span class="ft__k">{es ? 'Teléfono · Urgencias' : 'Phone · Emergencies'}</span><span class="ft__v">+52 {site.phoneDisplay} · {site.emergencyDisplay}</span></span>
+      </a>
+      <a class="ft__card" href={`mailto:${site.email}`}>
+        <span class="ft__ico ft__ico--blue"><Icon name="mail" size={16} /></span>
+        <span><span class="ft__k">{es ? 'Correo electrónico' : 'Email'}</span><span class="ft__v">{site.email}</span></span>
+      </a>
+      <a class="ft__card" href={site.mapsUrl} target="_blank" rel="noopener">
+        <span class="ft__ico ft__ico--green"><Icon name="pin" size={16} /></span>
+        <span><span class="ft__k">Edf. Corporativo Central</span><span class="ft__v">Diego Rivera No. 2311, Int. 507, {site.address.neighborhood}, Tijuana, B.C., C.P. {site.address.postalCode}</span></span>
+      </a>
+
+      <dl class="ft__hours">
+        {site.hours.map((h) => <div><dt>{days ? days[h.days] : h.days}</dt><dd>{h.time} hrs.</dd></div>)}
+        <div><dt>{es ? 'Domingo' : 'Sunday'}</dt><dd>{es ? 'Cerrado' : 'Closed'}</dd></div>
+      </dl>
+
+      <div class="ft__lists">
+        <nav aria-label={es ? 'Padecimientos' : 'Treatments'}>
+          <h3>{es ? 'Padecimientos' : 'Treatments'}</h3>
+          <ul>{padecimientos.map(([l, h]) => <li><a href={h}>{l}</a></li>)}</ul>
+        </nav>
+        <nav aria-label={es ? 'Conócenos' : 'About'}>
+          <h3>{es ? 'Conócenos' : 'About'}</h3>
+          <ul>{conocenos.map(([l, h]) => <li><a href={h}>{l}</a></li>)}</ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <div class="ft__legal">
+    <p>{es ? 'Responsables médicos' : 'Medical directors'}: {doctors.juvenal.name}, Ced. Prof. {doctors.juvenal.cedProf}, Ced. Esp. {doctors.juvenal.cedEsp} · {doctors.citlali.name}, Ced. Prof. {doctors.citlali.cedProf}, Ced. Esp. {doctors.citlali.cedEsp}.</p>
+    <p>Copyright © {year} Oftalmo Visión. {es ? 'Todos los derechos reservados' : 'All rights reserved'} · <a href="/aviso-de-privacidad/">{es ? 'Aviso de privacidad' : 'Privacy notice (Spanish)'}</a> · {es ? 'La información de este sitio es educativa y no sustituye una consulta médica.' : 'Information on this site is educational and does not replace a medical consultation.'}</p>
+  </div>
+</footer>
+
+<style>
+  .ft { background: #0c1226; color: #e6edf6; }
+  .ft__head { padding: clamp(40px, 5vw, 56px) max(20px, env(safe-area-inset-right, 0px)) clamp(32px, 4vw, 48px) max(20px, env(safe-area-inset-left, 0px)); }
+  .ft__headin { max-width: 1100px; margin-inline: auto; display: grid; gap: 24px; align-items: start; }
+  .ft__headin > * { min-width: 0; }
+  @media (min-width: 900px) { .ft__headin { grid-template-columns: 1fr auto; gap: 64px; } }
+  .ft__label { margin: 0 0 12px; font: 600 .72rem/1 var(--display); letter-spacing: .2em; text-transform: uppercase; color: #8d9ab3; }
+  .ft h2 { color: #fff; font: 600 clamp(1.45rem, 1.1rem + 1.2vw, 2.1rem)/1.28 var(--display); letter-spacing: -.01em; max-width: 30ch; margin: 0; }
+  .ft__cta { display: inline-grid; place-items: center; min-height: 64px; padding: 0 32px; background: var(--green); color: var(--navy); text-decoration: none; font: 600 .82rem/1 var(--display); letter-spacing: .18em; text-transform: uppercase; box-shadow: 0 14px 30px -12px rgb(43 182 115 / .55); transition: background-color .2s, transform .2s; justify-self: start; }
+  .ft__cta:hover { background: #3fc985; color: var(--navy); transform: translateY(-2px); }
+  .ft__ctas { display: grid; gap: 12px; justify-self: start; }
+  .ft__cta--wa { background: transparent; color: #fff; border: 1.5px solid var(--green); box-shadow: none; }
+  .ft__cta--wa:hover { background: rgb(43 182 115 / .12); color: #fff; }
+
+  .ft__body { display: grid; }
+  @media (min-width: 1000px) { .ft__body { grid-template-columns: 48% 1fr; } }
+  .ft__photo { position: relative; margin: 0; min-height: 320px; }
+  .ft__photo :global(picture) { position: absolute; inset: 0; }
+  .ft__photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 60%; }
+  @media (max-width: 999px) { .ft__photo { aspect-ratio: 4 / 3; min-height: 0; } }
+  .ft__social { position: absolute; right: 0; bottom: 0; display: grid; background: var(--green); }
+  .ft__social a { display: grid; place-items: center; width: 64px; height: 60px; color: var(--navy); }
+  .ft__social a:hover { background: #3fc985; color: var(--navy); }
+
+  .ft__info { padding: clamp(32px, 4vw, 40px) max(20px, env(safe-area-inset-right, 0px)) 40px max(20px, env(safe-area-inset-left, 0px)); max-width: 640px; display: grid; gap: 18px; align-content: start; }
+  @media (min-width: 1000px) { .ft__info { padding-left: 60px; } }
+  .ft__card { display: grid; grid-template-columns: 34px 1fr; gap: 16px; align-items: start; padding: 22px 24px; border: 1px solid rgb(255 255 255 / .16); color: #fff; text-decoration: none; transition: border-color .2s, background-color .2s; }
+  .ft__card:hover { border-color: rgb(255 255 255 / .4); background: rgb(255 255 255 / .03); color: #fff; }
+  .ft__card > span:last-child { display: grid; gap: 6px; min-width: 0; }
+  .ft__ico { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; color: #fff; }
+  .ft__ico--blue { background: var(--blue); color: var(--navy); }
+  .ft__ico--green { background: var(--green); color: var(--navy); }
+  .ft__k { font: 600 .7rem/1.2 var(--display); letter-spacing: .18em; text-transform: uppercase; color: #8d9ab3; }
+  .ft__v { font-size: 1rem; letter-spacing: .02em; overflow-wrap: anywhere; }
+
+  .ft__hours { margin: 14px 0 0; }
+  .ft__hours div { display: flex; justify-content: space-between; gap: 16px; padding: 18px 0; border-bottom: 1px solid rgb(255 255 255 / .1); }
+  .ft__hours dt { color: #8d9ab3; }
+  .ft__hours dd { margin: 0; font-weight: 600; color: #fff; }
+
+  .ft__lists { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; margin-top: 18px; }
+  .ft__lists h3 { color: #fff; font: 600 .95rem/1 var(--display); letter-spacing: .06em; text-transform: uppercase; margin: 0 0 14px; }
+  .ft__lists ul { margin: 0; padding-left: 1.1em; display: grid; gap: 8px; }
+  .ft__lists li::marker { color: var(--green); }
+  .ft__lists a { color: #e6edf6; text-decoration: none; font-weight: 600; }
+  .ft__lists a:hover { color: #9fe3c0; text-decoration: underline; }
+
+  .ft__legal { border-top: 1px solid rgb(255 255 255 / .1); padding: 22px max(20px, env(safe-area-inset-right, 0px)) 100px max(20px, env(safe-area-inset-left, 0px)); font-size: .8rem; color: #8d9ab3; text-align: center; }
+  .ft__legal p { max-width: 1100px; margin: 0 auto 6px; }
+  .ft__legal a { color: #c9d5e6; text-decoration: underline; }
+  @media (min-width: 900px) { .ft__legal { padding-bottom: 24px; } }
+</style>

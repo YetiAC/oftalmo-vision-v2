@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { waLink } from '../data/site';
+
+const services = [
+  { t: 'Consulta oftalmológica', d: 'Interrogatorio, evaluación de la visión y de todas las estructuras del ojo, diagnóstico y tratamiento.', h: '/padecimiento/' },
+  { t: 'Retina y vítreo', d: 'Retinopatía diabética, desprendimiento de retina, inyecciones intravítreas y vitrectomía.', h: '/profesionales-de-la-salud/retinologo-dr-juvenal-guzman-cerda/' },
+  { t: 'Cirugía de párpados', d: 'Blefaroplastia, párpado caído y cirugía reconstructiva por una especialista en oculoplástica.', h: '/padecimiento/cirugia-cosmetica-de-parpados/' },
+  { t: 'Cirugía de órbita', d: 'Para fracturas orbitarias, tumores o malformaciones que afectan la función del ojo.', h: '/profesionales-de-la-salud/dra-citlali-carrasco-gonzalez/' },
+  { t: 'Catarata y pterigión', d: 'Cirugía ambulatoria con anestesia local.', h: '/padecimiento/catarata/' },
+  { t: 'Óptica', d: 'Examen de la vista, armazones, micas y lentes de contacto.', h: '/optica-tijuana/' },
+  { t: 'Urgencias', d: 'Línea de urgencias para golpes, químicos o pérdida súbita de visión.', h: '/urgencias-oftalmologicas/' },
+  { t: 'Empresas', d: 'Programa de conservación visual con examen en planta.', h: '/empresas/' },
+];
+const faq = [
+  { q: '¿Cómo elijo una clínica de ojos confiable?', a: 'Verifica que los médicos tengan cédula de especialidad y certificación vigente del Consejo Mexicano de Oftalmología, y que la clínica cuente con el equipo necesario para tu diagnóstico.' },
+  { q: '¿Aceptan seguros?', a: 'Atendemos pacientes privados. Pregunta en recepción por facturación y opciones de pago.' },
+];
+---
+<Base title="Clínica de Ojos en Tijuana | Oftalmo Visión Zona Río" description="Clínica de ojos en Tijuana con oftalmólogos certificados: retina, cirugía de párpados, catarata, óptica, urgencias y salud visual para empresas en Zona Río." frente="clinica">
+  <PageHero
+    eyebrow="Clínica de ojos en Tijuana"
+    title="Una clínica de ojos completa en Zona Río"
+    lede="Consulta, estudios, cirugía, óptica y urgencias en un mismo lugar, con médicos avalados por el Consejo Mexicano de Oftalmología y miembros de la Sociedad Mexicana de Oftalmología."
+    photo="doctores-oftalmo-vision-recepcion"
+    photoAlt="Recepción de la clínica de ojos Oftalmo Visión en Tijuana"
+    crumbs={[{ label: 'Clínica de ojos Tijuana' }]}
+    wa={waLink('Clínica de ojos · Dudas', 'Hola, tengo una duda sobre la clínica.')}
+    frente="clinica"
+  />
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Servicios</p>
+      <h2>Servicios y tratamientos de Oftalmo Visión</h2>
+      <div class="grid grid-4 sv">
+        {services.map((s) => <a class="sv__c reveal" href={s.h}><h3>{s.t}</h3><p class="muted">{s.d}</p><span>Ver más <Icon name="arrow" size={16} /></span></a>)}
+      </div>
+    </div>
+  </section>
+  <section class="section section--tint">
+    <div class="container prose">
+      <h2>Antes de cualquier procedimiento</h2>
+      <p>Es importante verificar que los médicos estén calificados para el procedimiento que necesitas y que la clínica tenga el equipo para darte el diagnóstico correcto. Confirma que tu oftalmólogo cuente con el aval del Consejo Mexicano de Oftalmología.</p>
+      <p>En Oftalmo Visión nuestros especialistas están certificados por el Consejo Mexicano de Oftalmología y son miembros de la Sociedad Mexicana de Oftalmología. Sus cédulas están publicadas al pie de cada página para que puedas verificarlas.</p>
+    </div>
+  </section>
+  <Faq items={faq} title="Preguntas sobre la clínica" />
+  <CtaBand title="Visítanos en Zona Río" text="Agenda tu cita en la clínica de ojos de Oftalmo Visión." tag="Clínica de ojos · Banda final" message="Hola, quiero agendar una cita en la clínica." frente="clinica" />
+</Base>
+<style>
+  .sv { margin-top: 28px; }
+  .sv__c { display: grid; gap: 8px; align-content: start; padding: 24px; border: 1px solid var(--line); border-radius: 18px; text-decoration: none; color: var(--navy); transition: transform .25s, border-color .25s; }
+  .sv__c:hover { transform: translateY(-4px); border-color: var(--blue); }
+  .sv__c h3, .sv__c p { margin: 0; }
+  .sv__c p { font-size: .94rem; }
+  .sv__c span { display: inline-flex; gap: 6px; align-items: center; font-weight: 700; color: var(--blue-deep); }
+</style>

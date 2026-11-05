@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Photo from '../components/Photo.astro';
+import Reviews from '../components/Reviews.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { waLink } from '../data/site';
+---
+<Base title="Acerca de Oftalmo Visión | Oftalmólogos de Alta Especialidad en Tijuana" description="Oftalmo Visión es un grupo de oftalmólogos de alta especialidad en Tijuana dedicados a la atención integral de las enfermedades de los ojos. Misión, visión y equipo." frente="marca">
+  <PageHero
+    eyebrow="Acerca de"
+    title="Somos Oftalmo Visión"
+    lede="Un grupo de oftalmólogos de alta especialidad dedicados a la atención integral de las enfermedades de los ojos, con conocimiento científico actualizado y una relación cercana con cada paciente."
+    photo="doctores-oftalmo-vision-recepcion"
+    photoAlt="Dr. Juvenal Guzmán y Dra. Citlali Carrasco, fundadores de Oftalmo Visión"
+    crumbs={[{ label: 'Acerca de' }]}
+    wa={waLink('Acerca de · Dudas', 'Hola, tengo una duda:')}
+    frente="marca"
+  />
+  <section class="section">
+    <div class="container mv">
+      <div class="mv__t">
+        <p class="eyebrow">Nuestra razón de ser</p>
+        <h2>Mejorar la calidad de vida de nuestros pacientes</h2>
+        <p>En Oftalmo Visión siempre buscamos la mejor opción para tratar cada enfermedad. Por eso los especialistas que lo conforman tienen alta especialidad en diferentes áreas del ojo: retina y vítreo, y órbita, párpados y vía lagrimal.</p>
+        <div class="grid grid-2 mv__g">
+          <div class="card"><h3>Misión</h3><p class="muted">Brindar atención integral de los problemas oftalmológicos con médicos especialistas en las distintas disciplinas de la visión, a través de una relación cálida y cercana, conocimiento científico actualizado y tecnología vigente.</p></div>
+          <div class="card"><h3>Visión</h3><p class="muted">Ser la clínica oftalmológica con mejor atención de Baja California, con profesionales altamente capacitados, con ética y valores, que den un trato digno a cada paciente.</p></div>
+        </div>
+      </div>
+      <Photo name="dr-juvenal-guzman-optica-tijuana" alt="Instalaciones de Oftalmo Visión en Zona Río Tijuana" sizes="(min-width: 1000px) 40vw, 100vw" widths={[480, 800, 1100]} class="mv__img" />
+    </div>
+  </section>
+  <Reviews />
+  <CtaBand title="Conócenos en persona" text="Agenda tu consulta en Zona Río." tag="Acerca de · Banda final" message="Hola, quiero agendar una consulta." frente="marca" />
+</Base>
+<style>
+  .mv { display: grid; gap: 48px; align-items: center; }
+  .mv > * { min-width: 0; }
+  @media (min-width: 1000px) { .mv { grid-template-columns: 1.2fr .8fr; gap: 72px; } }
+  .mv__g { margin-top: 28px; }
+  .mv__g h3 { margin-bottom: 6px; }
+  .mv__g p { margin: 0; }
+  .mv :global(.mv__img), .mv :global(picture img) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 26px; }
+</style>

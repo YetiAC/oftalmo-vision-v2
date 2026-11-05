@@ -1,0 +1,115 @@
+---
+import '../styles/global.css';
+import soraFont from '@fontsource-variable/sora/files/sora-latin-wght-normal.woff2?url';
+import manropeFont from '@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2?url';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+import { site, doctors } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  lang?: 'es' | 'en';
+  image?: string;
+  schema?: Record<string, unknown>[];
+  alternates?: { es?: string; en?: string };
+  noindex?: boolean;
+  type?: 'website' | 'article';
+  frente?: string;
+}
+const { title, description, lang = 'es', image = '/og/oftalmo-vision.jpg', schema = [], alternates, noindex = false, type = 'website', frente = 'general' } = Astro.props;
+// Vista previa (GitHub Pages): sin indexar y sin GA4 para no mezclar datos con oftalmo.vision.
+const preview = import.meta.env.PUBLIC_PREVIEW === '1';
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const ogImage = new URL(image, site.url).href;
+
+const clinic = {
+  '@context': 'https://schema.org',
+  '@type': ['MedicalClinic', 'Optician'],
+  '@id': `${site.url}/#clinica`,
+  name: site.legalName,
+  alternateName: 'Oftalmo Vision',
+  url: `${site.url}/`,
+  logo: `${site.url}/logo-oftalmo-vision.png`,
+  image: `${site.url}/og/oftalmo-vision.jpg`,
+  telephone: site.phone,
+  email: site.email,
+  priceRange: '$$',
+  medicalSpecialty: ['Ophthalmology', 'Optometry', 'PlasticSurgery'],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    addressLocality: site.address.locality,
+    addressRegion: site.address.region,
+    postalCode: site.address.postalCode,
+    addressCountry: site.address.country,
+  },
+  hasMap: site.mapsUrl,
+  openingHoursSpecification: site.hours.map((h) => ({ '@type': 'OpeningHoursSpecification', dayOfWeek: h.schema, opens: h.opens, closes: h.closes })),
+  areaServed: ['Tijuana', 'Rosarito', 'Tecate', 'Ensenada', 'Mexicali', 'San Diego', 'Chula Vista', 'Los Angeles'],
+  availableLanguage: ['es', 'en'],
+  sameAs: [site.social.facebook, site.social.instagram, site.setmore.base],
+  employee: [{ '@id': `${site.url}${doctors.juvenal.url}#medico` }, { '@id': `${site.url}${doctors.citlali.url}#medico` }],
+};
+const graph = [clinic, ...schema];
+---
+<!doctype html>
+<html lang={lang === 'es' ? 'es-MX' : 'en-US'}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  {preview ? <meta name="robots" content="noindex, nofollow" /> : noindex ? <meta name="robots" content="noindex, follow" /> : <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />}
+  {alternates?.es && <link rel="alternate" hreflang="es-MX" href={new URL(alternates.es, site.url).href} />}
+  {alternates?.en && <link rel="alternate" hreflang="en-US" href={new URL(alternates.en, site.url).href} />}
+  {alternates?.es && <link rel="alternate" hreflang="x-default" href={new URL(alternates.es, site.url).href} />}
+  <meta name="theme-color" content="#000927" />
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="preload" href={soraFont} as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href={manropeFont} as="font" type="font/woff2" crossorigin />
+  <meta property="og:type" content={type} />
+  <meta property="og:site_name" content="Oftalmo Visión Tijuana" />
+  <meta property="og:locale" content={lang === 'es' ? 'es_MX' : 'en_US'} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogImage} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="geo.region" content="MX-BCN" />
+  <meta name="geo.placename" content="Tijuana" />
+  <script type="application/ld+json" set:html={JSON.stringify(graph.length === 1 ? graph[0] : graph)} />
+  <script is:inline define:vars={{ ga: preview ? '' : site.ga4, frente }}>
+    // GA4 sin frenar la carga: se descarga con la primera interacción (o a los 12 s).
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', ga, { frente: frente });
+    var loaded = false;
+    function loadGa(){ if (loaded || !ga) return; loaded = true; var s = document.createElement('script'); s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ga; document.head.appendChild(s); }
+    ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach(function (e) { addEventListener(e, loadGa, { once: true, passive: true }); });
+    setTimeout(loadGa, 12000);
+    // Cada CTA marcado con data-cta manda su evento con el frente y la posición.
+    document.addEventListener('click', function (e) {
+      var el = e.target.closest && e.target.closest('[data-cta]');
+      if (!el) return;
+      loadGa();
+      gtag('event', el.dataset.cta, { frente: el.dataset.frente || frente, ubicacion: el.dataset.pos || '', pagina: location.pathname, destino: el.getAttribute('href') || '' });
+    });
+  </script>
+</head>
+<body>
+  <a class="skip" href="#contenido">{lang === 'es' ? 'Saltar al contenido' : 'Skip to content'}</a>
+  <Header lang={lang} enHref={alternates?.en ?? '/en/'} esHref={alternates?.es ?? '/'} />
+  <main id="contenido">
+    <slot />
+  </main>
+  <Footer lang={lang} />
+  <MobileBar lang={lang} frente={frente} />
+</body>
+</html>

@@ -1,0 +1,166 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import Photo from '../components/Photo.astro';
+import LeadForm from '../components/LeadForm.astro';
+import { site, waLink } from '../data/site';
+
+const faq = [
+  { q: '¿El examen visual tiene costo para la empresa?', a: 'El examen visual para los colaboradores es sin costo. Los lentes son opcionales para cada trabajador, con una gama de precios variable y convenio de pago con la empresa.' },
+  { q: '¿Qué necesitamos para la brigada?', a: 'Solo un área donde instalar el consultorio óptico, con un escritorio y sillas. Nosotros llevamos autorrefractor, caja de pruebas, cartilla de Snellen, optometrista y coordinadores.' },
+  { q: '¿En cuánto tiempo entregan los lentes?', a: 'En la empresa, de 10 a 15 días hábiles a partir de que se terminan todos los exámenes.' },
+  { q: '¿Ayuda con la normatividad de la STPS?', a: 'El programa genera evidencia para el sistema de seguridad y salud en el trabajo de tu empresa, incluidos los exámenes de agudeza visual y percepción de colores que piden normas como la NOM‑025‑STPS‑2008 y la NOM‑030‑STPS‑2009.' },
+  { q: '¿Qué pasa si se detecta una enfermedad?', a: 'El trabajador recibe un pase para consulta con nuestros oftalmólogos especialistas, con costo preferencial para él y su familia.' },
+];
+const schema = [{
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Programa de Conservación Visual para empresas',
+  serviceType: 'Salud visual ocupacional y brigadas de examen de la vista',
+  provider: { '@id': `${site.url}/#clinica` },
+  areaServed: ['Tijuana', 'Tecate', 'Rosarito', 'Ensenada'],
+  audience: { '@type': 'BusinessAudience', audienceType: 'Empresas, maquiladoras e industria' },
+}];
+---
+<Base title="Examen de la Vista para Empresas en Tijuana | Oftalmo Visión" description="Programa de conservación visual para empresas en Tijuana: examen visual sin costo en tu planta, lentes entregados en la empresa e informe clínico para RH y seguridad." schema={schema} frente="empresas">
+  <PageHero
+    eyebrow="Oftalmo Visión Empresas"
+    title="Programa de conservación visual para empresas en Tijuana"
+    lede="Llevamos el consultorio de optometría a tu planta: examen visual sin costo para tus colaboradores, lentes entregados en la empresa e informe clínico para tu programa de seguridad y salud."
+    photo="examen-de-refraccion-tijuana"
+    photoAlt="Optometría ocupacional: examen de refracción a una colaboradora"
+    crumbs={[{ label: 'Empresas' }]}
+    wa={waLink('Empresas · Hero', 'Hola, me interesa una brigada de salud visual para mi empresa.')}
+    noBook
+    waLabel="Cotizar brigada por WhatsApp"
+    secondary={{ href: '#cotizar', label: 'Cotizar programa' }}
+    frente="empresas"
+    chips={['Examen visual sin costo', 'Entrega en tu empresa', 'Informe para RH y SST']}
+  />
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Beneficios</p>
+      <h2>Menos ausentismo, menos riesgo, más productividad</h2>
+      <div class="grid grid-3 ben">
+        <article class="card reveal"><Icon name="building" size={30} /><h3>Sin salir de la planta</h3><p class="muted">Tus colaboradores se revisan en su sitio de trabajo, sin perder la jornada ni trasladarse a una clínica.</p></article>
+        <article class="card reveal"><Icon name="shield" size={30} /><h3>Menos riesgos laborales</h3><p class="muted">La visión no corregida aumenta accidentes y errores. Detectarla a tiempo protege a tu gente.</p></article>
+        <article class="card reveal"><Icon name="eye" size={30} /><h3>Respaldo de especialistas</h3><p class="muted">Los casos con sospecha de enfermedad pasan con retinólogo u oculoplástica a costo preferencial.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tint">
+    <div class="container inc">
+      <div>
+        <p class="eyebrow">Qué incluye</p>
+        <h2>Todo el programa, de la visita a la entrega</h2>
+        <ul class="inc__list">
+          <li><Icon name="check" size={18} /> Examen visual sin costo para todos los colaboradores</li>
+          <li><Icon name="check" size={18} /> Certificado de salud visual</li>
+          <li><Icon name="check" size={18} /> Lentes entregados en tu empresa en 10 a 15 días hábiles</li>
+          <li><Icon name="check" size={18} /> Garantía de seis meses en armazones por defectos de fábrica</li>
+          <li><Icon name="check" size={18} /> Vales para familiares con consulta de optometría sin costo</li>
+          <li><Icon name="check" size={18} /> Convenio de pago con la empresa</li>
+          <li><Icon name="check" size={18} /> Gafas de protección graduadas para personal expuesto</li>
+        </ul>
+      </div>
+      <div class="report card">
+        <p class="report__k">Informe clínico de la campaña</p>
+        <h3>Datos que RH y seguridad pueden usar</h3>
+        <ul>
+          <li>Análisis por edad, género y factores de riesgo</li>
+          <li>Distribución por diagnóstico: miopía, hipermetropía, astigmatismo, presbicia</li>
+          <li>Quién necesita corrección visual para su puesto</li>
+          <li>Recomendaciones y conclusiones para la empresa</li>
+          <li>Tabla en Excel con el resultado de cada colaborador</li>
+        </ul>
+        <div class="report__bars" aria-hidden="true">
+          <span style="--w:62%"><b>Visión adecuada</b></span>
+          <span style="--w:24%"><b>Requiere lentes</b></span>
+          <span style="--w:9%"><b>Referido</b></span>
+        </div>
+        <p class="small muted">Ilustración de ejemplo, no son datos reales.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container how">
+      <div>
+        <p class="eyebrow">Cómo funciona</p>
+        <h2>Cinco pasos, cero complicaciones</h2>
+        <ol class="how__list">
+          <li><strong>Programamos la visita</strong> en los días y turnos que convengan.</li>
+          <li><strong>Invitas a tu personal</strong> con el material que te enviamos.</li>
+          <li><strong>Hacemos los exámenes</strong> y agendamos citas médicas si hacen falta.</li>
+          <li><strong>Mostramos armazones y micas</strong> a quien los necesite.</li>
+          <li><strong>Entregamos los lentes</strong> en tu empresa.</li>
+        </ol>
+        <p class="muted">Coordinación de brigadas: Lic. Silvia Carrasco González.</p>
+      </div>
+      <Photo name="examen-de-la-vista-foroptero" alt="Optometría ocupacional en Oftalmo Visión" sizes="(min-width: 1000px) 40vw, 100vw" widths={[480, 800, 1100]} class="how__img" />
+    </div>
+  </section>
+
+  <section class="section section--navy">
+    <div class="container law">
+      <div>
+        <p class="eyebrow">Normatividad</p>
+        <h2>Evidencia para tu sistema de seguridad y salud en el trabajo</h2>
+      </div>
+      <div class="grid grid-2">
+        <div><h3>NOM‑030‑STPS‑2009</h3><p>Servicios preventivos de seguridad y salud en el trabajo: el programa aporta acciones preventivas y de reconocimiento documentadas.</p></div>
+        <div><h3>NOM‑025‑STPS‑2008</h3><p>Condiciones de iluminación: exámenes anuales de agudeza visual, campimetría y percepción de colores para el personal en áreas con iluminación especial.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tint" id="cotizar">
+    <div class="container form-wrap">
+      <div>
+        <p class="eyebrow">Cotiza</p>
+        <h2>Lleva la salud visual a tu empresa</h2>
+        <p class="lede">Cuéntanos de tu empresa y te enviamos la propuesta por WhatsApp.</p>
+        <p class="muted">Atendemos Tijuana y su zona metropolitana. Pregunta por cobertura en Tecate, Rosarito y Ensenada.</p>
+      </div>
+      <LeadForm id="form-empresas" tag="Empresas · Formulario" title="Solicitar propuesta" frente="empresas" submit="Enviar por WhatsApp" fields={[
+        { name: 'empresa', label: 'Empresa', required: true },
+        { name: 'nombre', label: 'Tu nombre', required: true },
+        { name: 'puesto', label: 'Puesto', placeholder: 'RH, Seguridad, Gerencia…' },
+        { name: 'telefono', label: 'Teléfono', type: 'tel', required: true },
+        { name: 'empleados', label: 'Número de colaboradores', options: ['Menos de 50', '50 a 200', '200 a 500', 'Más de 500'] },
+        { name: 'ubicacion', label: 'Ubicación de la planta', placeholder: 'Parque industrial o colonia' },
+      ]} />
+    </div>
+  </section>
+
+  <Faq items={faq} title="Preguntas de empresas" />
+  <CtaBand title="Salud visual para tu equipo" text="Agenda una brigada de examen visual en tu empresa." tag="Empresas · Banda final" message="Hola, me interesa el programa de conservación visual para mi empresa." frente="empresas" />
+</Base>
+<style>
+  .ben { margin-top: 32px; }
+  .ben :global(svg) { color: var(--blue); margin-bottom: 14px; }
+  .ben h3 { margin-bottom: 6px; }
+  .ben p { margin: 0; }
+  .inc, .how, .form-wrap { display: grid; gap: 48px; align-items: start; }
+  .inc > *, .how > *, .form-wrap > * { min-width: 0; }
+  @media (min-width: 1000px) { .inc, .how, .form-wrap { grid-template-columns: 1fr 1fr; gap: 72px; } .how { align-items: center; } }
+  .inc__list { list-style: none; padding: 0; display: grid; gap: 12px; font-weight: 600; }
+  .inc__list li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; }
+  .inc__list :global(svg) { color: var(--green); margin-top: 4px; }
+  .report { box-shadow: var(--shadow); }
+  .report__k { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--green-ink); margin-bottom: 6px; }
+  .report ul { padding-left: 1.1em; display: grid; gap: 6px; margin-bottom: 24px; }
+  .report__bars { display: grid; gap: 10px; margin-bottom: 8px; }
+  .report__bars span { position: relative; display: block; height: 34px; border-radius: 8px; background: var(--paper-2); overflow: hidden; }
+  .report__bars span::before { content: ''; position: absolute; inset: 0 auto 0 0; width: var(--w); background: linear-gradient(90deg, var(--blue), var(--green)); border-radius: 8px; }
+  .report__bars b { position: relative; z-index: 1; line-height: 34px; padding-left: 12px; font-size: .85rem; color: var(--navy); mix-blend-mode: normal; }
+  .how__list { padding-left: 1.2em; display: grid; gap: 10px; margin-bottom: 20px; }
+  .how :global(.how__img), .how :global(picture img) { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 26px; }
+  .law { display: grid; gap: 32px; }
+  .law p { color: #b9c8dc; margin: 0; }
+</style>

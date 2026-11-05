@@ -1,0 +1,31 @@
+---
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+interface Props { photo: string; alt: string; name: string; role: string; text: string; href: string; tags: string[]; position?: string }
+const { photo, alt, name, role, text, href, tags, position } = Astro.props;
+---
+<article class="doc reveal">
+  <a href={href} class="doc__media" tabindex="-1" aria-hidden="true">
+    <Photo name={photo} alt={alt} sizes="(min-width: 1000px) 40vw, 100vw" widths={[480, 800, 1100]} position={position} />
+  </a>
+  <div class="doc__body">
+    <p class="doc__role">{role}</p>
+    <h3><a href={href}>{name}</a></h3>
+    <p class="muted">{text}</p>
+    <ul class="doc__tags">{tags.map((t) => <li>{t}</li>)}</ul>
+    <a class="doc__link" href={href}>Conocer al especialista <Icon name="arrow" size={18} /></a>
+  </div>
+</article>
+<style>
+  .doc { background: #fff; border: 1px solid var(--line); border-radius: 26px; overflow: hidden; display: grid; }
+  .doc__media { display: block; overflow: hidden; }
+  .doc__media :global(img) { width: 100%; aspect-ratio: 4 / 3.4; object-fit: cover; transition: transform .6s ease; }
+  .doc:hover .doc__media :global(img) { transform: scale(1.04); }
+  .doc__body { padding: 28px; }
+  .doc__role { font-size: .8rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--green-ink); margin-bottom: 8px; }
+  .doc h3 { font-size: var(--step-2); }
+  .doc h3 a { color: var(--navy); text-decoration: none; }
+  .doc__tags { list-style: none; padding: 0; margin: 0 0 22px; display: flex; flex-wrap: wrap; gap: 8px; }
+  .doc__tags li { font-size: .82rem; font-weight: 600; padding: 6px 12px; border-radius: 999px; background: var(--paper-2); }
+  .doc__link { display: inline-flex; align-items: center; gap: 8px; font-weight: 700; text-decoration: none; }
+</style>

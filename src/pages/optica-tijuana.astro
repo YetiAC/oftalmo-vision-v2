@@ -1,0 +1,108 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import Photo from '../components/Photo.astro';
+import LeadForm from '../components/LeadForm.astro';
+import { site, waLink } from '../data/site';
+
+const faq = [
+  { q: '¿El examen de la vista tiene costo?', a: 'Consulta con la recepción las promociones vigentes de examen de la vista. Escríbenos por WhatsApp y te damos la información actualizada.' },
+  { q: '¿Quién hace el examen?', a: 'Un licenciado en optometría o un médico oftalmólogo. Si el examen detecta algo más que graduación, te refiere con el especialista en la misma clínica.' },
+  { q: '¿Qué tipo de micas manejan?', a: 'Antirreflejo, policarbonato, alto índice, CR‑39, progresivos, ocupacionales, bifocales, fotocromáticos, polarizados y Transitions.' },
+  { q: '¿Tienen lentes de contacto?', a: 'Sí, lentes de contacto blandos esféricos y tóricos para astigmatismo.' },
+  { q: '¿Hacen examen a niños?', a: 'Sí, valoramos la vista de niños y adultos.' },
+];
+const schema = [{
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Óptica y examen de la vista en Tijuana',
+  serviceType: 'Examen de la vista, lentes graduados y lentes de contacto',
+  provider: { '@id': `${site.url}/#clinica` },
+  areaServed: 'Tijuana',
+}];
+---
+<Base title="Óptica en Zona Río Tijuana | Examen de la Vista y Lentes | Oftalmo Visión" description="Óptica en Zona Río, Tijuana: examen de la vista, armazones, micas graduadas, progresivos y lentes de contacto, con respaldo de oftalmólogos especialistas." schema={schema} frente="optica">
+  <PageHero
+    eyebrow="Óptica Oftalmo Visión"
+    title="Óptica en Tijuana con respaldo de oftalmólogos"
+    lede="Examen de la vista, armazones y micas graduadas en Zona Río. Y si tu examen muestra algo más que graduación, el especialista está a unos pasos."
+    photo="dra-citlali-carrasco-optica-tijuana"
+    photoAlt="Exhibidor de armazones en la óptica de Oftalmo Visión Tijuana"
+    photoPosition="35% 50%"
+    crumbs={[{ label: 'Óptica' }]}
+    wa={waLink('Óptica · Dudas', 'Hola, tengo una duda sobre lentes o examen de la vista.')}
+    bookLabel="Agendar examen de la vista"
+    frente="optica"
+    chips={['Optometría y oftalmología', 'Niños y adultos', 'Lentes de contacto']}
+  />
+
+  <section class="section">
+    <div class="container op">
+      <Photo name="examen-de-la-vista-foroptero" alt="Examen de la vista con foróptero en Oftalmo Visión" sizes="(min-width: 1000px) 40vw, 100vw" widths={[480, 800, 1100]} class="op__img" />
+      <div>
+        <p class="eyebrow">El examen</p>
+        <h2>Un examen de la vista completo, no solo tu graduación</h2>
+        <p class="lede">Historia clínica, agudeza visual, examen externo, prueba de color, oftalmoscopía, refracción y evaluación subjetiva. Al final recibes tu receta y, si hace falta, una cita con el especialista.</p>
+        <ul class="op__list">
+          <li><Icon name="check" size={18} /> Detecta miopía, hipermetropía, astigmatismo y presbicia</li>
+          <li><Icon name="check" size={18} /> Identifica señales de catarata, glaucoma, pterigión y otras enfermedades</li>
+          <li><Icon name="check" size={18} /> Referencia directa con retina u oculoplástica en la misma clínica</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tint">
+    <div class="container">
+      <p class="eyebrow">Catálogo</p>
+      <h2>Todo para ver bien</h2>
+      <div class="grid grid-4 cat">
+        <article class="card reveal"><Icon name="glasses" size={30} /><h3>Armazones</h3><p class="muted">Metálicos, pasta, acetato, acero, aluminio, nylon, TR90 y titanio, en variedad de marcas y estilos.</p></article>
+        <article class="card reveal"><Icon name="eye" size={30} /><h3>Micas graduadas</h3><p class="muted">Antirreflejo, policarbonato, alto índice, progresivos, bifocales, fotocromáticos, polarizados y Transitions.</p></article>
+        <article class="card reveal"><Icon name="shield" size={30} /><h3>Lentes de seguridad</h3><p class="muted">Gafas de protección graduadas para trabajos con riesgo ocular.</p></article>
+        <article class="card reveal"><Icon name="check" size={30} /><h3>Lentes de contacto</h3><p class="muted">Blandos esféricos y tóricos para astigmatismo, con adaptación profesional.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container form-wrap">
+      <div>
+        <p class="eyebrow">Agenda</p>
+        <h2>Reserva tu examen de la vista</h2>
+        <p class="lede">Elige tu horario en nuestra agenda en línea. ¿Dudas sobre lentes, micas o precios? Escríbenos y te respondemos por WhatsApp.</p>
+        <a class="btn btn--book" href={site.setmore.base} target="_blank" rel="noopener" data-cta="click_setmore" data-frente="optica" data-pos="formulario"><Icon name="calendar" /> Agendar examen de la vista</a>
+        <p class="muted">{site.address.street}, {site.address.neighborhood}. {site.hours.map((h) => `${h.days}: ${h.time}`).join(' · ')}.</p>
+      </div>
+      <LeadForm id="form-optica" tag="Óptica · Formulario" title="Tengo una duda sobre lentes" frente="optica" submit="Enviar mi duda por WhatsApp" fields={[
+        { name: 'nombre', label: 'Nombre', required: true },
+        { name: 'telefono', label: 'Teléfono', type: 'tel', required: true },
+        { name: 'para', label: 'El examen es para', options: ['Adulto', 'Niño o niña', 'Varias personas'] },
+        { name: 'interes', label: 'Me interesa', options: ['Lentes graduados', 'Lentes de contacto', 'Solo el examen', 'Lentes de seguridad'] },
+      ]} />
+    </div>
+  </section>
+
+  <Faq items={faq} title="Preguntas sobre la óptica" />
+  <CtaBand title="Tus lentes, con ojos de especialista" text="Agenda tu examen de la vista en Zona Río, Tijuana." tag="Óptica · Banda final" message="Hola, quiero agendar un examen de la vista." frente="optica" />
+</Base>
+<style>
+  .op { display: grid; gap: 48px; align-items: center; }
+  .op > * { min-width: 0; }
+  @media (min-width: 1000px) { .op { grid-template-columns: .9fr 1.1fr; gap: 80px; } }
+  .op :global(.op__img), .op :global(picture img) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 26px; }
+  .op__list { list-style: none; padding: 0; display: grid; gap: 12px; font-weight: 600; }
+  .op__list li { display: grid; grid-template-columns: 18px 1fr; gap: 10px; }
+  .op__list :global(svg) { color: var(--green); margin-top: 4px; }
+  .cat { margin-top: 32px; }
+  .cat :global(svg) { color: var(--blue); margin-bottom: 14px; }
+  .cat h3 { margin-bottom: 6px; }
+  .cat p { margin: 0; font-size: .95rem; }
+  .form-wrap .btn--book { margin-bottom: 20px; }
+  .form-wrap { display: grid; gap: 40px; align-items: start; }
+  .form-wrap > * { min-width: 0; }
+  @media (min-width: 1000px) { .form-wrap { grid-template-columns: .9fr 1.1fr; gap: 72px; } }
+</style>

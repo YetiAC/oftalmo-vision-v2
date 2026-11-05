@@ -1,0 +1,79 @@
+---
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import Breadcrumbs from './Breadcrumbs.astro';
+import { site } from '../data/site';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  lede: string;
+  photo?: string;
+  photoAlt?: string;
+  photoPosition?: string;
+  crumbs?: { label: string; href?: string }[];
+  /** Agenda en Setmore (botón principal "Agendar cita"). */
+  book?: string;
+  bookLabel?: string;
+  noBook?: boolean;
+  /** WhatsApp para dudas (botón secundario). */
+  wa?: string;
+  waLabel?: string;
+  secondary?: { href: string; label: string; cta?: string };
+  lang?: 'es' | 'en';
+  frente?: string;
+  chips?: string[];
+  illustration?: { src: string; w: number; h: number; alt: string };
+}
+const { eyebrow, title, lede, photo, photoAlt = '', photoPosition, crumbs, book = site.setmore.base, noBook = false, wa, secondary, frente, chips = [], lang = 'es', illustration } = Astro.props;
+const bookLabel = Astro.props.bookLabel ?? (lang === 'es' ? 'Agendar cita' : 'Book appointment');
+const waLabel = Astro.props.waLabel ?? (lang === 'es' ? '¿Tienes dudas? Escríbenos' : 'Questions? WhatsApp us');
+---
+<section class="ph">
+  <div class="container ph__in" class:list={[{ 'ph__in--solo': !photo && !illustration }]}>
+    <div class="ph__text">
+      {crumbs && <Breadcrumbs items={crumbs} />}
+      <p class="eyebrow">{eyebrow}</p>
+      <h1>{title}</h1>
+      <p class="lede">{lede}</p>
+      <div class="btn-row">
+        {!noBook && <a class="btn btn--book" href={book} target="_blank" rel="noopener" data-cta="click_setmore" data-frente={frente} data-pos="hero"><Icon name="calendar" /> {bookLabel}</a>}
+        {wa && <a class="btn btn--chat" href={wa} target="_blank" rel="noopener" data-cta="click_whatsapp" data-frente={frente} data-pos="hero"><Icon name="whatsapp" /> {waLabel}</a>}
+        {secondary && <a class="btn btn--ghost" href={secondary.href} data-cta={secondary.cta} data-frente={frente} data-pos="hero" target={secondary.href.startsWith('http') ? '_blank' : undefined} rel={secondary.href.startsWith('http') ? 'noopener' : undefined}>{secondary.label} <Icon name="arrow" /></a>}
+      </div>
+      {chips.length > 0 && <ul class="ph__chips">{chips.map((c) => <li><Icon name="check" size={16} />{c}</li>)}</ul>}
+      <slot />
+    </div>
+    {illustration && (
+      <figure class="ph__ill">
+        <span class="iris" aria-hidden="true"></span>
+        <div class="ph__illcard"><img src={illustration.src} alt={illustration.alt} width={illustration.w} height={illustration.h} fetchpriority="high" decoding="async" /></div>
+      </figure>
+    )}
+    {photo && !illustration && (
+      <div class="ph__media">
+        <span class="iris" aria-hidden="true"></span>
+        <Photo name={photo} alt={photoAlt} priority sizes="(min-width: 1000px) 46vw, 100vw" widths={[480, 760, 1100, 1500]} position={photoPosition} />
+      </div>
+    )}
+  </div>
+</section>
+<style>
+  .ph { background: linear-gradient(180deg, var(--paper) 0%, #fff 100%); padding-block: clamp(28px, 5vw, 64px) clamp(48px, 7vw, 96px); overflow: hidden; }
+  .ph__in { display: grid; gap: clamp(32px, 5vw, 64px); align-items: center; }
+  .ph__in > * { min-width: 0; }
+  @media (min-width: 1000px) { .ph__in { grid-template-columns: 1.05fr .95fr; } .ph__in--solo { grid-template-columns: 1fr; max-width: 900px; } }
+  .ph h1 { font-size: clamp(2.2rem, 1.5rem + 3vw, 3.9rem); }
+  .ph .lede { margin-bottom: 28px; }
+  .ph__chips { list-style: none; padding: 0; margin: 28px 0 0; display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: .92rem; font-weight: 600; color: var(--graphite); }
+  .ph__chips li { display: inline-flex; align-items: center; gap: 6px; }
+  .ph__chips svg { color: var(--green); }
+  .ph__media { position: relative; }
+  .ph__media .iris { width: 118%; left: -9%; top: -9%; opacity: .9; }
+  .ph__media :global(img) { position: relative; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 28px; box-shadow: var(--shadow); }
+  @media (max-width: 999px) { .ph__media :global(img) { aspect-ratio: 4 / 3; } }
+  .ph__ill { position: relative; margin: 0; }
+  .ph__ill .iris { width: 112%; left: -6%; top: 50%; translate: 0 -50%; opacity: .55; }
+  .ph__illcard { position: relative; background: #fff; border-radius: 28px; padding: clamp(20px, 3vw, 40px); box-shadow: var(--shadow); display: grid; place-items: center; }
+  .ph__illcard img { width: 100%; height: auto; max-height: 460px; object-fit: contain; }
+</style>

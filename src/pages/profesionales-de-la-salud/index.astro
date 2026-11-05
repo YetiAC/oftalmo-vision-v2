@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import DoctorCard from '../../components/DoctorCard.astro';
+import Reviews from '../../components/Reviews.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { doctors, waLink } from '../../data/site';
+---
+<Base title="Oftalmólogos Especialistas en Tijuana | Oftalmo Visión" description="Conoce a los oftalmólogos de Oftalmo Visión: Dr. Juvenal Guzmán, retinólogo, y Dra. Citlali Carrasco, especialista en párpados. Certificados por el Consejo Mexicano de Oftalmología." frente="equipo">
+  <PageHero
+    eyebrow="Nuestro equipo"
+    title="Oftalmólogos especialistas en Tijuana"
+    lede="Dos cirujanos oftalmólogos certificados por el Consejo Mexicano de Oftalmología, cada uno con alta especialidad en un área del ojo."
+    photo="doctores-oftalmo-vision-optica"
+    photoAlt="Dra. Citlali Carrasco y Dr. Juvenal Guzmán en la óptica de Oftalmo Visión"
+    crumbs={[{ label: 'Especialistas' }]}
+    wa={waLink('Especialistas · Dudas', 'Hola, no sé con qué especialista agendar:')}
+    frente="equipo"
+  />
+  <section class="section">
+    <div class="container grid grid-2">
+      <DoctorCard photo="dr-juvenal-guzman-optica-tijuana" alt="Dr. Juvenal Guzmán Cerda, retinólogo" name={doctors.juvenal.name} role="Retina y vítreo" text="Cirujano oftalmólogo con alta especialidad en retina y vítreo por el Instituto Mexicano de Oftalmología, avalado por la UNAM." href={doctors.juvenal.url} tags={['Retinopatía diabética', 'Desprendimiento de retina', 'Vitrectomía', 'Inyecciones intravítreas']} position="60% 30%" />
+      <DoctorCard photo="dra-citlali-carrasco-optica-tijuana" alt="Dra. Citlali Carrasco González, oculoplástica" name={doctors.citlali.name} role="Oculoplástica" text="Cirujana oftalmóloga con alta especialidad en órbita, párpados y vía lagrimal por la Universidad Autónoma de Sinaloa." href={doctors.citlali.url} tags={['Blefaroplastia', 'Párpado caído', 'Vía lagrimal', 'Órbita']} position="55% 30%" />
+    </div>
+  </section>
+  <Reviews />
+  <CtaBand title="Agenda con el especialista indicado" text="Cuéntanos qué necesitas y te asignamos al doctor correcto." tag="Especialistas · Banda final" message="Hola, quiero agendar una cita. Mi caso es:" frente="equipo" />
+</Base>

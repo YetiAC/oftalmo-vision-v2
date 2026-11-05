@@ -1,0 +1,59 @@
+---
+import DoctorProfile from '../../components/DoctorProfile.astro';
+import { doctors } from '../../data/site';
+---
+<DoctorProfile
+  doc={doctors.juvenal}
+  author="jguzman"
+  frente="retina"
+  seoTitle="Retinólogo en Tijuana | Dr. Juvenal Guzmán Cerda | Oftalmo Visión"
+  description="Dr. Juvenal Guzmán Cerda, retinólogo en Tijuana: cirujano oftalmólogo con alta especialidad en retina y vítreo (IMO, UNAM). Retinopatía diabética, desprendimiento de retina y vitrectomía."
+  eyebrow="Retinólogo en Tijuana"
+  h1="Dr. Juvenal Guzmán Cerda, retinólogo en Tijuana"
+  lede="Cirujano oftalmólogo con alta especialidad en retina y vítreo. Atiende retinopatía diabética, desprendimiento de retina, degeneración macular y cirugía de vitrectomía."
+  photo="dr-juvenal-guzman-retinologo"
+  photo2="dr-juvenal-guzman-exploracion-ocular"
+  photo2Alt="Dr. Juvenal Guzmán explorando la retina de un paciente con lámpara de hendidura"
+  specialty="Retina médica y quirúrgica"
+  knowsAbout={['Retinopatía diabética', 'Desprendimiento de retina', 'Vitrectomía', 'Inyecciones intravítreas', 'Degeneración macular', 'Edema macular', 'Oclusiones vasculares de retina', 'Coriorretinopatía serosa central']}
+  bio={[
+    'Originario de Tijuana, Baja California. Estudió medicina en la Universidad Autónoma de Baja California, campus Tijuana, y ejerció como médico general en un consultorio que instaló en la zona este de su ciudad natal.',
+    'Ahí notó la necesidad de atención de enfermedades oculares en la región. Viajó a San Luis Potosí para especializarse en oftalmología en el Hospital Central Ignacio Morones Prieto y después realizó la alta especialidad en retina y vítreo en el Instituto Mexicano de Oftalmología, avalada por la UNAM.',
+    'Ha colaborado con instituciones oftalmológicas de Tijuana, Ensenada y Mexicali, y con fundaciones de Baja California dedicadas a apoyar a personas de escasos recursos.',
+  ]}
+  treatments={[
+    { name: 'Retinopatía diabética', href: '/padecimiento/retinopatia-diabetica/', text: 'Revisión, láser, inyecciones y cirugía para personas con diabetes.' },
+    { name: 'Desprendimiento de retina', href: '/padecimiento/desprendimiento-de-retina/', text: 'Atención urgente con vitrectomía, neumoretinopexia o cerclaje.' },
+    { name: 'Vitrectomía', href: '/padecimiento/vitrectomia/', text: 'Cirugía dentro del ojo para reparar la retina.' },
+    { name: 'Inyecciones intravítreas', href: '/padecimiento/inyecciones-intravitreas/', text: 'Para edema macular, degeneración macular y oclusiones.' },
+    { name: 'Degeneración macular', href: '/padecimiento/degeneracion-macular/', text: 'Diagnóstico con imagen y tratamiento de la forma húmeda.' },
+    { name: 'Urgencias de retina', href: '/urgencias-oftalmologicas/', text: 'Destellos, moscas flotantes o pérdida súbita de visión.' },
+  ]}
+  education={[
+    { year: '2016 – 2018', title: 'Alta especialidad en Retina y Vítreo', place: 'Instituto Mexicano de Oftalmología I.A.P. · UNAM' },
+    { year: '2013 – 2016', title: 'Especialidad en Oftalmología', place: 'Hospital Central Dr. Ignacio Morones Prieto · UASLP' },
+    { year: '2010 – 2011', title: 'Servicio social', place: 'CUMAI · Universidad Autónoma de Baja California' },
+    { year: '2009 – 2010', title: 'Internado rotatorio de pregrado', place: 'Hospital General Regional No. 20 · IMSS Tijuana' },
+    { year: '2004 – 2009', title: 'Médico', place: 'Facultad de Medicina y Psicología · UABC Tijuana' },
+  ]}
+  experience={[
+    'Oftalmo Visión, Tijuana (actual)',
+    'Fundación Codet, Tijuana',
+    'Clínica de Ojos de Tijuana',
+    'Fundación Ojos Vivos y Com Eye Group, Mexicali',
+    'Clínica Dr. Corral y Ophthalmo Médica, Ensenada',
+    'Certificado por el Consejo Mexicano de Oftalmología',
+  ]}
+  academic={[
+    { title: 'Retinopatía del prematuro y su respuesta al tratamiento con bevacizumab', detail: 'Video ganador del 2.º lugar educativo · Festival de videos 2015, San Luis Potosí' },
+    { title: 'Síndrome de ectrodactilia‑displasia ectodérmica‑hendidura: reporte de un caso', detail: 'Revista Mexicana de Oftalmología', href: 'https://doi.org/10.1016/j.mexoft.2016.01.008' },
+    { title: 'Bilateralidad en oclusiones vasculares', detail: 'Póster · XXXV Reunión Anual de Retina, León 2016' },
+    { title: 'Case report of ROP treatment with bevacizumab', detail: 'Póster · IV World ROP Meeting, Cancún 2017' },
+    { title: 'Angeítis de ramas escarchadas', detail: 'Caso clínico · XXXVI Reunión Anual de Retina, León 2017' },
+  ]}
+  faq={[
+    { q: '¿Qué es un retinólogo?', a: 'Es un oftalmólogo que, después de su especialidad, hizo una alta especialidad en las enfermedades de la retina y el vítreo, incluida su cirugía.' },
+    { q: '¿Cuándo debo ver a un retinólogo?', a: 'Si tienes diabetes, si ves destellos o moscas flotantes nuevas, si notas una sombra en tu visión o si te diagnosticaron una enfermedad de la mácula.' },
+    { q: '¿Dónde consulta el Dr. Juvenal Guzmán?', a: 'En Oftalmo Visión, Diego Rivera 2311, interior 507, Zona Río, Tijuana.' },
+  ]}
+/>

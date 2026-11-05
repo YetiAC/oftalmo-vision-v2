@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+---
+<Base title="Página no encontrada | Oftalmo Visión" description="La página que buscas no existe o cambió de dirección." noindex frente="404">
+  <section class="section">
+    <div class="container narrow nf">
+      <p class="eyebrow">Error 404</p>
+      <h1>No encontramos esta página</h1>
+      <p class="lede">Puede que haya cambiado de dirección con nuestro nuevo sitio. Estas secciones te pueden ayudar:</p>
+      <div class="btn-row">
+        <a class="btn" href="/">Ir al inicio</a>
+        <a class="btn btn--ghost" href="/padecimiento/">Padecimientos <Icon name="arrow" /></a>
+        <a class="btn btn--ghost" href="/contactanos/">Contacto <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>.nf { min-height: 50vh; }</style>

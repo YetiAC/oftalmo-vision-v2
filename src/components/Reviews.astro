@@ -1,0 +1,101 @@
+---
+// Carrusel de reseñas públicas de Google (perfil de Oftalmo Visión en Setmore/Google).
+// Extractos breves de reseñas que mencionan a los doctores. Actualizar cada pocos meses.
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+interface Props { lang?: 'es' | 'en' }
+const { lang = 'es' } = Astro.props;
+const es = lang === 'es';
+
+type Q = { t: string; a: string; doc: 'Dra. Citlali' | 'Dr. Juvenal' | 'Ambos'; topic?: string };
+const quotes: Q[] = es
+  ? [
+      { t: 'Fui operada de cataratas por el doctor Juvenal Guzmán y los resultados fueron excelentes. El doctor muy claro, cálido y profesional, y el personal del quirófano transmite mucha confianza.', a: 'Cristina C.', doc: 'Dr. Juvenal', topic: 'Cirugía de catarata' },
+      { t: 'Mi cita es con la Dra. Citlali Carrasco, excelente médico y ser humano: te explica todo a detalle y te inspira mucha confianza. Servicio 10/10.', a: 'Dulce Olivia C.', doc: 'Dra. Citlali' },
+      { t: 'Quiero agradecerle a la Dra. Citlali Carrasco: me hizo una cirugía de carnosidad y levantamiento de párpados, estoy muy contento y la recomendaría.', a: 'Joaquín A.', doc: 'Dra. Citlali', topic: 'Párpados y pterigión' },
+      { t: 'Me apareció un problema que el doctor Juvenal Guzmán solucionó tan atinadamente que desde la cirugía láser todo ha sido mejorar y mejorar. Gracias, doctor.', a: 'Rodolfo R.', doc: 'Dr. Juvenal', topic: 'Láser de retina' },
+      { t: 'Mi experiencia con la Dra. Citlali ha sido completamente satisfactoria: muy profesional, amable y responsable. Cuando alguien ama lo que hace, se nota. Agradezco mucho mis resultados.', a: 'Victoria O.', doc: 'Dra. Citlali' },
+      { t: 'El doctor Juvenal me ayudó con todas mis dudas, siempre con una explicación fácil de entender. Excelente atención de todo el equipo desde que agendé mi cita.', a: 'Mercedes S.', doc: 'Dr. Juvenal' },
+      { t: 'La Dra. Citlali inspira mucha confianza y da muy buen trato. Mi hermano y dos cuñados se han atendido con ella y han quedado muy satisfechos.', a: 'Rosa S.', doc: 'Dra. Citlali' },
+      { t: 'El Dr. Juvenal destaca por su profesionalismo: su puntualidad es impecable y su claridad al explicar el diagnóstico y las opciones de tratamiento es sumamente valiosa.', a: 'Cristina V.', doc: 'Dr. Juvenal' },
+      { t: 'La doctora es muy atenta y paciente con los niños. Te va explicando a detalle lo que está haciendo y lo que va viendo en tus ojos.', a: 'Elizabeth O.', doc: 'Dra. Citlali', topic: 'Niños' },
+      { t: 'The doctor did a lens replacement on both my eyes and after surgery my eyes were perfect. My wife had hers done this month and she can read again.', a: 'Sergio V. · Orange County, CA', doc: 'Dra. Citlali', topic: 'Cambio de cristalino' },
+    ]
+  : [
+      { t: 'The doctor did a lens replacement on both my eyes and after surgery my eyes were perfect. My wife had hers done this month and she can read again. We put our trust in Dr. Citlali.', a: 'Sergio V. · Orange County, CA', doc: 'Dra. Citlali', topic: 'Lens replacement' },
+      { t: 'I had cataract surgery with Dr. Juvenal Guzmán and the results were excellent. The doctor was clear, warm and professional.', a: 'Cristina C. (translated)', doc: 'Dr. Juvenal', topic: 'Cataract surgery' },
+      { t: 'Dr. Citlali performed my pterygium surgery and eyelid lift. I am very happy and would recommend her.', a: 'Joaquín A. (translated)', doc: 'Dra. Citlali', topic: 'Eyelids' },
+      { t: 'Dr. Juvenal is punctual and explains the diagnosis and treatment options with great clarity.', a: 'Cristina V. (translated)', doc: 'Dr. Juvenal' },
+      { t: 'Dr. Citlali inspires a lot of trust. My brother and two in‑laws have been treated by her and are very satisfied.', a: 'Rosa S. (translated)', doc: 'Dra. Citlali' },
+    ];
+const count = Math.floor(site.reviews.count / 10) * 10;
+---
+<section class="section rev" aria-roledescription="carrusel" aria-label={es ? 'Reseñas de pacientes' : 'Patient reviews'}>
+  <div class="container">
+    <div class="rev__head">
+      <div>
+        <p class="eyebrow">{es ? 'Lo que dicen nuestros pacientes' : 'What patients say'}</p>
+        <h2>{es ? <>Calificación de <span class="rev__num">{site.reviews.rating}</span> con más de {count} reseñas en Google</> : <>Rated <span class="rev__num">{site.reviews.rating}</span> by {count}+ patients on Google</>}</h2>
+      </div>
+      <div class="rev__ctrl">
+        <div class="rev__stars" role="img" aria-label={`${site.reviews.rating} de 5`}>{[1, 2, 3, 4, 5].map(() => <Icon name="star" size={22} />)}</div>
+        <div class="rev__btns">
+          <button type="button" class="rev__btn" data-dir="-1" aria-label={es ? 'Reseña anterior' : 'Previous review'}><Icon name="arrow" size={20} class="rev__flip" /></button>
+          <button type="button" class="rev__btn" data-dir="1" aria-label={es ? 'Siguiente reseña' : 'Next review'}><Icon name="arrow" size={20} /></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="rev__track" tabindex="0">
+    {quotes.map((q) => (
+      <figure class="rev__card">
+        <div class="rev__top">
+          <span class="rev__doc" data-doc={q.doc}>{q.doc === 'Ambos' ? (es ? 'Ambos doctores' : 'Both doctors') : q.doc}</span>
+          {q.topic && <span class="rev__topic">{q.topic}</span>}
+        </div>
+        <blockquote>“{q.t}”</blockquote>
+        <figcaption><span class="rev__s" aria-hidden="true">★★★★★</span>{q.a}</figcaption>
+      </figure>
+    ))}
+  </div>
+  <div class="container">
+    <p class="small muted rev__src">{es ? `Extractos de reseñas públicas de Google, ${site.reviews.asOf}.` : `Excerpts from public Google reviews, ${site.reviews.asOf}.`} <a href={site.mapsUrl} target="_blank" rel="noopener">{es ? 'Ver todas las reseñas' : 'Read all reviews'}</a></p>
+  </div>
+</section>
+<script is:inline>
+  document.querySelectorAll('.rev:not([data-ready])').forEach(function (sec) {
+    sec.dataset.ready = '1';
+    var track = sec.querySelector('.rev__track');
+    sec.querySelectorAll('.rev__btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var card = track.querySelector('.rev__card');
+        var step = card ? card.getBoundingClientRect().width + 20 : 320;
+        track.scrollBy({ left: step * Number(b.dataset.dir), behavior: 'smooth' });
+      });
+    });
+  });
+</script>
+<style>
+  .rev { overflow: hidden; }
+  .rev__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 36px; }
+  .rev__head h2 { max-width: 22ch; margin: 0; }
+  .rev__num { background: var(--ring); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .rev__ctrl { display: grid; gap: 14px; justify-items: end; }
+  .rev__stars { display: flex; gap: 4px; color: #f5b301; }
+  .rev__btns { display: flex; gap: 8px; }
+  .rev__btn { display: grid; place-items: center; width: 52px; height: 52px; border: 1.5px solid var(--navy); background: #fff; color: var(--navy); cursor: pointer; transition: background-color .2s, color .2s; }
+  .rev__btn:hover { background: var(--navy); color: #fff; }
+  .rev__btn :global(.rev__flip) { rotate: 180deg; }
+  .rev__track { display: grid; grid-auto-flow: column; grid-auto-columns: min(86vw, 380px); gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: max(20px, calc((100vw - var(--max)) / 2 + 20px)); padding: 4px max(20px, calc((100vw - var(--max)) / 2 + 20px)) 20px; scrollbar-width: thin; }
+  .rev__track:focus-visible { outline-offset: -3px; }
+  .rev__card { scroll-snap-align: start; margin: 0; background: var(--paper); border: 1px solid var(--line); padding: 28px; display: flex; flex-direction: column; gap: 18px; }
+  .rev__top { display: flex; flex-wrap: wrap; gap: 8px; }
+  .rev__doc { font: 600 .7rem/1 var(--display); letter-spacing: .12em; text-transform: uppercase; padding: 7px 10px; background: var(--navy); color: #fff; }
+  .rev__doc[data-doc='Dra. Citlali'] { background: var(--green); color: var(--navy); }
+  .rev__doc[data-doc='Dr. Juvenal'] { background: var(--blue); color: var(--navy); }
+  .rev__topic { font-size: .78rem; font-weight: 700; padding: 6px 10px; border: 1px solid var(--line); background: #fff; color: var(--muted); }
+  .rev__card blockquote { margin: 0; flex: 1; font: 500 1.04rem/1.6 var(--body); color: var(--navy); }
+  .rev__card figcaption { display: grid; gap: 4px; font-weight: 700; font-size: .9rem; color: var(--blue-deep); }
+  .rev__s { color: #f5b301; letter-spacing: 2px; font-size: .9rem; }
+  .rev__src { margin-top: 12px; }
+</style>

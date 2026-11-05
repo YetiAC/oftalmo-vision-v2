@@ -1,0 +1,30 @@
+---
+import Icon from './Icon.astro';
+import { site, waLink } from '../data/site';
+interface Props { title: string; text: string; tag: string; message: string; frente?: string; setmore?: string; lang?: 'es' | 'en' }
+const { title, text, tag, message, frente = 'general', setmore = site.setmore.base, lang = 'es' } = Astro.props;
+const es = lang === 'es';
+---
+<section class="cta">
+  <div class="container cta__in on-dark">
+    <span class="iris cta__iris" aria-hidden="true"></span>
+    <div class="cta__text">
+      <h2>{title}</h2>
+      <p>{text}</p>
+    </div>
+    <div class="btn-row">
+      <a class="btn btn--book" href={setmore} target="_blank" rel="noopener" data-cta="click_setmore" data-frente={frente} data-pos="banda-cta"><Icon name="calendar" /> {es ? 'Agendar cita' : 'Book appointment'}</a>
+      <a class="btn btn--chat" href={waLink(tag, message)} target="_blank" rel="noopener" data-cta="click_whatsapp" data-frente={frente} data-pos="banda-cta"><Icon name="whatsapp" /> {es ? '¿Dudas? WhatsApp' : 'Questions? WhatsApp'}</a>
+      <a class="btn btn--ghost" href={`tel:${site.phone}`} data-cta="click_call" data-frente={frente} data-pos="banda-cta"><Icon name="phone" /> {site.phoneDisplay}</a>
+    </div>
+  </div>
+</section>
+<style>
+  .cta { padding-block: clamp(48px, 7vw, 88px); }
+  .cta__in { position: relative; overflow: hidden; background: radial-gradient(120% 140% at 100% 0%, #10326e 0%, var(--navy) 55%); border-radius: 32px; padding: clamp(32px, 6vw, 72px); display: grid; gap: 28px; color: #c8d6ea; }
+  .cta__in > * { position: relative; min-width: 0; }
+  .cta h2 { color: #fff; max-width: 20ch; }
+  .cta p { max-width: 56ch; font-size: var(--step-1); line-height: 1.5; margin: 0; }
+  .cta .cta__iris { position: absolute; width: 520px; right: -160px; top: -180px; opacity: .55; }
+  @media (min-width: 1000px) { .cta__in { grid-template-columns: 1.2fr 1fr; align-items: end; } .cta .btn-row { justify-content: flex-end; } }
+</style>

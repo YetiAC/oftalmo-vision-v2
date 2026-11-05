@@ -1,0 +1,85 @@
+---
+// Artículos del blog en la raíz, igual que en WordPress, para conservar sus URLs.
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Icon from '../components/Icon.astro';
+import { getCollection, render } from 'astro:content';
+import { site, doctors, waLink } from '../data/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+const { post } = Astro.props;
+const { Content } = await render(post);
+const d = post.data;
+const author = d.author === 'jguzman' ? doctors.juvenal : d.author === 'ccarrasco' ? doctors.citlali : null;
+const frente = d.category === 'retina' ? 'retina' : d.category === 'parpados' ? 'parpados' : 'clinica';
+const related = (await getCollection('blog')).filter((p) => p.id !== post.id && p.data.category === d.category).slice(0, 2);
+const url = `${site.url}/${post.id}/`;
+const fmt = (x: Date) => x.toLocaleDateString('es-MX', { day: 'numeric', month: 'long', year: 'numeric' });
+const schema = [{
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: d.title,
+  description: d.description,
+  datePublished: d.date.toISOString(),
+  dateModified: (d.updated ?? d.date).toISOString(),
+  image: d.cover ? `${site.url}${d.cover}` : `${site.url}/og/oftalmo-vision.jpg`,
+  mainEntityOfPage: url,
+  inLanguage: 'es-MX',
+  author: author ? { '@type': 'Physician', '@id': `${site.url}${author.url}#medico`, name: author.name, url: `${site.url}${author.url}` } : { '@type': 'Organization', name: 'Oftalmo Visión' },
+  publisher: { '@id': `${site.url}/#clinica` },
+}];
+---
+<Base title={d.seoTitle} description={d.description} schema={schema} type="article" frente={frente} image={d.cover}>
+  <article class="art">
+    <header class="art__head">
+      <div class="container narrow">
+        <Breadcrumbs items={[{ label: 'Blog', href: '/blog/' }, { label: d.title.length > 48 ? d.title.slice(0, 46) + '…' : d.title }]} />
+        <h1>{d.title}</h1>
+        <div class="art__by">
+          {author ? <a href={author.url}>{author.name}</a> : <span>Equipo Oftalmo Visión</span>}
+          <span>·</span>
+          <time datetime={d.date.toISOString()}>{fmt(d.date)}</time>
+        </div>
+      </div>
+    </header>
+    {d.cover && <div class="container art__cover"><img src={d.cover} alt={d.coverAlt ?? d.title} width="1200" height="700" fetchpriority="high" /></div>}
+    <div class="container narrow">
+      <div class="prose art__body"><Content /></div>
+      {author && (
+        <aside class="card art__author">
+          <span class="small muted">Sobre el autor</span>
+          <strong>{author.name}</strong>
+          <span>{author.title}</span>
+          <span class="small muted">Céd. Prof. {author.cedProf} · Céd. Esp. {author.cedEsp}</span>
+          <a href={author.url}>Ver perfil <Icon name="arrow" size={16} /></a>
+        </aside>
+      )}
+      <p class="small muted">Este artículo es informativo y no sustituye una consulta médica.</p>
+      {related.length > 0 && (
+        <nav class="art__rel" aria-label="Artículos relacionados">
+          <h2>Sigue leyendo</h2>
+          {related.map((r) => <a href={`/${r.id}/`}>{r.data.title} <Icon name="arrow" size={16} /></a>)}
+        </nav>
+      )}
+    </div>
+  </article>
+  <CtaBand title="¿Te identificaste con este artículo?" text={author ? `Agenda una valoración con ${author.short}.` : 'Agenda una valoración con nuestros especialistas.'} tag={`Blog · ${d.title.slice(0, 40)}`} message="Hola, leí un artículo del blog y quiero agendar una valoración." frente={frente} setmore={author?.setmore ?? site.setmore.base} />
+</Base>
+<style>
+  .art__head { padding-block: clamp(32px, 5vw, 64px) 32px; background: linear-gradient(180deg, var(--paper), #fff); }
+  .art h1 { font-size: clamp(2rem, 1.5rem + 2.2vw, 3.2rem); }
+  .art__by { display: flex; flex-wrap: wrap; gap: 8px; color: var(--muted); font-weight: 600; }
+  .art__cover img { width: 100%; max-height: 520px; object-fit: cover; border-radius: 26px; }
+  .art__body { margin-block: 40px; font-size: 1.08rem; }
+  .art__body :global(.caption) { font-size: .88rem; color: var(--muted); margin-top: -.8em; }
+  .art__author { display: grid; gap: 4px; margin-bottom: 24px; }
+  .art__author a { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; margin-top: 6px; }
+  .art__rel { display: grid; gap: 10px; margin-block: 40px 0; }
+  .art__rel h2 { font-size: var(--step-1); }
+  .art__rel a { display: flex; justify-content: space-between; gap: 12px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; text-decoration: none; color: var(--navy); font-weight: 600; }
+  .art__rel a:hover { border-color: var(--blue); }
+</style>

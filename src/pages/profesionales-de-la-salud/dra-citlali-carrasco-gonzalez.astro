@@ -1,0 +1,79 @@
+---
+import DoctorProfile from '../../components/DoctorProfile.astro';
+import YouTube from '../../components/YouTube.astro';
+import Icon from '../../components/Icon.astro';
+import { doctors, site } from '../../data/site';
+---
+<DoctorProfile
+  doc={doctors.citlali}
+  author="ccarrasco"
+  frente="parpados"
+  seoTitle="Dra. Citlali Carrasco | Especialista en Párpados en Tijuana"
+  description="Dra. Citlali Carrasco González, cirujana oftalmóloga con alta especialidad en oculoplástica en Tijuana: blefaroplastia, párpado caído, vía lagrimal y cirugía de órbita."
+  eyebrow="Oculoplástica · Párpados, órbita y vía lagrimal"
+  h1="Dra. Citlali Carrasco, especialista en párpados en Tijuana"
+  lede="Cirujana oftalmóloga con alta especialidad en oculoplástica. Realiza blefaroplastia, corrección de párpado caído, cirugía de vía lagrimal y de órbita, cuidando la estética y la salud de tus ojos."
+  photo="dra-citlali-carrasco-oculoplastica"
+  photo2="cirugia-de-parpados-marcaje"
+  photo2Alt="Dra. Citlali Carrasco marcando los párpados de una paciente antes de la cirugía"
+  specialty="Cirugía estética y reconstructiva de párpados"
+  knowsAbout={['Blefaroplastia', 'Ptosis palpebral', 'Cirugía de órbita', 'Vía lagrimal', 'Dacriocistorrinostomía', 'Tumores de párpado', 'Chalazión', 'Oftalmopatía tiroidea', 'Rejuvenecimiento periocular']}
+  bio={[
+    'La Dra. Citlali Carrasco González es cirujana oftalmóloga con alta especialidad en oculoplástica, egresada de la Facultad de Medicina de la UABC Tijuana.',
+    'Realizó su residencia de oftalmología en el Hospital Central Ignacio Morones Prieto, avalada por la UASLP, y después la alta especialidad en oculoplástica (órbita, párpados y vía lagrimal) en el Hospital Civil de Culiacán, avalada por la Universidad Autónoma de Sinaloa.',
+    'Su enfoque une lo estético y lo funcional: una mirada rejuvenecida, natural y, sobre todo, ojos protegidos. Ha laborado en instituciones públicas y privadas de Tijuana y Ensenada.',
+  ]}
+  treatments={[
+    { name: 'Blefaroplastia', href: '/padecimiento/cirugia-cosmetica-de-parpados/', text: 'Retira el exceso de piel y bolsas de los párpados.' },
+    { name: 'Párpado caído (ptosis)', href: '/padecimiento/ptosis-parpado-caido/', text: 'Corrección del músculo que eleva el párpado.' },
+    { name: 'Obstrucción de vía lagrimal', href: '/padecimiento/obstruccion-via-lagrimal/', text: 'Lagrimeo constante e infecciones del lagrimal.' },
+    { name: 'Chalazión', href: '/padecimiento/chalazion/', text: 'Bolitas e inflamación de las glándulas del párpado.' },
+    { name: 'Tumores de párpado', href: '/contactanos/', text: 'Resección de lesiones benignas o malignas con reconstrucción.' },
+    { name: 'Catarata y pterigión', href: '/padecimiento/catarata/', text: 'Como cirujana oftalmóloga también atiende el segmento anterior.' },
+  ]}
+  education={[
+    { year: '2017 – 2018', title: 'Alta especialidad en Oculoplástica', place: 'Hospital Civil de Culiacán · Universidad Autónoma de Sinaloa' },
+    { year: '2017', title: 'Diplomado en Metodología de la Investigación Clínica', place: 'CIDOCS · Universidad Autónoma de Sinaloa' },
+    { year: '2014 – 2017', title: 'Especialidad en Oftalmología', place: 'Hospital Central Ignacio Morones Prieto · UASLP' },
+    { year: '2010 – 2011', title: 'Servicio social comunitario', place: 'ISESALUD · Tijuana' },
+    { year: '2009 – 2010', title: 'Internado de pregrado', place: 'Hospital General Regional No. 20 · IMSS Tijuana' },
+    { year: '2004 – 2009', title: 'Médica', place: 'Facultad de Medicina y Psicología · UABC Tijuana' },
+  ]}
+  experience={[
+    'Oftalmo Visión, Tijuana (actual)',
+    'Fundación Dr. Méndez, Tijuana',
+    'Clínica Corral, Ensenada',
+    'Ophthalmo Médica, Ensenada',
+    'Certificada por el Consejo Mexicano de Oftalmología',
+  ]}
+  academic={[
+    { title: 'Carcinoma epidermoide metastásico relacionado a enfermedad de Bowen', detail: 'Cartel · X Curso Internacional de la Asociación Mexicana de Cirugía de Órbita, Párpados y Vías Lagrimales, 2017' },
+    { title: 'Clasificación de catarata senil mediante LOCS III', detail: 'Cartel · 3.er Foro de Investigación de Residentes, UASLP 2016' },
+    { title: '6.º Congreso de la Sociedad Iberoamericana de Oculoplástica', detail: 'CDMX, 2018' },
+    { title: 'XXXIV Congreso Panamericano de Oftalmología', detail: 'Cancún, 2019' },
+  ]}
+  faq={[
+    { q: '¿Qué es la oculoplástica?', a: 'Es la alta especialidad de la oftalmología dedicada a los párpados, la órbita y la vía lagrimal, tanto en cirugía estética como reconstructiva.' },
+    { q: '¿Por qué operarme los párpados con una oftalmóloga?', a: 'Porque además de la estética cuida la función del párpado y la salud del ojo: cierre, lubricación y protección de la córnea.' },
+    { q: '¿Atiende en inglés?', a: 'Sí, atendemos pacientes de Estados Unidos en español e inglés.' },
+  ]}
+>
+  <section class="section">
+    <div class="container vid">
+      <div>
+        <p class="eyebrow">Conócela</p>
+        <h2>Una cirujana que entiende tu mirada</h2>
+        <p class="lede">Mira la presentación de la Dra. Citlali y conoce cómo trabaja en Oftalmo Visión.</p>
+        <a class="btn btn--book" href={doctors.citlali.setmore} target="_blank" rel="noopener" data-cta="click_setmore" data-frente="parpados" data-pos="perfil-video"><Icon name="calendar" /> Agendar valoración de párpados</a>
+        <p class="small muted vid__note">Permiso de publicidad COFEPRIS {site.cofepris}.</p>
+      </div>
+      <YouTube id="u0QWOZ2Tj94" title="Dra. Citlali Carrasco en Oftalmo Visión Tijuana" frente="parpados" />
+    </div>
+  </section>
+</DoctorProfile>
+<style>
+  .vid { display: grid; gap: 40px; align-items: center; }
+  .vid > * { min-width: 0; }
+  @media (min-width: 1000px) { .vid { grid-template-columns: .9fr 1.1fr; gap: 72px; } }
+  .vid__note { margin-top: 16px; }
+</style>

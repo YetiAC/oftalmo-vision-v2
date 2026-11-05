@@ -1,0 +1,65 @@
+# Oftalmo Visión 2.0 · Hostinger (LiteSpeed / Apache)
+
+Options -Indexes
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# HTTPS y dominio sin www
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^(.*)$ https://oftalmo.vision/$1 [L,R=301]
+
+# Barra final en URLs sin extensión (igual que en WordPress)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !\.[a-zA-Z0-9]{2,5}$
+RewriteCond %{REQUEST_URI} !/$
+RewriteRule ^(.*)$ https://oftalmo.vision/$1/ [L,R=301]
+
+# ---- Redirecciones 301 del sitio anterior (ver mapa-redirecciones-v2.csv) ----
+RewriteRule ^proximamente/?$ / [L,R=301]
+RewriteRule ^sucursal-oftamo-vision-playas-de-tijuana/?$ /sucursal-oftalmo-vision-zona-rio-tijuana/ [L,R=301]
+RewriteRule ^category/uncategorized/?$ /blog/ [L,R=301]
+RewriteRule ^category/retina/coriorretinopatia-serosa-central/?$ /cuando-las-emociones-pueden-afectar-tu-vision-coriorretinopatia-serosa-central/ [L,R=301]
+RewriteRule ^category/retina/?$ /blog/ [L,R=301]
+RewriteRule ^category/retinopatia-diabetica/?$ /padecimiento/retinopatia-diabetica/ [L,R=301]
+RewriteRule ^category/desprendimiento-de-retina/?$ /padecimiento/desprendimiento-de-retina/ [L,R=301]
+RewriteRule ^category/cirugia-cosmetica-de-parpados/?$ /padecimiento/cirugia-cosmetica-de-parpados/ [L,R=301]
+RewriteRule ^category/.*$ /blog/ [L,R=301]
+RewriteRule ^author/jguzman/?$ /profesionales-de-la-salud/retinologo-dr-juvenal-guzman-cerda/ [L,R=301]
+RewriteRule ^author/ccarrasco/?$ /profesionales-de-la-salud/dra-citlali-carrasco-gonzalez/ [L,R=301]
+RewriteRule ^author/.*$ /blog/ [L,R=301]
+RewriteRule ^feed/?$ /blog/ [L,R=301]
+RewriteRule ^comments/feed/?$ /blog/ [L,R=301]
+RewriteRule ^blog/page/.*$ /blog/ [L,R=301]
+RewriteRule ^wp-content/uploads/2019/05/CV-Dr-Juvenal-Guzman\.pdf$ /profesionales-de-la-salud/retinologo-dr-juvenal-guzman-cerda/ [L,R=301]
+RewriteRule ^wp-content/uploads/2019/05/CV-Dra\.-Carrasco-mayo-2019\.pdf$ /profesionales-de-la-salud/dra-citlali-carrasco-gonzalez/ [L,R=301]
+RewriteRule ^(wp-login\.php|xmlrpc\.php|wp-admin/?.*)$ - [G,L]
+</IfModule>
+
+# Compresión
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml text/xml application/xml text/plain
+</IfModule>
+
+# Caché: assets con hash por un año, HTML siempre fresco
+<IfModule mod_headers.c>
+  <FilesMatch "\.(avif|webp|jpg|jpeg|png|svg|woff2|css|js|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.(html|xml|txt)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Strict-Transport-Security "max-age=31536000"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType image/avif .avif
+  AddType image/webp .webp
+  AddType font/woff2 .woff2
+</IfModule>

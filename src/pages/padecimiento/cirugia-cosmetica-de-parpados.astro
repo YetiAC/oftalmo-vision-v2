@@ -1,0 +1,223 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Faq from '../../components/Faq.astro';
+import DoctorCta from '../../components/DoctorCta.astro';
+import Icon from '../../components/Icon.astro';
+import Photo from '../../components/Photo.astro';
+import YouTube from '../../components/YouTube.astro';
+import LeadForm from '../../components/LeadForm.astro';
+import { site, doctors, waLink } from '../../data/site';
+
+const d = doctors.citlali;
+const url = `${site.url}/padecimiento/cirugia-cosmetica-de-parpados/`;
+const gallery = Array.from({ length: 10 }, (_, i) => `/img/antes-despues/blefaroplastia-antes-despues-${String(i + 1).padStart(2, '0')}.webp`);
+
+const faq = [
+  { q: '¿Quién debe operar mis párpados?', a: 'Lo ideal es una cirujana oftalmóloga con alta especialidad en oculoplástica: conoce a detalle el párpado, el ojo y la órbita, y cuida tanto la estética como la función, el cierre y la protección del ojo.' },
+  { q: '¿La blefaroplastia duele?', a: 'Se realiza con anestesia local, por lo que no hay dolor durante la cirugía. Después puede haber molestia leve que se controla con medicamento.' },
+  { q: '¿Cuánto dura la recuperación?', a: 'Se recomienda una recuperación breve de alrededor de 5 días. La inflamación y los moretones disminuyen en las siguientes semanas. Tu especialista te dará indicaciones para tu caso.' },
+  { q: '¿Se puede operar párpado superior e inferior al mismo tiempo?', a: 'Sí, en muchos casos se corrigen ambos en el mismo procedimiento. Se define en la valoración.' },
+  { q: '¿Quién es buen candidato?', a: 'Personas con exceso de piel o bolsas en los párpados que buscan una mejoría natural, no una perfección absoluta, y que están en buen estado de salud general.' },
+  { q: '¿Atienden pacientes de San Diego y Los Ángeles?', a: 'Sí. Muchas pacientes cruzan desde California. Hacemos una valoración, programamos la cirugía y te damos indicaciones para tu regreso y tus revisiones.' },
+  { q: '¿Cuánto cuesta la blefaroplastia?', a: 'El costo depende de si se operan párpados superiores, inferiores o ambos, y de si se combina con otros procedimientos. Escríbenos por WhatsApp para agendar tu valoración y recibir tu presupuesto.' },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'MedicalWebPage',
+    url,
+    name: 'Blefaroplastia en Tijuana',
+    inLanguage: 'es-MX',
+    lastReviewed: '2026-10-20',
+    reviewedBy: { '@id': `${site.url}${d.url}#medico` },
+    mainEntity: {
+      '@type': 'MedicalProcedure',
+      name: 'Blefaroplastia (cirugía de párpados)',
+      alternateName: ['Cirugía cosmética de párpados', 'Cirugía de párpados caídos', 'Eyelid surgery'],
+      procedureType: 'https://schema.org/SurgicalProcedure',
+      bodyLocation: 'Párpados',
+      howPerformed: 'Retiro del exceso de piel y, en algunos casos, músculo o grasa de los párpados, con anestesia local.',
+      preparation: 'Valoración oftalmológica y marcaje de los párpados.',
+      followup: 'Recuperación breve recomendada de 5 días con revisiones de control.',
+      performer: { '@id': `${site.url}${d.url}#medico` },
+    },
+  },
+  { '@context': 'https://schema.org', '@type': 'VideoObject', name: 'Dra. Citlali Carrasco en Oftalmo Visión Tijuana', description: 'Presentación de la Dra. Citlali Carrasco, cirujana oftalmóloga especialista en párpados.', thumbnailUrl: 'https://i.ytimg.com/vi/u0QWOZ2Tj94/hqdefault.jpg', uploadDate: '2020-06-01', embedUrl: 'https://www.youtube-nocookie.com/embed/u0QWOZ2Tj94' },
+];
+---
+<Base title="Blefaroplastia en Tijuana | Cirugía de Párpados con Oculoplástica" description="Blefaroplastia en Tijuana con la Dra. Citlali Carrasco, cirujana oftalmóloga especialista en párpados. Anestesia local, recuperación breve y resultados naturales." schema={schema} frente="parpados" image="/og/blefaroplastia-tijuana.jpg" alternates={{ es: '/padecimiento/cirugia-cosmetica-de-parpados/', en: '/en/eyelid-surgery-tijuana/' }}>
+  <PageHero
+    eyebrow="Dra. Citlali Carrasco · Oculoplástica"
+    title="Blefaroplastia en Tijuana: confía tus párpados a quien más sabe de ojos"
+    lede="Retira el exceso de piel y las bolsas de tus párpados con una cirujana oftalmóloga con alta especialidad en oculoplástica. Mirada descansada, resultado natural."
+    photo="valoracion-blefaroplastia-tijuana"
+    photoAlt="Dra. Citlali Carrasco valorando los párpados de una paciente antes de una blefaroplastia en Tijuana"
+    crumbs={[{ label: 'Padecimientos', href: '/padecimiento/' }, { label: 'Blefaroplastia' }]}
+    wa={waLink('Blefaroplastia · Dudas', 'Hola, tengo dudas sobre la blefaroplastia.')}
+    book={d.setmore}
+    bookLabel="Agendar valoración"
+    frente="parpados"
+    chips={['Anestesia local', 'Recuperación breve', 'Especialista en ojos y párpados']}
+  />
+
+  <!-- POR QUÉ OCULOPLÁSTICA -->
+  <section class="section">
+    <div class="container why">
+      <div>
+        <p class="eyebrow">La diferencia</p>
+        <h2>Tus párpados protegen tus ojos. Opérate con una especialista en ambos.</h2>
+        <p class="lede">La piel del párpado es la más delgada del cuerpo. Operarla bien exige conocer a fondo el párpado, el ojo y la órbita, para mejorar la apariencia sin afectar el cierre ni la protección del ojo.</p>
+      </div>
+      <div class="why__list">
+        <div class="why__item reveal"><Icon name="eye" size={28} /><div><h3>Formación en ojos y párpados</h3><p class="muted">Cirujana oftalmóloga (UASLP) con alta especialidad en oculoplástica: órbita, párpados y vía lagrimal (UAS).</p></div></div>
+        <div class="why__item reveal"><Icon name="shield" size={28} /><div><h3>Estética y función</h3><p class="muted">Corrige el aspecto cansado y también el campo visual cuando la piel cae sobre las pestañas.</p></div></div>
+        <div class="why__item reveal"><Icon name="check" size={28} /><div><h3>Valoración completa del ojo</h3><p class="muted">Antes de operar se revisa la salud ocular, el ojo seco y la posición del párpado, algo que solo hace un oftalmólogo.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUÉ CORRIGE -->
+  <section class="section section--tint">
+    <div class="container">
+      <p class="eyebrow">Qué corrige</p>
+      <h2>Una cirugía, varias soluciones</h2>
+      <div class="grid grid-3 fix">
+        <article class="card reveal"><h3>Párpados superiores</h3><p class="muted">Exceso de piel (dermatocalasia) que da aspecto cansado y puede tapar la visión lateral.</p></article>
+        <article class="card reveal"><h3>Bolsas de los párpados inferiores</h3><p class="muted">Grasa abultada y piel redundante debajo de los ojos.</p></article>
+        <article class="card reveal"><h3>Párpado caído</h3><p class="muted">Cuando el músculo se debilita, se combina con <a href="/padecimiento/ptosis-parpado-caido/">corrección de ptosis</a>.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERÍA -->
+  <section class="section">
+    <div class="container">
+      <div class="gal__head">
+        <div>
+          <p class="eyebrow">Resultados reales</p>
+          <h2>Antes y después</h2>
+        </div>
+        <p class="muted small">Pacientes de la Dra. Citlali Carrasco, publicadas con su autorización. Los resultados varían en cada persona. Permiso de publicidad COFEPRIS {site.cofepris}.</p>
+      </div>
+      <div class="gal">
+        {gallery.map((src, i) => <img src={src} alt={`Blefaroplastia antes y después, paciente ${i + 1} de la Dra. Citlali Carrasco en Tijuana`} width="540" height="540" loading="lazy" decoding="async" />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESO -->
+  <section class="section section--navy">
+    <div class="container steps">
+      <div>
+        <p class="eyebrow">Paso a paso</p>
+        <h2>Así es tu blefaroplastia</h2>
+        <p class="lede">Un proceso claro, con la misma especialista de la valoración a la última revisión.</p>
+        <Photo name="marcaje-blefaroplastia-dra-citlali" alt="Marcaje de párpados previo a la blefaroplastia" sizes="(min-width: 1000px) 40vw, 100vw" widths={[480, 800, 1100]} class="steps__img" />
+      </div>
+      <ol class="steps__list">
+        <li><h3>Valoración</h3><p>Revisión oftalmológica completa, fotos clínicas y plan a tu medida. Resolvemos tus dudas y te damos presupuesto.</p></li>
+        <li><h3>Marcaje</h3><p>La doctora marca con precisión la piel a retirar para un resultado simétrico y natural.</p></li>
+        <li><h3>Cirugía con anestesia local</h3><p>Procedimiento ambulatorio y sin dolor. Regresas a casa el mismo día con un acompañante.</p></li>
+        <li><h3>Recuperación breve</h3><p>Se recomiendan alrededor de 5 días de reposo relativo, con compresas frías e indicaciones claras.</p></li>
+        <li><h3>Revisiones</h3><p>Seguimiento hasta el resultado final. Si vives en EE. UU., planeamos las revisiones contigo.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- DOCTORA + VIDEO -->
+  <section class="section">
+    <div class="container doc">
+      <div>
+        <p class="eyebrow">Tu cirujana</p>
+        <h2>{d.name}</h2>
+        <p class="lede">Cirujana oftalmóloga con alta especialidad en oculoplástica. Certificada por el Consejo Mexicano de Oftalmología y miembro de la Sociedad Mexicana de Oftalmología.</p>
+        <ul class="doc__facts">
+          <li><strong>Médica</strong> · Universidad Autónoma de Baja California</li>
+          <li><strong>Oftalmología</strong> · Hospital Central Ignacio Morones Prieto, UASLP</li>
+          <li><strong>Oculoplástica</strong> · Hospital Civil de Culiacán, UAS</li>
+          <li>Céd. Prof. {d.cedProf} · Céd. Esp. {d.cedEsp}</li>
+        </ul>
+        <a class="btn btn--ghost" href={d.url}>Ver perfil completo <Icon name="arrow" /></a>
+      </div>
+      <YouTube id="u0QWOZ2Tj94" title="Dra. Citlali Carrasco en Oftalmo Visión Tijuana" frente="parpados" />
+    </div>
+  </section>
+
+  <!-- FORMULARIO -->
+  <section class="section section--tint" id="valoracion">
+    <div class="container form-wrap">
+      <div>
+        <p class="eyebrow">Agenda tu valoración</p>
+        <h2>Da el primer paso hacia una mirada descansada</h2>
+        <p class="lede">Agenda directamente en la agenda de la Dra. Citlali. Si antes tienes dudas, déjanos tus datos y te escribimos por WhatsApp.</p>
+        <a class="btn btn--book" href={d.setmore} target="_blank" rel="noopener" data-cta="click_setmore" data-frente="parpados" data-pos="formulario"><Icon name="calendar" /> Agendar valoración</a>
+        <ul class="ok">
+          <li><Icon name="check" size={18} /> Respuesta en horario de consulta</li>
+          <li><Icon name="check" size={18} /> Atención en español e inglés</li>
+          <li><Icon name="check" size={18} /> Zona Río, a minutos de San Ysidro</li>
+        </ul>
+      </div>
+      <LeadForm
+        id="form-blefaro"
+        tag="Blefaroplastia · Formulario"
+        title="Tengo dudas sobre la blefaroplastia"
+        frente="parpados"
+        submit="Enviar mis dudas por WhatsApp"
+        fields={[
+          { name: 'nombre', label: 'Nombre', required: true },
+          { name: 'telefono', label: 'Teléfono', type: 'tel', required: true },
+          { name: 'zona', label: '¿Qué te gustaría corregir?', options: ['Párpados superiores', 'Bolsas inferiores', 'Ambos', 'Párpado caído', 'No estoy segura/o'] },
+          { name: 'ciudad', label: '¿Desde dónde nos visitas?', options: ['Tijuana', 'Otra ciudad de Baja California', 'San Diego / California', 'Otro lugar'] },
+          { name: 'mensaje', label: 'Comentarios', type: 'textarea', placeholder: 'Opcional' },
+        ]}
+      />
+    </div>
+  </section>
+
+  <Faq items={faq} title="Preguntas sobre la blefaroplastia" />
+
+  <DoctorCta who="citlali" topic="Blefaroplastia" frente="parpados" />
+</Base>
+
+<style>
+  .why { display: grid; gap: 40px; }
+  .why > * { min-width: 0; }
+  @media (min-width: 1000px) { .why { grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; } }
+  .why__list { display: grid; gap: 14px; }
+  .why__item { display: grid; grid-template-columns: 48px 1fr; gap: 18px; padding: 24px; border: 1px solid var(--line); border-radius: 20px; }
+  .why__item :global(svg) { color: var(--green); }
+  .why__item h3 { margin-bottom: 4px; }
+  .why__item p { margin: 0; }
+  .fix { margin-top: 32px; }
+  .fix h3 { margin-bottom: 6px; }
+  .fix p { margin: 0; }
+  .gal__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 16px 40px; margin-bottom: 28px; }
+  .gal__head h2 { margin: 0; }
+  .gal__head p { max-width: 48ch; margin: 0; }
+  .gal { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 210px), 1fr)); gap: 14px; }
+  .gal img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 16px; background: var(--paper); }
+  .steps { display: grid; gap: 48px; }
+  .steps > * { min-width: 0; }
+  @media (min-width: 1000px) { .steps { grid-template-columns: .9fr 1.1fr; gap: 80px; align-items: start; } }
+  .steps :global(.steps__img), .steps :global(picture img) { margin-top: 28px; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 24px; }
+  .steps__list { list-style: none; padding: 0; margin: 0; counter-reset: s; display: grid; gap: 4px; }
+  .steps__list li { counter-increment: s; position: relative; padding: 22px 0 22px 68px; border-bottom: 1px solid rgb(255 255 255 / .1); }
+  .steps__list li::before { content: counter(s, decimal-leading-zero); position: absolute; left: 0; top: 22px; font: 600 1.6rem/1 var(--display); background: var(--ring); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .steps__list h3 { margin-bottom: 4px; }
+  .steps__list p { margin: 0; color: #b9c8dc; }
+  .doc { display: grid; gap: 48px; align-items: center; }
+  .doc > * { min-width: 0; }
+  @media (min-width: 1000px) { .doc { grid-template-columns: 1fr 1fr; gap: 72px; } }
+  .doc__facts { list-style: none; padding: 0; margin: 0 0 28px; display: grid; gap: 10px; }
+  .doc__facts li { padding-left: 18px; position: relative; }
+  .doc__facts li::before { content: ''; position: absolute; left: 0; top: .6em; width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+  .form-wrap { display: grid; gap: 40px; align-items: start; }
+  .form-wrap > * { min-width: 0; }
+  @media (min-width: 1000px) { .form-wrap { grid-template-columns: .9fr 1.1fr; gap: 72px; } }
+  .form-wrap .btn--book { margin-top: 4px; }
+  .ok { list-style: none; padding: 0; margin-top: 24px; display: grid; gap: 10px; font-weight: 600; }
+  .ok li { display: flex; gap: 8px; align-items: center; }
+  .ok :global(svg) { color: var(--green); }
+</style>

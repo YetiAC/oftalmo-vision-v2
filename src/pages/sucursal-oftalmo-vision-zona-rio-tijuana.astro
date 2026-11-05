@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import YouTube from '../components/YouTube.astro';
+import Icon from '../components/Icon.astro';
+import { site, waLink } from '../data/site';
+---
+<Base title="Oftalmo Visión Zona Río Tijuana | Ubicación y Horarios" description="Oftalmo Visión Zona Río: Diego Rivera 2311, Int. 507, Edificio Corporativo Central, Tijuana. Cómo llegar desde la garita de San Ysidro, horarios y teléfono." frente="ubicacion">
+  <PageHero
+    eyebrow="Sucursal Zona Río"
+    title="Oftalmo Visión Zona Río, Tijuana"
+    lede="En el Edificio Corporativo Central, una zona moderna y segura de Tijuana, a minutos de la garita internacional de San Ysidro."
+    photo="doctores-oftalmo-vision-optica"
+    photoAlt="Instalaciones de Oftalmo Visión en Zona Río Tijuana"
+    crumbs={[{ label: 'Sucursal Zona Río' }]}
+    wa={waLink('Sucursal Zona Río · Dudas', 'Hola, tengo una duda sobre cómo llegar.')}
+    secondary={{ href: site.mapsUrl, label: 'Abrir en Google Maps' }}
+    frente="ubicacion"
+  />
+  <section class="section">
+    <div class="container loc">
+      <div class="loc__info">
+        <h2>Dirección y horarios</h2>
+        <ul>
+          <li><Icon name="pin" /><div><strong>Dirección</strong><span>{site.address.street}<br />{site.address.neighborhood}, C.P. {site.address.postalCode}, Tijuana, B.C.</span></div></li>
+          <li><Icon name="clock" /><div><strong>Horario</strong>{site.hours.map((h) => <span>{h.days}: {h.time}</span>)}<span>Domingo: cerrado</span></div></li>
+          <li><Icon name="phone" /><div><strong>Teléfono</strong><a href={`tel:${site.phone}`} data-cta="click_call" data-pos="sucursal">{site.phoneDisplay}</a><span>Urgencias: <a href={`tel:${site.emergency}`} data-cta="click_call" data-frente="urgencias" data-pos="sucursal">{site.emergencyDisplay}</a></span></div></li>
+        </ul>
+        <h3>Cómo llegar desde la garita de San Ysidro</h3>
+        <p class="muted">Al cruzar a pie por San Ysidro, toma un taxi o un auto de aplicación hacia “Edificio Corporativo Central, Diego Rivera 2311, Zona Río”. Si vienes en auto, sigue por Vía Rápida o Paseo de los Héroes hacia Zona Río. Pregunta en recepción por estacionamiento.</p>
+      </div>
+      <YouTube id="tSKwqrLRXDE" title="Ubicación de Oftalmo Visión" frente="ubicacion" />
+    </div>
+  </section>
+</Base>
+<style>
+  .loc { display: grid; gap: 48px; align-items: start; }
+  .loc > * { min-width: 0; }
+  @media (min-width: 1000px) { .loc { grid-template-columns: 1fr 1fr; gap: 72px; } }
+  .loc__info ul { list-style: none; padding: 0; margin: 0 0 32px; display: grid; gap: 22px; }
+  .loc__info li { display: grid; grid-template-columns: 24px 1fr; gap: 14px; }
+  .loc__info li :global(svg) { color: var(--green); margin-top: 3px; }
+  .loc__info li div { display: grid; gap: 2px; }
+</style>

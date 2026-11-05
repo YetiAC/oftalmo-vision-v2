@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from './PageHero.astro';
+import Faq from './Faq.astro';
+import CtaBand from './CtaBand.astro';
+import Icon from './Icon.astro';
+import Reviews from './Reviews.astro';
+import { site, waLink } from '../data/site';
+
+interface Props {
+  seoTitle: string; description: string; eyebrow: string; h1: string; lede: string;
+  photo: string; photoAlt: string; es: string; en: string; tag: string; frente: string; setmore: string;
+  chips: string[]; points: { t: string; d: string }[]; faq: { q: string; a: string }[]; procedure: string; image?: string;
+}
+const p = Astro.props;
+const schema = [{
+  '@context': 'https://schema.org', '@type': 'MedicalWebPage', inLanguage: 'en-US', name: p.seoTitle, url: `${site.url}${p.en}`,
+  mainEntity: { '@type': 'MedicalProcedure', name: p.procedure, procedureType: 'https://schema.org/SurgicalProcedure' },
+  audience: { '@type': 'PeopleAudience', geographicArea: { '@type': 'AdministrativeArea', name: 'Southern California' } },
+}];
+---
+<Base lang="en" title={p.seoTitle} description={p.description} schema={schema} alternates={{ es: p.es, en: p.en }} frente={p.frente} image={p.image}>
+  <PageHero eyebrow={p.eyebrow} title={p.h1} lede={p.lede} photo={p.photo} photoAlt={p.photoAlt} lang="en" book={p.setmore} wa={waLink(`${p.tag} · Questions`, 'Hi, I have a question:')} frente={p.frente} chips={p.chips} />
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Why patients cross the border</p>
+      <h2>Specialist care, minutes from San Ysidro</h2>
+      <div class="grid grid-3 pts">
+        {p.points.map((x) => <article class="card reveal"><Icon name="check" size={26} /><h3>{x.t}</h3><p class="muted">{x.d}</p></article>)}
+      </div>
+    </div>
+  </section>
+  <section class="section section--navy">
+    <div class="container trip">
+      <div>
+        <p class="eyebrow">Plan your visit</p>
+        <h2>From San Diego to your appointment</h2>
+      </div>
+      <ol>
+        <li><strong>Message us on WhatsApp</strong> in English. We schedule your consultation and answer your questions.</li>
+        <li><strong>Walk across at San Ysidro</strong> and take a taxi or rideshare to Edificio Corporativo Central, Diego Rivera 2311, Zona Río.</li>
+        <li><strong>Consultation and plan</strong> the same day. If surgery is recommended, we coordinate dates and follow‑ups with you.</li>
+        <li><strong>Bring a companion</strong> on surgery day. You should not drive afterwards.</li>
+      </ol>
+    </div>
+  </section>
+  <Reviews lang="en" />
+  <Faq items={p.faq} title="Frequently asked questions" eyebrow="Before you come" />
+  <CtaBand lang="en" title="Book your consultation" text={`Message us on WhatsApp or call ${site.phoneDisplay} (from the US dial +52 664 608 5040).`} tag={`${p.tag} · Final`} message="Hi, I would like to schedule a consultation." frente={p.frente} setmore={p.setmore} />
+</Base>
+<style>
+  .pts { margin-top: 28px; }
+  .pts :global(svg) { color: var(--green); margin-bottom: 12px; }
+  .pts h3 { margin-bottom: 4px; }
+  .pts p { margin: 0; }
+  .trip { display: grid; gap: 32px; }
+  .trip > * { min-width: 0; }
+  @media (min-width: 1000px) { .trip { grid-template-columns: .8fr 1.2fr; gap: 72px; } }
+  .trip ol { margin: 0; padding-left: 1.3em; display: grid; gap: 14px; color: #c8d6ea; }
+  .trip strong { color: #fff; }
+</style>

@@ -1,0 +1,59 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import { site, waLink } from '../data/site';
+
+const alarm = [
+  { t: 'Pérdida súbita de la visión', d: 'En uno o ambos ojos, total o parcial.' },
+  { t: 'Destellos y moscas flotantes nuevas', d: 'Sobre todo si aparecen de golpe o con una sombra.' },
+  { t: 'Sombra o cortina en tu campo visual', d: 'Puede ser un desprendimiento de retina.' },
+  { t: 'Golpe en el ojo o cuerpo extraño', d: 'Esquirlas, metal, madera o cualquier objeto.' },
+  { t: 'Químicos en el ojo', d: 'Lava con agua limpia 15 minutos y llama.' },
+  { t: 'Dolor intenso con ojo rojo', d: 'Especialmente con visión borrosa, náusea o halos.' },
+];
+const faq = [
+  { q: '¿Qué hago si me cae un químico en el ojo?', a: 'Lava el ojo con abundante agua limpia durante al menos 15 minutos, sin tallar, y llama de inmediato a la línea de urgencias.' },
+  { q: '¿Debo ir a urgencias por moscas flotantes?', a: 'Si aparecen de golpe, son muchas o vienen con destellos o una sombra, sí: necesitas una revisión de retina el mismo día.' },
+  { q: '¿Atienden urgencias fuera de horario?', a: `Contamos con una línea de urgencias: ${site.emergencyDisplay}. Llama y te orientamos sobre el siguiente paso.` },
+];
+const schema = [{ '@context': 'https://schema.org', '@type': 'MedicalWebPage', name: 'Urgencias oftalmológicas en Tijuana', about: { '@type': 'MedicalCondition', name: 'Urgencia oftalmológica' }, specialty: 'Ophthalmology', inLanguage: 'es-MX' }];
+---
+<Base title="Urgencias Oftalmológicas en Tijuana | Oftalmo Visión" description={`Urgencias de ojos en Tijuana: pérdida súbita de visión, golpes, químicos, destellos o desprendimiento de retina. Llama a la línea de urgencias ${site.emergencyDisplay}.`} schema={schema} frente="urgencias">
+  <PageHero
+    eyebrow="Línea de urgencias"
+    title="Urgencias oftalmológicas en Tijuana"
+    lede="Si perdiste visión de golpe, recibiste un golpe o un químico en el ojo, o ves una cortina en tu visión, no esperes. Llama ahora a nuestra línea de urgencias."
+    crumbs={[{ label: 'Urgencias' }]}
+    frente="urgencias"
+    noBook
+  >
+    <div class="urg">
+      <a class="urg__call" href={`tel:${site.emergency}`} data-cta="click_call" data-frente="urgencias" data-pos="hero"><Icon name="phone" size={28} /><span><small>Llama a urgencias</small>{site.emergencyDisplay}</span></a>
+      <a class="btn btn--wa" href={waLink('Urgencias', 'Hola, tengo una urgencia en el ojo:')} target="_blank" rel="noopener" data-cta="click_whatsapp" data-frente="urgencias" data-pos="hero"><Icon name="whatsapp" /> WhatsApp de urgencias</a>
+    </div>
+  </PageHero>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Señales de alarma</p>
+      <h2>Acude de inmediato si tienes…</h2>
+      <div class="grid grid-3 al">
+        {alarm.map((a) => <article class="card al__c"><Icon name="alert" size={26} /><h3>{a.t}</h3><p class="muted">{a.d}</p></article>)}
+      </div>
+      <p class="muted al__n">Relacionado: <a href="/padecimiento/desprendimiento-de-retina/">desprendimiento de retina</a> · <a href="/padecimiento/glaucoma/">glaucoma</a> · <a href="/padecimiento/retinopatia-diabetica/">retinopatía diabética</a></p>
+    </div>
+  </section>
+  <Faq items={faq} title="Preguntas sobre urgencias" />
+</Base>
+<style>
+  .urg { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin-top: 8px; }
+  .urg__call { display: inline-flex; align-items: center; gap: 14px; padding: 14px 26px 14px 18px; border-radius: 0; background: #b3261e; color: #fff; text-decoration: none; font: 650 1.5rem/1 var(--display); box-shadow: 0 12px 30px -12px rgb(179 38 30 / .6); }
+  .urg__call:hover { color: #fff; background: #941f18; }
+  .urg__call small { display: block; font: 600 .75rem/1.4 var(--body); letter-spacing: .1em; text-transform: uppercase; opacity: .85; }
+  .al { margin-top: 28px; }
+  .al__c :global(svg) { color: #b3261e; margin-bottom: 12px; }
+  .al__c h3 { margin-bottom: 4px; }
+  .al__c p { margin: 0; }
+  .al__n { margin-top: 28px; }
+</style>

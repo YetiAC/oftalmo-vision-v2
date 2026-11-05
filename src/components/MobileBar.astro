@@ -1,0 +1,19 @@
+---
+import Icon from './Icon.astro';
+import { site, waLink } from '../data/site';
+interface Props { lang?: 'es' | 'en'; frente?: string }
+const { lang = 'es', frente = 'general' } = Astro.props;
+const es = lang === 'es';
+const wa = es ? waLink(`Barra móvil · ${frente}`, 'Hola, tengo una duda:') : waLink(`EN · Mobile · ${frente}`, 'Hi, I have a question:');
+---
+<nav class="mbar" aria-label={es ? 'Contacto rápido' : 'Quick contact'}>
+  <a href={`tel:${site.phone}`} data-cta="click_call" data-pos="barra-movil"><Icon name="phone" /> <span>{es ? 'Llamar' : 'Call'}</span></a>
+  <a class="mbar__book" href={site.setmore.base} target="_blank" rel="noopener" data-cta="click_setmore" data-pos="barra-movil"><Icon name="calendar" /> <span>{es ? 'Agendar cita' : 'Book'}</span></a>
+  <a href={wa} target="_blank" rel="noopener" data-cta="click_whatsapp" data-pos="barra-movil"><Icon name="whatsapp" size={22} /> <span>{es ? 'Dudas' : 'Chat'}</span></a>
+</nav>
+<style>
+  .mbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; display: grid; grid-template-columns: 1fr 1.3fr 1fr; gap: 8px; padding: 10px max(12px, env(safe-area-inset-left, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-right, 0px)); background: rgb(255 255 255 / .94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-top: 1px solid var(--line); }
+  .mbar a { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; border-radius: 0; font: 600 .72rem/1.1 var(--display); letter-spacing: .08em; text-transform: uppercase; text-decoration: none; color: var(--navy); background: var(--paper-2); }
+  .mbar .mbar__book { background: var(--green); color: var(--navy); }
+  @media (min-width: 900px) { .mbar { display: none; } }
+</style>

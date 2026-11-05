@@ -1,0 +1,25 @@
+---
+import { site } from '../data/site';
+interface Props { items: { label: string; href?: string }[] }
+const { items } = Astro.props;
+const all = [{ label: 'Inicio', href: '/' }, ...items];
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: all.map((it, i) => ({ '@type': 'ListItem', position: i + 1, name: it.label, item: new URL(it.href ?? Astro.url.pathname, site.url).href })),
+};
+---
+<nav class="bc" aria-label="Ruta">
+  <ol>
+    {all.map((it, i) => (
+      <li>{it.href && i < all.length - 1 ? <a href={it.href}>{it.label}</a> : <span aria-current="page">{it.label}</span>}</li>
+    ))}
+  </ol>
+</nav>
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+<style>
+  .bc ol { list-style: none; padding: 0; margin: 0 0 22px; display: flex; flex-wrap: wrap; gap: 6px; font-size: .84rem; color: var(--muted); }
+  .bc li + li::before { content: '/'; margin-right: 6px; opacity: .5; }
+  .bc a { color: var(--muted); text-decoration: none; }
+  .bc a:hover { color: var(--navy); text-decoration: underline; }
+</style>

@@ -1,0 +1,170 @@
+---
+// Perfil de médico: hub de su especialidad, con schema Physician.
+import Base from '../layouts/Base.astro';
+import PageHero from './PageHero.astro';
+import CtaBand from './CtaBand.astro';
+import Icon from './Icon.astro';
+import Photo from './Photo.astro';
+import Faq from './Faq.astro';
+import { getCollection } from 'astro:content';
+import { site, waLink } from '../data/site';
+
+interface Item { year: string; title: string; place: string }
+interface Props {
+  doc: { name: string; short: string; title: string; url: string; cedProf: string; cedEsp: string; setmore: string; facebook: string; linkedin: string };
+  author: 'jguzman' | 'ccarrasco';
+  seoTitle: string;
+  description: string;
+  eyebrow: string;
+  h1: string;
+  lede: string;
+  photo: string;
+  photo2: string;
+  photo2Alt: string;
+  bio: string[];
+  specialty: string;
+  frente: string;
+  treatments: { name: string; href: string; text: string }[];
+  education: Item[];
+  experience: string[];
+  academic: { title: string; detail: string; href?: string }[];
+  faq: { q: string; a: string }[];
+  knowsAbout: string[];
+  extra?: boolean;
+}
+const p = Astro.props;
+const posts = (await getCollection('blog')).filter((b) => b.data.author === p.author).sort((a, b) => +b.data.date - +a.data.date);
+const schema = [{
+  '@context': 'https://schema.org',
+  '@type': 'Physician',
+  '@id': `${site.url}${p.doc.url}#medico`,
+  name: p.doc.name,
+  url: `${site.url}${p.doc.url}`,
+  image: `${site.url}/og/oftalmo-vision.jpg`,
+  medicalSpecialty: 'Ophthalmology',
+  description: p.description,
+  knowsAbout: p.knowsAbout,
+  knowsLanguage: ['es', 'en'],
+  telephone: site.phone,
+  address: { '@type': 'PostalAddress', streetAddress: site.address.street, addressLocality: 'Tijuana', addressRegion: 'Baja California', postalCode: site.address.postalCode, addressCountry: 'MX' },
+  worksFor: { '@id': `${site.url}/#clinica` },
+  hasCredential: [
+    { '@type': 'EducationalOccupationalCredential', credentialCategory: 'Cédula profesional', identifier: p.doc.cedProf },
+    { '@type': 'EducationalOccupationalCredential', credentialCategory: 'Cédula de especialidad', identifier: p.doc.cedEsp },
+    { '@type': 'EducationalOccupationalCredential', credentialCategory: 'Certificación', recognizedBy: { '@type': 'Organization', name: 'Consejo Mexicano de Oftalmología' } },
+  ],
+  memberOf: { '@type': 'Organization', name: 'Sociedad Mexicana de Oftalmología' },
+  alumniOf: p.education.map((e) => ({ '@type': 'EducationalOrganization', name: e.place })),
+  sameAs: [p.doc.facebook, p.doc.linkedin],
+}];
+---
+<Base title={p.seoTitle} description={p.description} schema={schema} frente={p.frente} image={p.frente === 'retina' ? '/og/retinologo-tijuana.jpg' : '/og/blefaroplastia-tijuana.jpg'}>
+  <PageHero
+    eyebrow={p.eyebrow}
+    title={p.h1}
+    lede={p.lede}
+    photo={p.photo}
+    photoAlt={`${p.doc.name}, ${p.doc.title}`}
+    photoPosition="50% 20%"
+    crumbs={[{ label: 'Especialistas', href: '/profesionales-de-la-salud/' }, { label: p.doc.short }]}
+    wa={waLink(`${p.doc.short} · Dudas`, `Hola, tengo una duda para ${p.doc.short}.`)}
+    book={p.doc.setmore}
+    bookLabel={`Agendar con ${p.doc.short.replace('Dr. ', 'el Dr. ').replace('Dra. ', 'la Dra. ')}`}
+    frente={p.frente}
+    chips={['Consejo Mexicano de Oftalmología', `Céd. Esp. ${p.doc.cedEsp}`, 'Español · English']}
+  />
+
+  <section class="section">
+    <div class="container bio">
+      <div class="bio__text">
+        <p class="eyebrow">Biografía</p>
+        <h2>{p.specialty}</h2>
+        {p.bio.map((b) => <p>{b}</p>)}
+      </div>
+      <figure class="bio__fig">
+        <Photo name={p.photo2} alt={p.photo2Alt} sizes="(min-width: 1000px) 40vw, 100vw" widths={[480, 800, 1100]} />
+      </figure>
+    </div>
+  </section>
+
+  <section class="section section--tint">
+    <div class="container">
+      <p class="eyebrow">Tratamientos</p>
+      <h2>¿En qué te puede ayudar?</h2>
+      <div class="grid grid-3 tr">
+        {p.treatments.map((t) => (
+          <a class="tr__card reveal" href={t.href}><h3>{t.name}</h3><p class="muted">{t.text}</p><span>Ver más <Icon name="arrow" size={16} /></span></a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container cv">
+      <div>
+        <p class="eyebrow">Formación</p>
+        <h2>Trayectoria académica</h2>
+        <ol class="tl">
+          {p.education.map((e) => <li><span class="tl__y">{e.year}</span><div><strong>{e.title}</strong><span class="muted">{e.place}</span></div></li>)}
+        </ol>
+        <p class="small muted">Cédula profesional {p.doc.cedProf} · Cédula de especialidad {p.doc.cedEsp}. Puedes verificarlas en el Registro Nacional de Profesionistas de la SEP.</p>
+      </div>
+      <div>
+        <p class="eyebrow">Experiencia y academia</p>
+        <h2>Práctica clínica</h2>
+        <ul class="xp">{p.experience.map((x) => <li>{x}</li>)}</ul>
+        <h3 class="cv__h3">Congresos y publicaciones</h3>
+        <ul class="ac">
+          {p.academic.map((a) => <li><strong>{a.href ? <a href={a.href} target="_blank" rel="noopener">{a.title}</a> : a.title}</strong><span class="muted small">{a.detail}</span></li>)}
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <slot />
+
+  {posts.length > 0 && (
+    <section class="section section--tint">
+      <div class="container">
+        <p class="eyebrow">Artículos médicos</p>
+        <h2>Escritos por {p.doc.short}</h2>
+        <div class="grid grid-3 posts">
+          {posts.map((b) => <a class="card post" href={`/${b.id}/`}><span class="small muted">{b.data.date.toLocaleDateString('es-MX', { year: 'numeric', month: 'long' })}</span><h3>{b.data.title}</h3><span class="post__go">Leer <Icon name="arrow" size={16} /></span></a>)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <Faq items={p.faq} title={`Preguntas sobre ${p.doc.short}`} />
+  <CtaBand title={`Agenda con ${p.doc.short}`} text="Escríbenos por WhatsApp o reserva directamente en su agenda en línea." tag={`${p.doc.short} · Banda final`} message={`Hola, quiero agendar una cita con ${p.doc.short}.`} frente={p.frente} setmore={p.doc.setmore} />
+</Base>
+
+<style>
+  .bio { display: grid; gap: 48px; align-items: center; }
+  .bio > * { min-width: 0; }
+  @media (min-width: 1000px) { .bio { grid-template-columns: 1.1fr .9fr; gap: 80px; } }
+  .bio__text p { font-size: 1.06rem; }
+  .bio__fig { margin: 0; }
+  .bio__fig :global(img) { width: 100%; aspect-ratio: 4 / 4.6; object-fit: cover; border-radius: 26px; }
+  .tr { margin-top: 32px; }
+  .tr__card { display: grid; gap: 8px; align-content: start; padding: 26px; background: #fff; border-radius: 20px; border: 1px solid var(--line); text-decoration: none; color: var(--navy); transition: transform .25s, border-color .25s; }
+  .tr__card:hover { transform: translateY(-4px); border-color: var(--blue); }
+  .tr__card h3, .tr__card p { margin: 0; }
+  .tr__card span { display: inline-flex; gap: 6px; align-items: center; font-weight: 700; color: var(--blue-deep); }
+  .cv { display: grid; gap: 56px; }
+  .cv > * { min-width: 0; }
+  @media (min-width: 1000px) { .cv { grid-template-columns: 1fr 1fr; gap: 80px; } }
+  .tl { list-style: none; padding: 0; margin: 0 0 24px; display: grid; gap: 0; border-left: 2px solid var(--line); }
+  .tl li { display: grid; grid-template-columns: 110px 1fr; gap: 14px; padding: 14px 0 14px 22px; position: relative; }
+  .tl li::before { content: ''; position: absolute; left: -7px; top: 22px; width: 12px; height: 12px; border-radius: 50%; background: #fff; border: 2px solid var(--blue); }
+  .tl__y { font: 600 .9rem/1.6 var(--display); color: var(--blue-deep); }
+  .tl div { display: grid; gap: 2px; }
+  .xp { padding-left: 1.1em; display: grid; gap: 6px; }
+  .cv__h3 { margin-top: 32px; }
+  .ac { list-style: none; padding: 0; display: grid; gap: 14px; }
+  .ac li { display: grid; gap: 2px; }
+  .posts { margin-top: 28px; }
+  .post { text-decoration: none; color: var(--navy); display: grid; gap: 8px; align-content: start; }
+  .post h3 { margin: 0; font-size: 1.08rem; }
+  .post__go { display: inline-flex; gap: 6px; align-items: center; font-weight: 700; color: var(--blue-deep); }
+</style>
