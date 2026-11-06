@@ -38,7 +38,6 @@ const nav: Item[] = es
           { href: '/padecimiento/pterigion/', label: 'Pterigión' },
         ] },
       ], extras: [
-        { href: '/urgencias-oftalmologicas/', label: 'Urgencias oftalmológicas' },
         { href: '/padecimiento/', label: 'Ver todos los padecimientos' },
       ] },
       { href: '/profesionales-de-la-salud/', label: 'Profesionales', children: [
@@ -106,7 +105,7 @@ const active = (it: Item) => it.href === path || (it.href !== '/' && it.href !==
                         <ul>{g.items.map((c) => <li><a href={c.href} aria-current={c.href === path ? 'page' : undefined}>{c.label}</a></li>)}</ul>
                         {g.book && <a class="hd__colbook" href={g.book.href} target="_blank" rel="noopener" data-cta="click_setmore" data-pos="menu-padecimientos">{g.book.label}</a>}
                         {!g.book && it.extras && (
-                          <div class="hd__extras">{it.extras.map((x) => <a href={x.href} class:list={[{ 'hd__urg': x.href.includes('urgencias') }]}>{x.label} ›</a>)}</div>
+                          <div class="hd__extras">{it.extras.map((x) => <a href={x.href}>{x.label} ›</a>)}</div>
                         )}
                       </div>
                     ))}
@@ -211,7 +210,6 @@ const active = (it: Item) => it.href === path || (it.href !== '/' && it.href !==
   .hd__extras { margin-top: auto; display: grid; gap: 10px; padding-top: 16px; border-top: 1px solid var(--line); }
   .hd__extras a { color: var(--blue-deep); font-weight: 700; font-size: .92rem; text-decoration: none; }
   .hd__extras a:hover { text-decoration: underline; }
-  .hd__extras .hd__urg { color: #b3261e; }
   .hd__kidtitle { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); font: 600 .74rem/1.2 var(--display); letter-spacing: .14em; text-transform: uppercase; color: var(--green-ink); }
   .hd__kidtitle:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
   .hd__kidtitle small { letter-spacing: 0; text-transform: none; color: var(--muted); font-family: var(--body); font-weight: 600; }

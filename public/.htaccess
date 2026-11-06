@@ -20,6 +20,7 @@ RewriteRule ^(.*)$ https://oftalmo.vision/$1/ [L,R=301]
 
 # ---- Redirecciones 301 del sitio anterior (ver mapa-redirecciones-v2.csv) ----
 RewriteRule ^proximamente/?$ / [L,R=301]
+RewriteRule ^urgencias-oftalmologicas/?$ /contactanos/ [L,R=301]
 RewriteRule ^sucursal-oftamo-vision-playas-de-tijuana/?$ /sucursal-oftalmo-vision-zona-rio-tijuana/ [L,R=301]
 RewriteRule ^category/uncategorized/?$ /blog/ [L,R=301]
 RewriteRule ^category/retina/coriorretinopatia-serosa-central/?$ /cuando-las-emociones-pueden-afectar-tu-vision-coriorretinopatia-serosa-central/ [L,R=301]

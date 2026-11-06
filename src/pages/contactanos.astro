@@ -5,7 +5,7 @@ import LeadForm from '../components/LeadForm.astro';
 import Icon from '../components/Icon.astro';
 import { site, waLink } from '../data/site';
 ---
-<Base title="Contacto | Oftalmo Visión Tijuana" description={`Contacta a Oftalmo Visión en Tijuana: WhatsApp, teléfono ${site.phoneDisplay}, urgencias ${site.emergencyDisplay} y agenda en línea. Diego Rivera 2311, Zona Río.`} frente="contacto">
+<Base title="Contacto | Oftalmo Visión Tijuana" description={`Contacta a Oftalmo Visión en Tijuana: WhatsApp, teléfono ${site.phoneDisplay}, WhatsApp ${site.whatsappDisplay} y agenda en línea. Diego Rivera 2311, Zona Río.`} frente="contacto">
   <PageHero
     eyebrow="Contáctanos"
     title="Es un gusto atenderte"
@@ -18,7 +18,7 @@ import { site, waLink } from '../data/site';
     <div class="container ct">
       <div class="ct__info">
         <a class="ct__c" href={`tel:${site.phone}`} data-cta="click_call" data-pos="contacto"><Icon name="phone" /><div><span>Teléfono</span><strong>{site.phoneDisplay}</strong></div></a>
-        <a class="ct__c ct__c--urg" href={`tel:${site.emergency}`} data-cta="click_call" data-frente="urgencias" data-pos="contacto"><Icon name="alert" /><div><span>Urgencias</span><strong>{site.emergencyDisplay}</strong></div></a>
+        <a class="ct__c" href={waLink('Contacto · Tarjeta', 'Hola, quiero información:')} target="_blank" rel="noopener" data-cta="click_whatsapp" data-pos="contacto"><Icon name="whatsapp" /><div><span>WhatsApp</span><strong>{site.whatsappDisplay}</strong></div></a>
         <a class="ct__c" href={`mailto:${site.email}`}><Icon name="mail" /><div><span>Correo</span><strong>{site.email}</strong></div></a>
         <a class="ct__c" href={site.mapsUrl} target="_blank" rel="noopener"><Icon name="pin" /><div><span>Dirección</span><strong>{site.address.street}, {site.address.neighborhood}, Tijuana</strong></div></a>
         <div class="ct__c"><Icon name="clock" /><div><span>Horario</span>{site.hours.map((h) => <strong>{h.days}: {h.time}</strong>)}</div></div>
@@ -42,5 +42,4 @@ import { site, waLink } from '../data/site';
   .ct__c :global(svg) { color: var(--green); margin-top: 2px; }
   .ct__c div { display: grid; gap: 2px; min-width: 0; overflow-wrap: anywhere; }
   .ct__c span { font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); font-weight: 700; }
-  .ct__c--urg :global(svg) { color: #b3261e; }
 </style>

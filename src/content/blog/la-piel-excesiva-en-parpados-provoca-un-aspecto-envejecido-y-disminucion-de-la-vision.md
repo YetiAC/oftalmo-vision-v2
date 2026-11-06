@@ -6,8 +6,8 @@ date: "2019-10-07"
 updated: "2019-12-28"
 author: "ccarrasco"
 category: "parpados"
-cover: "/img/blog/2019_10_dermatochalasis-dra.-carrasco.webp"
-coverAlt: "La piel excesiva en párpados provoca un aspecto envejecido y disminución de la visión."
+cover: "/og/blefaroplastia-tijuana.jpg"
+coverAlt: "La Dra. Citlali Carrasco marca los párpados de una paciente antes de una blefaroplastia en Oftalmo Visión Tijuana"
 ---
 
 <p>La piel excesiva o redundante en los párpados superiores o inferiores se conoce como <strong><em>dermatochalasis</em></strong>. Es una condición médica muy frecuente que puede presentarse en personas jóvenes, sin embargo es más común en personas mayores de 45 años. </p>

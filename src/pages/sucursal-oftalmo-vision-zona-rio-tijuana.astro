@@ -24,7 +24,7 @@ import { site, waLink } from '../data/site';
         <ul>
           <li><Icon name="pin" /><div><strong>Dirección</strong><span>{site.address.street}<br />{site.address.neighborhood}, C.P. {site.address.postalCode}, Tijuana, B.C.</span></div></li>
           <li><Icon name="clock" /><div><strong>Horario</strong>{site.hours.map((h) => <span>{h.days}: {h.time}</span>)}<span>Domingo: cerrado</span></div></li>
-          <li><Icon name="phone" /><div><strong>Teléfono</strong><a href={`tel:${site.phone}`} data-cta="click_call" data-pos="sucursal">{site.phoneDisplay}</a><span>Urgencias: <a href={`tel:${site.emergency}`} data-cta="click_call" data-frente="urgencias" data-pos="sucursal">{site.emergencyDisplay}</a></span></div></li>
+          <li><Icon name="phone" /><div><strong>Teléfono</strong><a href={`tel:${site.phone}`} data-cta="click_call" data-pos="sucursal">{site.phoneDisplay}</a><span>WhatsApp: <a href={`https://wa.me/${site.whatsapp}`} target="_blank" rel="noopener" data-cta="click_whatsapp" data-pos="sucursal">{site.whatsappDisplay}</a></span></div></li>
         </ul>
         <h3>Cómo llegar desde la garita de San Ysidro</h3>
         <p class="muted">Al cruzar a pie por San Ysidro, toma un taxi o un auto de aplicación hacia “Edificio Corporativo Central, Diego Rivera 2311, Zona Río”. Si vienes en auto, sigue por Vía Rápida o Paseo de los Héroes hacia Zona Río. Pregunta en recepción por estacionamiento.</p>

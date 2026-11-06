@@ -72,7 +72,7 @@ const days: Record<string, string> | null = es ? null : { 'Lunes a viernes': 'Mo
     <div class="ft__info">
       <a class="ft__card" href={`tel:${site.phone}`} data-cta="click_call" data-pos="footer">
         <span class="ft__ico ft__ico--green"><Icon name="phone" size={16} /></span>
-        <span><span class="ft__k">{es ? 'Teléfono · Urgencias' : 'Phone · Emergencies'}</span><span class="ft__v">+52 {site.phoneDisplay} · {site.emergencyDisplay}</span></span>
+        <span><span class="ft__k">{es ? 'Teléfono' : 'Phone'}</span><span class="ft__v">+52 {site.phoneDisplay}</span></span>
       </a>
       <a class="ft__card" href={`mailto:${site.email}`}>
         <span class="ft__ico ft__ico--blue"><Icon name="mail" size={16} /></span>
@@ -102,7 +102,7 @@ const days: Record<string, string> | null = es ? null : { 'Lunes a viernes': 'Mo
   </div>
 
   <div class="ft__legal">
-    <p>{es ? 'Responsables médicos' : 'Medical directors'}: {doctors.juvenal.name}, Ced. Prof. {doctors.juvenal.cedProf}, Ced. Esp. {doctors.juvenal.cedEsp} · {doctors.citlali.name}, Ced. Prof. {doctors.citlali.cedProf}, Ced. Esp. {doctors.citlali.cedEsp}.</p>
+    <p>{es ? 'Responsables médicos' : 'Medical directors'}: {doctors.juvenal.name}, Ced. Prof. {doctors.juvenal.cedProf}, Ced. Esp. {doctors.juvenal.cedEsp} · {doctors.citlali.name}, Ced. Prof. {doctors.citlali.cedProf}, Ced. Esp. {doctors.citlali.cedEsp} y {doctors.citlali.cedAlta}.</p>
     <p>Copyright © {year} Oftalmo Visión. {es ? 'Todos los derechos reservados' : 'All rights reserved'} · <a href="/aviso-de-privacidad/">{es ? 'Aviso de privacidad' : 'Privacy notice (Spanish)'}</a> · {es ? 'La información de este sitio es educativa y no sustituye una consulta médica.' : 'Information on this site is educational and does not replace a medical consultation.'}</p>
   </div>
 </footer>

@@ -1,9 +1,9 @@
 <?php
 // Recibe los formularios del sitio (sendBeacon) y manda una copia por correo,
 // para que ningún lead se pierda aunque la persona no envíe el WhatsApp.
-// PENDIENTE: confirmar el correo destino con la clínica.
+// Destino confirmado por el Dr. Juvenal (nov 2026).
 
-const DESTINO = 'info@oftalmo.vision';
+const DESTINO = 'agenda.oftalmovision@gmail.com';
 const REMITENTE = 'web@oftalmo.vision';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') { http_response_code(405); exit; }

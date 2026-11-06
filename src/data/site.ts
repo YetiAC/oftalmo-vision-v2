@@ -1,6 +1,6 @@
 // Datos de contacto y marca. Un solo lugar para cambiarlos.
-// PENDIENTE confirmar con la clínica: número de WhatsApp oficial y horario real
-// (el sitio anterior dice L–V 9–19 h; Setmore marcaba cierre a las 17 h).
+// Confirmado por el Dr. Juvenal (nov 2026): WhatsApp oficial 664 357 9604, L–V 8–17 h,
+// sábado 9–14 h, formularios a agenda.oftalmovision@gmail.com. No hay servicio de urgencias.
 
 export const site = {
   name: 'Oftalmo Visión',
@@ -8,10 +8,10 @@ export const site = {
   url: 'https://oftalmo.vision',
   phone: '+526646085040',
   phoneDisplay: '(664) 608 5040',
-  emergency: '+526643579604',
-  emergencyDisplay: '(664) 357 9604',
   whatsapp: '526643579604',
+  whatsappDisplay: '(664) 357 9604',
   email: 'info@oftalmo.vision',
+  leadsTo: 'agenda.oftalmovision@gmail.com', // destino de formularios (ver public/api/lead.php)
   address: {
     street: 'Diego Rivera 2311, Int. 507, Edificio Corporativo Central',
     locality: 'Tijuana',
@@ -22,13 +22,13 @@ export const site = {
   },
   mapsUrl: 'https://maps.google.com/?cid=5004953545419934127',
   hours: [
-    { days: 'Lunes a viernes', time: '9:00 – 19:00', schema: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '09:00', closes: '19:00' },
+    { days: 'Lunes a viernes', time: '8:00 – 17:00', schema: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '08:00', closes: '17:00' },
     { days: 'Sábado', time: '9:00 – 14:00', schema: ['Saturday'], opens: '09:00', closes: '14:00' },
   ],
   setmore: {
     base: 'https://oftalmovision.setmore.com/',
-    juvenal: 'https://oftalmovision.setmore.com/resourcebookingpage/r45031588023698378',
-    citlali: 'https://oftalmovision.setmore.com/resourcebookingpage/rab2b1588024211774',
+    juvenal: 'https://oftalmovision.setmore.com/team/r45031588023698378',
+    citlali: 'https://oftalmovision.setmore.com/team/rab2b1588024211774',
   },
   social: {
     facebook: 'https://www.facebook.com/OftalmoVisionTijuana',
@@ -49,10 +49,12 @@ export const doctors = {
     titleEn: 'Ophthalmic surgeon · Retina & Vitreous fellowship',
     cedProf: '7373859',
     cedEsp: '10757004',
+    cedAlta: '',
+    societies: ['Sociedad Mexicana de Oftalmología', 'Asociación Mexicana de Retina'],
     schools: 'UABC · UASLP · UNAM',
     facebook: 'https://www.facebook.com/dr.juvenalguzman/',
     linkedin: 'https://www.linkedin.com/in/juvenal-guzman-05b94b5a/',
-    setmore: 'https://oftalmovision.setmore.com/resourcebookingpage/r45031588023698378',
+    setmore: 'https://oftalmovision.setmore.com/team/r45031588023698378',
   },
   citlali: {
     slug: 'dra-citlali-carrasco-gonzalez',
@@ -63,10 +65,13 @@ export const doctors = {
     titleEn: 'Ophthalmic surgeon · Oculoplastic fellowship',
     cedProf: '7373817',
     cedEsp: '10855406',
+    cedAlta: '12762160', // alta especialidad en oculoplástica
+    societies: ['Sociedad Mexicana de Oftalmología'],
     schools: 'UABC · UASLP · UAS',
     facebook: 'https://www.facebook.com/dra.citlalicarrasco/',
+    instagram: 'https://www.instagram.com/dra.citlali.carrasco/',
     linkedin: 'https://www.linkedin.com/in/citlali-carrasco-5a6ba2177/',
-    setmore: 'https://oftalmovision.setmore.com/resourcebookingpage/rab2b1588024211774',
+    setmore: 'https://oftalmovision.setmore.com/team/rab2b1588024211774',
   },
 } as const;
 

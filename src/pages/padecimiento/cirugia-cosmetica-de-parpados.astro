@@ -6,6 +6,8 @@ import DoctorCta from '../../components/DoctorCta.astro';
 import Icon from '../../components/Icon.astro';
 import Photo from '../../components/Photo.astro';
 import YouTube from '../../components/YouTube.astro';
+import ReelsCarousel from '../../components/ReelsCarousel.astro';
+import { reelsBlefaroplastia } from '../../data/reels';
 import LeadForm from '../../components/LeadForm.astro';
 import { site, doctors, waLink } from '../../data/site';
 
@@ -137,13 +139,25 @@ const schema = [
           <li><strong>Médica</strong> · Universidad Autónoma de Baja California</li>
           <li><strong>Oftalmología</strong> · Hospital Central Ignacio Morones Prieto, UASLP</li>
           <li><strong>Oculoplástica</strong> · Hospital Civil de Culiacán, UAS</li>
-          <li>Céd. Prof. {d.cedProf} · Céd. Esp. {d.cedEsp}</li>
+          <li>Céd. Prof. {d.cedProf} · Céd. Esp. {d.cedEsp} · Céd. Alta Esp. {d.cedAlta}</li>
         </ul>
         <a class="btn btn--ghost" href={d.url}>Ver perfil completo <Icon name="arrow" /></a>
       </div>
       <YouTube id="u0QWOZ2Tj94" title="Dra. Citlali Carrasco en Oftalmo Visión Tijuana" frente="parpados" />
     </div>
   </section>
+
+  <!-- REELS -->
+  <ReelsCarousel
+    reels={reelsBlefaroplastia}
+    eyebrow="En video"
+    title="La Dra. Citlali te explica la blefaroplastia"
+    text="Resultados, recuperación y lo que debes saber de tus párpados, contado por tu cirujana."
+    profile={d.instagram}
+    handle="@dra.citlali.carrasco"
+    frente="parpados"
+    pos="blefaroplastia"
+  />
 
   <!-- FORMULARIO -->
   <section class="section section--tint" id="valoracion">

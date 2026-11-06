@@ -2,6 +2,8 @@
 import DoctorProfile from '../../components/DoctorProfile.astro';
 import YouTube from '../../components/YouTube.astro';
 import Icon from '../../components/Icon.astro';
+import ReelsCarousel from '../../components/ReelsCarousel.astro';
+import { reelsCitlali } from '../../data/reels';
 import { doctors, site } from '../../data/site';
 ---
 <DoctorProfile
@@ -70,6 +72,16 @@ import { doctors, site } from '../../data/site';
       <YouTube id="u0QWOZ2Tj94" title="Dra. Citlali Carrasco en Oftalmo Visión Tijuana" frente="parpados" />
     </div>
   </section>
+  <ReelsCarousel
+    reels={reelsCitlali}
+    eyebrow="Síguela en Instagram"
+    title="Mírala explicarlo en video"
+    text="Consejos, su consultorio y cómo trabaja la oculoplástica, en reels cortos."
+    profile={doctors.citlali.instagram}
+    handle="@dra.citlali.carrasco"
+    frente="parpados"
+    pos="perfil-citlali"
+  />
 </DoctorProfile>
 <style>
   .vid { display: grid; gap: 40px; align-items: center; }

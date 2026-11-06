@@ -11,7 +11,7 @@ import { site, waLink } from '../data/site';
 
 interface Item { year: string; title: string; place: string }
 interface Props {
-  doc: { name: string; short: string; title: string; url: string; cedProf: string; cedEsp: string; setmore: string; facebook: string; linkedin: string };
+  doc: { name: string; short: string; title: string; url: string; cedProf: string; cedEsp: string; cedAlta?: string; societies?: readonly string[]; setmore: string; facebook: string; linkedin: string };
   author: 'jguzman' | 'ccarrasco';
   seoTitle: string;
   description: string;
@@ -51,9 +51,10 @@ const schema = [{
   hasCredential: [
     { '@type': 'EducationalOccupationalCredential', credentialCategory: 'Cédula profesional', identifier: p.doc.cedProf },
     { '@type': 'EducationalOccupationalCredential', credentialCategory: 'Cédula de especialidad', identifier: p.doc.cedEsp },
+    ...(p.doc.cedAlta ? [{ '@type': 'EducationalOccupationalCredential', credentialCategory: 'Cédula de alta especialidad', identifier: p.doc.cedAlta }] : []),
     { '@type': 'EducationalOccupationalCredential', credentialCategory: 'Certificación', recognizedBy: { '@type': 'Organization', name: 'Consejo Mexicano de Oftalmología' } },
   ],
-  memberOf: { '@type': 'Organization', name: 'Sociedad Mexicana de Oftalmología' },
+  memberOf: (p.doc.societies ?? ['Sociedad Mexicana de Oftalmología']).map((name) => ({ '@type': 'Organization', name })),
   alumniOf: p.education.map((e) => ({ '@type': 'EducationalOrganization', name: e.place })),
   sameAs: [p.doc.facebook, p.doc.linkedin],
 }];
@@ -107,7 +108,7 @@ const schema = [{
         <ol class="tl">
           {p.education.map((e) => <li><span class="tl__y">{e.year}</span><div><strong>{e.title}</strong><span class="muted">{e.place}</span></div></li>)}
         </ol>
-        <p class="small muted">Cédula profesional {p.doc.cedProf} · Cédula de especialidad {p.doc.cedEsp}. Puedes verificarlas en el Registro Nacional de Profesionistas de la SEP.</p>
+        <p class="small muted">Cédula profesional {p.doc.cedProf} · Cédula de especialidad {p.doc.cedEsp}{p.doc.cedAlta && ` · Cédula de alta especialidad ${p.doc.cedAlta}`}. Puedes verificarlas en el Registro Nacional de Profesionistas de la SEP.</p>
       </div>
       <div>
         <p class="eyebrow">Experiencia y academia</p>
