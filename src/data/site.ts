@@ -10,7 +10,7 @@ export const site = {
   phoneDisplay: '(664) 608 5040',
   whatsapp: '526643579604',
   whatsappDisplay: '(664) 357 9604',
-  email: 'info@oftalmo.vision',
+  email: 'agenda.oftalmovision@gmail.com', // único correo de contacto; info@ ya no se usa (Dr. Juvenal, nov 2026)
   leadsTo: 'agenda.oftalmovision@gmail.com', // destino de formularios (ver public/api/lead.php)
   address: {
     street: 'Diego Rivera 2311, Int. 507, Edificio Corporativo Central',

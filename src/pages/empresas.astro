@@ -106,6 +106,25 @@ const schema = [{
     </div>
   </section>
 
+  <!-- GALERÍA: fotos de brigadas enviadas por el Dr. Juvenal (nov 2026) -->
+  <section class="section section--tint">
+    <div class="container gal">
+      <div class="gal__text">
+        <p class="eyebrow">Brigadas en empresas</p>
+        <h2>Así se ve una brigada de Oftalmo Visión</h2>
+        <p class="muted">Instalamos el examen de la vista y la óptica dentro de tu empresa. Tu personal se revisa, elige armazón y recibe sus lentes sin salir de la planta.</p>
+      </div>
+      <figure class="gal__fig reveal">
+        <Photo name="brigada-empresa-armazones" alt="Trabajador elige armazón en la óptica que Oftalmo Visión instala dentro de una empresa" sizes="(min-width: 1000px) 30vw, 50vw" widths={[360, 600, 900]} />
+        <figcaption>Muestrario de armazones y lentes de sol en planta.</figcaption>
+      </figure>
+      <figure class="gal__fig reveal">
+        <Photo name="brigada-empresa-examenes" alt="Equipo de Oftalmo Visión hace exámenes de la vista al personal de una empresa" sizes="(min-width: 1000px) 30vw, 50vw" widths={[360, 600, 900]} />
+        <figcaption>Exámenes de la vista al personal, con equipo de optometría.</figcaption>
+      </figure>
+    </div>
+  </section>
+
   <section class="section section--navy">
     <div class="container law">
       <div>
@@ -161,6 +180,13 @@ const schema = [{
   .report__bars b { position: relative; z-index: 1; line-height: 34px; padding-left: 12px; font-size: .85rem; color: var(--navy); mix-blend-mode: normal; }
   .how__list { padding-left: 1.2em; display: grid; gap: 10px; margin-bottom: 20px; }
   .how :global(.how__img), .how :global(picture img) { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 26px; }
+  .gal { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: end; }
+  .gal__text { grid-column: 1 / -1; }
+  .gal__text p:last-child { margin-bottom: 8px; }
+  .gal__fig { margin: 0; min-width: 0; }
+  .gal__fig :global(img) { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: 22px; }
+  .gal__fig figcaption { font-size: .85rem; color: var(--muted); margin-top: 10px; }
+  @media (min-width: 1000px) { .gal { grid-template-columns: 1.1fr 1fr 1fr; gap: 28px; align-items: center; } .gal__text { grid-column: auto; } }
   .law { display: grid; gap: 32px; }
   .law p { color: #b9c8dc; margin: 0; }
 </style>
